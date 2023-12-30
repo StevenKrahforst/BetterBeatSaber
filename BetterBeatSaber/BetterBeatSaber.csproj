@@ -242,8 +242,6 @@
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Providers\BloomFontProvider.cs" />
         <Compile Include="Providers\MaterialProvider.cs" />
-        <Compile Include="Reflection\ReflectedEnum.cs" />
-        <Compile Include="Reflection\ReflectedObject.cs" />
         <Compile Include="UI\AsyncListView.cs" />
         <Compile Include="UI\FlowController.cs" />
         <Compile Include="UI\ListCell.cs" />
