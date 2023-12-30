@@ -7,8 +7,6 @@ using BetterBeatSaber.Utilities;
 
 using IPA.Loader;
 
-using ReeSabers;
-
 namespace BetterBeatSaber.Mixins;
 
 // ReSharper disable UnusedType.Global

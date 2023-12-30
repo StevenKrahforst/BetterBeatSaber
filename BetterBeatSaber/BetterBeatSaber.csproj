@@ -42,12 +42,9 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="BeatmapCore">
-          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
-        </Reference>
-        <!--<Reference Include="BeatmapCore">
             <HintPath>$(BeatSaberManagedDirectory)\BeatmapCore.dll</HintPath>
             <Private>False</Private>
-        </Reference>-->
+        </Reference>
         <Reference Include="BSML">
             <HintPath>$(BeatSaberPluginsDirectory)\BSML.dll</HintPath>
             <Private>False</Private>
@@ -83,9 +80,6 @@
         <Reference Include="Newtonsoft.Json">
             <HintPath>$(BeatSaberLibsDirectory)\Newtonsoft.Json.dll</HintPath>
             <Private>False</Private>
-        </Reference>
-        <Reference Include="ReeSabers">
-          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Plugins\ReeSabers.dll</HintPath>
         </Reference>
         <Reference Include="SiraUtil">
             <HintPath>$(BeatSaberPluginsDirectory)\SiraUtil.dll</HintPath>
@@ -127,10 +121,8 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.UnityWebRequestModule">
-          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
-        </Reference>
-        <Reference Include="UnityEngine.UnityWebRequestWWWModule">
-          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.UnityWebRequestModule.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="Zenject">
             <HintPath>$(BeatSaberManagedDirectory)\Zenject.dll</HintPath>
