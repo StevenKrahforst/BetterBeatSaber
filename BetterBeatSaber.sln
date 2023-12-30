@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterBeatSaber", "BetterBeatSaber\BetterBeatSaber.csproj", "{F4D05FAA-F8B3-45C0-9F23-07F36A2FD944}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UIColorizer", "UIColorizer\UIColorizer.csproj", "{11D9B689-BEF0-478D-87AB-CDAECC35A11F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F4D05FAA-F8B3-45C0-9F23-07F36A2FD944}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4D05FAA-F8B3-45C0-9F23-07F36A2FD944}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4D05FAA-F8B3-45C0-9F23-07F36A2FD944}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4D05FAA-F8B3-45C0-9F23-07F36A2FD944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11D9B689-BEF0-478D-87AB-CDAECC35A11F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11D9B689-BEF0-478D-87AB-CDAECC35A11F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11D9B689-BEF0-478D-87AB-CDAECC35A11F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11D9B689-BEF0-478D-87AB-CDAECC35A11F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

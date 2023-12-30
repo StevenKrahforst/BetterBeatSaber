@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <Nullable>enable</Nullable>
+        <OutputPath>bin\</OutputPath>
+        <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <DefineConstants>DEBUG</DefineConstants>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+        <DebugSymbols>false</DebugSymbols>
+        <Optimize>true</Optimize>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <BeatSaberManagedDirectory>$(BeatSaberDirectory)\Beat Saber_Data\Managed</BeatSaberManagedDirectory>
+        <BeatSaberLibsDirectory>$(BeatSaberDirectory)\Libs</BeatSaberLibsDirectory>
+        <BeatSaberPluginsDirectory>$(BeatSaberDirectory)\Plugins</BeatSaberPluginsDirectory>
+        <BetterBeatSaberModulesDirectory>$(BeatSaberDirectory)\BetterBeatSaber\Modules</BetterBeatSaberModulesDirectory>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Reference Include="0Harmony" Condition="$(Libraries.Contains('Harmony'))">
+            <HintPath>$(BeatSaberLibsDirectory)\0Harmony.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="BeatmapCore" Condition="$(Libraries.Contains('BeatmapCore'))">
+            <HintPath>$(BeatSaberManagedDirectory)\BeatmapCore.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="BSML" Condition="$(Libraries.Contains('BSML'))">
+            <HintPath>$(BeatSaberPluginsDirectory)\BSML.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="GameplayCore" Condition="$(Libraries.Contains('GameplayCore'))">
+            <HintPath>$(BeatSaberManagedDirectory)\GameplayCore.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Hive.Versioning" Condition="$(Libraries.Contains('Hive.Versioning'))">
+            <HintPath>$(BeatSaberLibsDirectory)\Hive.Versioning.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="HMLib" Condition="$(Libraries.Contains('HMLib'))">
+            <HintPath>$(BeatSaberManagedDirectory)\HMLib.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="HMRendering" Condition="$(Libraries.Contains('HMRendering'))">
+            <HintPath>$(BeatSaberManagedDirectory)\HMRendering.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="HMUI" Condition="$(Libraries.Contains('HMUI'))">
+            <HintPath>$(BeatSaberManagedDirectory)\HMUI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="IPA.Loader" Condition="$(Libraries.Contains('IPA.Loader'))">
+            <HintPath>$(BeatSaberManagedDirectory)\IPA.Loader.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Main" Condition="$(Libraries.Contains('Main'))">
+            <HintPath>$(BeatSaberManagedDirectory)\Main.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Mono.Cecil" Condition="$(Libraries.Contains('Mono.Cecil'))">
+            <HintPath>$(BeatSaberLibsDirectory)\Mono.Cecil.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Newtonsoft.Json" Condition="$(Libraries.Contains('Newtonsoft.Json'))">
+            <HintPath>$(BeatSaberLibsDirectory)\Newtonsoft.Json.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Polyglot" Condition="$(Libraries.Contains('Polyglot'))">
+            <HintPath>$(BeatSaberManagedDirectory)\Polyglot.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="SongDetailsCache" Condition="$(Libraries.Contains('SongDetailsCache'))">
+            <HintPath>$(BeatSaberLibsDirectory)\SongDetailsCache.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Unity.TextMeshPro" Condition="$(Libraries.Contains('Unity.TextMeshPro'))">
+            <HintPath>$(BeatSaberManagedDirectory)\Unity.TextMeshPro.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.AnimationModule" Condition="$(Libraries.Contains('UnityEngine.AnimationModule'))">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.AnimationModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.AssetBundleModule" Condition="$(Libraries.Contains('UnityEngine.AssetBundleModule'))">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.AssetBundleModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule" Condition="$(Libraries.Contains('UnityEngine.CoreModule'))">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.CoreModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule" Condition="$(Libraries.Contains('UnityEngine.TextRenderingModule'))">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextRenderingModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.ParticleSystemModule" Condition="$(Libraries.Contains('UnityEngine.ParticleSystemModule'))">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.ParticleSystemModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.UI" Condition="$(Libraries.Contains('UnityEngine.UI'))">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.UI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.UIModule" Condition="$(Libraries.Contains('UnityEngine.UIModule'))">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.UIModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestModule" Condition="$(Libraries.Contains('UnityEngine.UnityWebRequestModule'))">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.UnityWebRequestModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.XRModule" Condition="$(Libraries.Contains('UnityEngine.XRModule'))">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.XRModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Zenject" Condition="$(Libraries.Contains('Zenject'))">
+            <HintPath>$(BeatSaberManagedDirectory)\Zenject.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Zenject-usage" Condition="$(Libraries.Contains('Zenject-usage'))">
+            <HintPath>$(BeatSaberManagedDirectory)\Zenject-usage.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    
+    <ItemGroup Condition="$(Libraries.Contains('Shared'))">
+        <Compile Include="..\Shared\**\*.*">
+            <Link>%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Compile>
+        <Compile Remove="..\Shared\bin\**" />
+        <Compile Remove="..\Shared\obj\**" />
+        <Compile Remove="..\Shared\Shared.csproj" />
+        <Compile Remove="..\Shared\packages.lock.json" />
+    </ItemGroup>
+
+</Project>

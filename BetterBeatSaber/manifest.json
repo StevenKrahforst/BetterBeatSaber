@@ -1,0 +1,18 @@
+{
+  "$schema": "https://raw.githubusercontent.com/beat-saber-modding-group/BSIPA-MetadataFileSchema/master/Schema.json",
+  "id": "bbs",
+  "name": "Better Beat Saber",
+  "author": "StevenK",
+  "version": "0.2.0",
+  "description": "Better Beat Saber",
+  "gameVersion": "1.29.1",
+  "dependsOn": {
+    "BSIPA": "^4.0.0",
+    "BeatSaberMarkupLanguage": "^1.5.3"
+  },
+  "loadAfter": [
+    "BeatSaberMarkupLanguage",
+    "ReeSabers",
+    "Custom Notes"
+  ]
+}

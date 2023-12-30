@@ -1,0 +1,53 @@
+﻿*.swp
+*.*~
+
+# Rider
+.idea
+
+# Build results
+bin/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# C#
+nupkg/
+packages/
+
+appsettings.json
+appsettings.*.json
+
+*DotSettings.user
+
+# Node / NPM / Yarn
+node_modules
+project.lock.json
+yarn.lock
+.npmrc
+
+# Unity Files
+Library/
+Assets/
+ProjectSettings/
+Packages/
+
+# System
+Thumbs.db
+
+# Custom
+website/
+UIColorizer/
+
+# Private
+UnityMixin.cs

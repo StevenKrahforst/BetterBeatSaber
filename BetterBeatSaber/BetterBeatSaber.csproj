@@ -1,0 +1,274 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{F4D05FAA-F8B3-45C0-9F23-07F36A2FD944}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>BetterBeatSaber</RootNamespace>
+        <AssemblyName>BetterBeatSaber</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <BeatSaberVersion>1.29.1</BeatSaberVersion>
+        <BeatSaberVersionNumber>129</BeatSaberVersionNumber>
+        <BeatSaberDirectory>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDirectory>
+        <BeatSaberManagedDirectory>$(BeatSaberDirectory)\Beat Saber_Data\Managed</BeatSaberManagedDirectory>
+        <BeatSaberLibsDirectory>$(BeatSaberDirectory)\Libs</BeatSaberLibsDirectory>
+        <BeatSaberPluginsDirectory>$(BeatSaberDirectory)\Plugins</BeatSaberPluginsDirectory>
+        <BetterBeatSaberModulesDirectory>$(BeatSaberDirectory)\BetterBeatSaber\Modules</BetterBeatSaberModulesDirectory>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(BeatSaberVersionNumber)' &lt; '130'">
+        <DefineConstants>PRE_130</DefineConstants>
+    </PropertyGroup>
+
+    <Target Name="CopyToPluginsDirectory" AfterTargets="Build">
+        <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(BeatSaberPluginsDirectory)\BetterBeatSaber.dll" />
+    </Target>
+    
+    <ItemGroup>
+        <Reference Include="0Harmony">
+            <HintPath>$(BeatSaberLibsDirectory)\0Harmony.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="BeatmapCore">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
+        </Reference>
+        <!--<Reference Include="BeatmapCore">
+            <HintPath>$(BeatSaberManagedDirectory)\BeatmapCore.dll</HintPath>
+            <Private>False</Private>
+        </Reference>-->
+        <Reference Include="BSML">
+            <HintPath>$(BeatSaberPluginsDirectory)\BSML.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="GameplayCore">
+            <HintPath>$(BeatSaberManagedDirectory)\GameplayCore.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Hive.Versioning">
+            <HintPath>$(BeatSaberLibsDirectory)\Hive.Versioning.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="HMLib">
+            <HintPath>$(BeatSaberManagedDirectory)\HMLib.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="HMRendering">
+            <HintPath>$(BeatSaberManagedDirectory)\HMRendering.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="HMUI">
+            <HintPath>$(BeatSaberManagedDirectory)\HMUI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="IPA.Loader">
+            <HintPath>$(BeatSaberManagedDirectory)\IPA.Loader.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Main">
+            <HintPath>$(BeatSaberManagedDirectory)\Main.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Newtonsoft.Json">
+            <HintPath>$(BeatSaberLibsDirectory)\Newtonsoft.Json.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="ReeSabers">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Plugins\ReeSabers.dll</HintPath>
+        </Reference>
+        <Reference Include="SiraUtil">
+            <HintPath>$(BeatSaberPluginsDirectory)\SiraUtil.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Unity.TextMeshPro">
+            <HintPath>$(BeatSaberManagedDirectory)\Unity.TextMeshPro.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.AnimationModule">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AssetBundleModule">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.AssetBundleModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.CoreModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.ParticleSystemModule">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.ParticleSystemModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.TextCoreModule">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.TextRenderingModule">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextRenderingModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.UI.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.UIModule">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.UIModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestModule">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+        </Reference>
+        <Reference Include="Zenject">
+            <HintPath>$(BeatSaberManagedDirectory)\Zenject.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="Zenject-usage">
+            <HintPath>$(BeatSaberManagedDirectory)\Zenject-usage.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Reference Include="UnityEngine.TextCoreFontEngineModule" Condition="$(BeatSaberVersionNumber) &gt; 130 Or $(BeatSaberVersionNumber) == 130">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityExplorer.Standalone.Mono" Condition="'$(Configuration)' == 'Debug'">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityExplorer.STANDALONE.Mono.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Reference Include="System"/>
+        <Reference Include="System.Core"/>
+        <Reference Include="System.Data"/>
+        <Reference Include="System.IO.Compression" />
+        <Reference Include="System.Net.Http" />
+        <Reference Include="System.Runtime.Serialization" />
+        <Reference Include="System.Web" />
+        <Reference Include="System.Xml"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Include="Colorizer\BombColorizer.cs" />
+        <Compile Include="Colorizer\BurnMarkAreaColorizer.cs" />
+        <Compile Include="Colorizer\DustColorizer.cs" />
+        <Compile Include="Colorizer\FeetColorizer.cs" />
+        <Compile Include="Colorizer\ObstacleColorizer.cs" />
+        <Compile Include="Colorizer\PlayersPlaceColorizer.cs" />
+        <Compile Include="Colorizer\UIElementColorizer.cs" />
+        <Compile Include="Config\Attributes\RequiresRestartAttribute.cs" />
+        <Compile Include="Config\Config.cs" />
+        <Compile Include="Config\Converters\ColorConverter.cs" />
+        <Compile Include="Config\Converters\QuaternionConverter.cs" />
+        <Compile Include="Config\Converters\Vector2Converter.cs" />
+        <Compile Include="Config\Converters\Vector3Converter.cs" />
+        <Compile Include="Config\Enums\RestartType.cs" />
+        <Compile Include="Extensions\BeatmapExtensions.cs" />
+        <Compile Include="Extensions\TMP_FontAssetExtensions.cs" />
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Compile Include="BetterBeatSaber.cs" />
+        <Compile Include="BetterBeatSaberConfig.cs" />
+        <Compile Include="Enums\Visibility.cs" />
+        <Compile Include="Extensions\ButtonExtensions.cs" />
+        <Compile Include="Extensions\ColorExtensions.cs" />
+        <Compile Include="Extensions\GameObjectExtensions.cs" />
+        <Compile Include="Extensions\MonoBehaviourExtensions.cs" />
+        <Compile Include="Extensions\ReflectionExtensions.cs" />
+        <Compile Include="Extensions\TextSegmentedControlExtensions.cs" />
+        <Compile Include="Extensions\TypeExtensions.cs" />
+        <Compile Include="HudModifier\ComboHudModifier.cs" />
+        <Compile Include="HudModifier\EnergyHudModifier.cs" />
+        <Compile Include="HudModifier\HudModifier.cs" />
+        <Compile Include="HudModifier\MultiplierHudModifier.cs" />
+        <Compile Include="HudModifier\ProgressHudModifier.cs" />
+        <Compile Include="HudModifier\RemoveBackgroundHudModifier.cs" />
+        <Compile Include="HudModifier\ScoreHudModifier.cs" />
+        <Compile Include="Installer\GameInstaller.cs" />
+        <Compile Include="Installer\MenuAndPlayerInstaller.cs" />
+        <Compile Include="Installer\MenuInstaller.cs" />
+        <Compile Include="Mixins\BaseNoteVisualsMixin.cs" />
+        <Compile Include="Mixins\BeatmapDataMixin.cs" />
+        <Compile Include="Mixins\BeatmapObjectsInstallerMixin.cs" />
+        <Compile Include="Mixins\BlueNoiseDitheringUpdaterMixin.cs" />
+        <Compile Include="Mixins\BombExplosionEffectMixin.cs" />
+        <Compile Include="Mixins\BombNoteControllerMixin.cs" />
+        <Compile Include="Mixins\ButtonTagMixin.cs" />
+        <Compile Include="Mixins\ColorControllerMixin.cs" />
+        <Compile Include="Mixins\ComboUIControllerMixin.cs" />
+        <Compile Include="Mixins\CustomNoteControllerMixin.cs" />
+        <Compile Include="Mixins\DateTimeMixin.cs" />
+        <Compile Include="Mixins\DeltaRankCounterVisualManagerMixin.cs" />
+        <Compile Include="Mixins\EffectPoolsManualInstallerMixin.cs" />
+        <Compile Include="Mixins\FCPCounterControllerMixin.cs" />
+        <Compile Include="Mixins\LightSwitchEventEffectMixin.cs" />
+        <Compile Include="Mixins\MainMenuViewControllerMixin.cs" />
+        <Compile Include="Mixins\MissedNoteEffectSpawnerMixin.cs" />
+        <Compile Include="Mixins\NoteControllerMixin.cs" />
+        <Compile Include="Mixins\NoteCutParticlesEffectMixin.cs" />
+        <Compile Include="Mixins\NoteDebrisMixin.cs" />
+        <Compile Include="Mixins\ObstacleControllerMixin.cs" />
+        <Compile Include="Mixins\RankModelMixin.cs" />
+        <Compile Include="Mixins\SaberBurnMarkAreaMixin.cs" />
+        <Compile Include="Mixins\SpectrogramMixin.cs" />
+        <Compile Include="Mixins\StandardLevelDetailViewMixin.cs" />
+        <Compile Include="Mixins\StaticEnvironmentLightsMixin.cs" />
+        <Compile Include="Mixins\UnityMixin.cs" />
+        <Compile Include="Mixin\Mixin.cs" />
+        <Compile Include="Mixin\MixinAt.cs" />
+        <Compile Include="Mixin\MixinAttribute.cs" />
+        <Compile Include="Mixin\MixinManager.cs" />
+        <Compile Include="Mixin\MixinMethodAttribute.cs" />
+        <Compile Include="Mixin\MixinPluginAttribute.cs" />
+        <Compile Include="Mixin\MixinPropertyAttribute.cs" />
+        <Compile Include="Models\HitScoreFlyingScoreEffect.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="Providers\BloomFontProvider.cs" />
+        <Compile Include="Providers\MaterialProvider.cs" />
+        <Compile Include="Reflection\ReflectedEnum.cs" />
+        <Compile Include="Reflection\ReflectedObject.cs" />
+        <Compile Include="UI\AsyncListView.cs" />
+        <Compile Include="UI\FlowController.cs" />
+        <Compile Include="UI\ListCell.cs" />
+        <Compile Include="UI\ListView.cs" />
+        <Compile Include="UI\ModifierView.cs" />
+        <Compile Include="UI\View.cs" />
+        <Compile Include="Utilities\EnvironmentHider.cs" />
+        <Compile Include="Utilities\Outline.cs" />
+        <Compile Include="Utilities\PersistentSingleton.cs" />
+        <Compile Include="Utilities\RGB.cs" />
+        <Compile Include="Utilities\SharedCoroutineStarter.cs" />
+    </ItemGroup>
+    
+    <ItemGroup>
+
+        <EmbeddedResource Include="manifest.json" />
+
+        <EmbeddedResource Include="Resources\resources" />
+        
+    </ItemGroup>
+    
+    <ItemGroup>
+        <Content Include="outline_shader.glsl" />
+    </ItemGroup>
+    
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+
+</Project>
