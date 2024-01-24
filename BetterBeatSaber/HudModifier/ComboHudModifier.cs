@@ -27,7 +27,7 @@ internal sealed class ComboHudModifier : HudModifier, IInitializable, ITickable,
 
     [UsedImplicitly]
     [Inject]
-    private readonly BloomFontProvider _bloomFontProvider = null!;
+    private readonly BetterBloomFontProvider _bloomFontProvider = null!;
     
     private CurvedTextMeshPro? _comboText;
     private CurvedTextMeshPro? _comboNumText;

@@ -1,11 +1,14 @@
-﻿using BetterBeatSaber.HudModifier;
+﻿using System.ComponentModel;
+
+using BetterBeatSaber.Config.Attributes;
+using BetterBeatSaber.HudModifier;
 using BetterBeatSaber.Utilities;
 
 using UnityEngine;
 
 namespace BetterBeatSaber; 
 
-public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig> {
+public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>, INotifyPropertyChanged {
 
     // ReSharper disable once ConvertToPrimaryConstructor
     public BetterBeatSaberConfig(string name) : base(name) { }
@@ -19,6 +22,7 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     public bool ColorizeObstacles { get; set; } = true;
     public bool ColorizeCutParticles { get; set; } = true;
     public bool ColorizeNoteDebris { get; set; } = true;
+    public ObservableValue<bool> ColorizeReeSabers { get; set; } = true;
     
     public Outline.OutlineConfig NoteOutlines { get; set; } = new();
     public Outline.OutlineConfig BombOutlines { get; set; } = new();
@@ -38,12 +42,14 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     // ReSharper disable once InconsistentNaming
     public bool ColorizeFCPercentage { get; set; } = true;
     
+    public bool ColorizeFPSCounter { get; set; } = true;
+    
     #endregion
     
     #region Tweaks
 
-    public float NoteSize { get; set; } = 1.2f;
-    public float BombSize { get; set; } = 1.2f;
+    public ObservableValue<float> NoteSize { get; set; } = 1.2f;
+    public ObservableValue<float> BombSize { get; set; } = 1.2f;
     
     public bool HideMissTexts { get; set; } = true;
     public bool DisableCutParticles { get; set; } = true;
@@ -55,15 +61,20 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     public bool DisableMenuCameraNoise { get; set; } = true;
     public bool TransparentObstacles { get; set; } = true;
     
-    public bool HideLevelEnvironment { get; set; } = true;
-    public bool HideMenuEnvironment { get; set; } = true;
+    [ConflictsWith("CustomFloorPlugin")]
+    public ObservableValue<bool> HideLevelEnvironment { get; set; } = true;
+    
+    [ConflictsWith("CustomFloorPlugin")]
+    public ObservableValue<bool> HideMenuEnvironment { get; set; } = true;
 
     #endregion
 
     #region Hit Score
 
-    public float HitScoreScale { get; set; } = 1.05f;
+    public ObservableValue<bool> HitScoreEnable { get; set; } = true;
     public bool HitScoreGlow { get; set; } = true;
+    public float HitScoreScale { get; set; } = 1.05f;
+    public bool HitScoreTotalScore { get; set; } = false;
 
     #endregion
     
@@ -83,5 +94,7 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
         public Color? SecondColor { get; set; }
 
     }
+
+    public override event PropertyChangedEventHandler? PropertyChanged;
 
 }

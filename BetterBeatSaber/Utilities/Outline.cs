@@ -28,7 +28,7 @@ public sealed class Outline : MonoBehaviour {
 
     private bool _needsUpdate;
     
-    private Visibility _visibility = Visibility.All;
+    private Visibility _visibility = Visibility.Everywhere;
     public Visibility Visibility {
         get => _visibility;
         set {
@@ -157,10 +157,10 @@ public sealed class Outline : MonoBehaviour {
 
     public class OutlineConfig {
 
-        public bool Enable { get; set; } = true;
-        public bool Glow { get; set; } = true;
-        public float OutlinesWidth { get; set; } = 3f;
-        public Visibility Visibility { get; set; } = Visibility.DesktopOnly;
+        public ObservableValue<bool> Enable { get; set; } = true;
+        public ObservableValue<bool> Bloom { get; set; } = true;
+        public ObservableValue<float> Width { get; set; } = 3f;
+        public Visibility Visibility { get; set; } = Visibility.Desktop;
 
     }
 

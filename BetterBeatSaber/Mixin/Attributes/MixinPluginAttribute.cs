@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Reflection;
 
 using IPA.Loader;
 
-namespace BetterBeatSaber.Mixin;
+namespace BetterBeatSaber.Mixin.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public class MixinPluginAttribute : MixinAttribute {

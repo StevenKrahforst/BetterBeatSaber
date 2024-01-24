@@ -4,13 +4,12 @@ using System.Reflection;
 using System.Reflection.Emit;
 
 using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Models;
 
 using HarmonyLib;
 
 using IPA.Utilities;
-
-using SiraUtil.Affinity;
 
 using TMPro;
 
@@ -24,8 +23,9 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
-[Mixin(typeof(EffectPoolsManualInstaller))]
-internal static class EffectPoolsManualInstallerMixin {
+[Mixin(typeof(EffectPoolsManualInstaller), "HitScoreVisualizer")]
+[ToggleableMixin(typeof(BetterBeatSaberConfig), nameof(BetterBeatSaberConfig.HitScoreEnable))]
+public static class EffectPoolsManualInstallerMixin {
 	
 	private static readonly MethodInfo MemoryPoolBinderOriginal = typeof(DiContainer).GetMethods().First(x => x.Name == nameof(DiContainer.BindMemoryPool) && x.IsGenericMethod && x.GetGenericArguments().Length == 2).MakeGenericMethod(typeof(FlyingScoreEffect), typeof(FlyingScoreEffect.Pool));
     private static readonly MethodInfo MemoryPoolBinderReplacement = SymbolExtensions.GetMethodInfo(() => MemoryPoolBinderStub(null!));
@@ -40,11 +40,11 @@ internal static class EffectPoolsManualInstallerMixin {
     internal static readonly FieldAccessor<FlyingScoreEffect, TextMeshPro>.Accessor TextAccessor = FieldAccessor<FlyingScoreEffect, TextMeshPro>.GetAccessor("_text");
     internal static readonly FieldAccessor<FlyingScoreEffect, AnimationCurve>.Accessor FadeAnimationCurveAccessor = FieldAccessor<FlyingScoreEffect, AnimationCurve>.GetAccessor("_fadeAnimationCurve");
     internal static readonly FieldAccessor<FlyingScoreEffect, SpriteRenderer>.Accessor SpriteRendererAccessor = FieldAccessor<FlyingScoreEffect, SpriteRenderer>.GetAccessor("_maxCutDistanceScoreIndicator");
-    
+
     [MixinMethod("ManualInstallBindings", MixinAt.Pre)]
     // ReSharper disable once SuggestBaseTypeForParameter
     private static void Prefix(FlyingScoreEffect ____flyingScoreEffectPrefab) {
-
+        
 	    var gameObject = ____flyingScoreEffectPrefab.gameObject;
 
 	    var flyingScoreEffect = gameObject.GetComponent<FlyingScoreEffect>();

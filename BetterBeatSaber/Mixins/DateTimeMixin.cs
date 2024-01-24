@@ -1,6 +1,7 @@
 ﻿using System;
 
 using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Mixin.Attributes;
 
 namespace BetterBeatSaber.Mixins;
 

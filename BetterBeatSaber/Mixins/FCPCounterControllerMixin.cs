@@ -1,4 +1,5 @@
 ﻿using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Providers;
 
 using TMPro;
@@ -14,8 +15,8 @@ internal static class FCPCounterControllerMixin {
 
     [MixinMethod(nameof(InitCounterText), MixinAt.Post)]
     private static void InitCounterText(ref TMP_Text ___counterPercentageText) {
-        if (BloomFontProvider.Instance != null && BetterBeatSaberConfig.Instance.ColorizeFCPercentage)
-            ___counterPercentageText.font = BloomFontProvider.Instance.BloomFont;
+        if (BetterBloomFontProvider.Instance != null && BetterBeatSaberConfig.Instance.ColorizeFCPercentage)
+            ___counterPercentageText.font = BetterBloomFontProvider.Instance.BloomFont;
     }
 
 }

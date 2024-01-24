@@ -148,40 +148,51 @@ public sealed class EnergyHudModifier : HudModifier, IInitializable, ITickable, 
     }
 
     private void OnComboBreakingEventHappenedEvent() {
+        
         if (_shaking) {
-            _shakingIntensity += 2.5f;
-            _shakingDuration += .2f;
-            //_shakingIntensity += 50f;
-            //_shakingDuration += 50f;
+            _shakingIntensity += BetterBeatSaberConfig.Instance.EnergyHudModifier.ShakeIntensity;
+            _shakingDuration += BetterBeatSaberConfig.Instance.EnergyHudModifier.ShakeDuration;
             return;
         }
+        
         _shaking = true;
-        _shakingIntensity = 10f;
-        _shakingDuration = .25f;
-        //_shakingIntensity = 250f;
-        //_shakingDuration = 10f;
-        //StartCoroutine(Shake());
+        _shakingIntensity = BetterBeatSaberConfig.Instance.EnergyHudModifier.ShakeStartIntensity;
+        _shakingDuration = BetterBeatSaberConfig.Instance.EnergyHudModifier.ShakeStartDuration;
+        
         Utilities.SharedCoroutineStarter.Instance.StartCoroutine(Shake());
+        
     }
     
     private void OnGameEnergyDidChangeEvent(float energy) {
+        
         if (_energyBar == null)
             return;
+        
         _energyBar.color = energy switch {
             .5f => Color.yellow,
             > .5f => Color.yellow.LerpHSV(Color.green, (energy - .5f) * 2f),
             < .5f => Color.red.LerpHSV(Color.yellow, energy * 2f),
             _ => _energyBar.color
         };
+        
         if (energy > 0f || !BetterBeatSaberConfig.Instance.EnergyHudModifier.ShakeOnComboBreak || _isDead)
             return;
+        
         _comboController.comboBreakingEventHappenedEvent -= OnComboBreakingEventHappenedEvent;
+        
         _isDead = true;
+        
     }
     
     public class Options : BaseOptions {
 
         public bool ShakeOnComboBreak { get; set; } = true;
+        
+        public float ShakeStartIntensity { get; set; } = 10f;
+        public float ShakeIntensity { get; set; } = 2.5f;
+
+        public float ShakeStartDuration { get; set; } = .25f;
+        public float ShakeDuration { get; set; } = .2f;
         
     }
 

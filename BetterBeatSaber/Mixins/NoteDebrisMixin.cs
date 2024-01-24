@@ -1,4 +1,5 @@
 ﻿using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Utilities;
 
 using UnityEngine;

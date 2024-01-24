@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 
 using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Utilities;
 
 using IPA.Loader;
@@ -13,9 +14,12 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
-//[MixinPlugin("ReeSabers", "ReeSabers.ColorController")]
+[MixinPlugin("ReeSabers", "ReeSabers.ColorController")]
+[ToggleableMixin(typeof(BetterBeatSaberConfig), nameof(BetterBeatSaberConfig.ColorizeReeSabers))]
 internal static class ColorControllerMixin {
 
+    private static float _value;
+    
     private static PluginMetadata Plugin => PluginManager.GetPluginFromId("ReeSabers");
     
     private static Type _colorTransformType = null!;
@@ -43,23 +47,31 @@ internal static class ColorControllerMixin {
         _hsbTransformConstructor = hsbTransformType.GetConstructor(new[] { _colorTransformType, typeof(float), typeof(float), typeof(float), typeof(float) })!;
 
         _isInitialized = true;
+
+        var version = PluginManager.GetPluginFromId("ReeSabers")?.HVersion;
+        if (version != null)
+            _value = version is { Minor: >= 3, Patch: >= 5 } ? 1f : 0f;
+        else
+            _value = 0f;
         
     }
     
-    [MixinMethod(nameof(Update), MixinAt.Post)]
-    private static void Update(object __instance) {
-
+    [MixinMethod(nameof(Update), MixinAt.Pre)]
+    private static bool Update(object __instance) {
+        
         if(!_isInitialized)
             Initialize();
 
-        var hsbTransform = _hsbTransformConstructor.Invoke(new[] { Enum.Parse(_colorTransformType, "HueOverride"), RGB.Instance.FirstHue, 1f, 0f, 1f })!;
+        var hsbTransform = _hsbTransformConstructor.Invoke(new[] { Enum.Parse(_colorTransformType, "HueOverride"), RGB.Instance.FirstHue, 1f, _value, 1f })!;
 
         var observableValue = _observableField.GetValue(__instance)!;
 
         _setValueMethod.Invoke(observableValue, new[] { hsbTransform, __instance });
         
-        _isDirtyField.SetValue(__instance, true);
+        _isDirtyField.SetValue(__instance, false);
         
+        return true;
+
     }
     
 }

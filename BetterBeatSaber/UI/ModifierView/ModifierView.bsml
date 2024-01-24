@@ -1,0 +1,6 @@
+﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+    <modifier-container pref-width='65' spacing='5'>
+        <modifier src='#StaticLightsIcon' text='Hide Level Environment' value='HideLevelEnvironment' apply-on-change='true' />
+        <modifier src='#DetailedHUDIcon' text='Hide Menu Environment' value='HideMenuEnvironment' apply-on-change='true' />
+    </modifier-container>
+</bg>

@@ -1,9 +1,12 @@
-﻿namespace BetterBeatSaber.Enums; 
+﻿using System;
 
-public enum Visibility {
+namespace BetterBeatSaber.Enums; 
 
-    All = 0,
-    VROnly = 1,
-    DesktopOnly = 2
+[Flags]
+public enum Visibility : byte {
+
+    Everywhere = VR | Desktop,
+    VR = 0x01,
+    Desktop = 0x02
 
 }

@@ -1,9 +1,13 @@
-﻿using BetterBeatSaber.Colorizer;
-using BetterBeatSaber.Utilities;
+﻿using System;
+using System.Collections.Generic;
+
+using BetterBeatSaber.Colorizer;
+
+using UnityEngine;
 
 namespace BetterBeatSaber.Installer; 
 
-public sealed class MenuInstaller : Zenject.Installer {
+public sealed class MenuInstaller : Zenject.Installer, IDisposable {
 
     public override void InstallBindings() {
         
@@ -13,13 +17,43 @@ public sealed class MenuInstaller : Zenject.Installer {
         if (BetterBeatSaberConfig.Instance.ColorizeFeet)
             Container.BindInterfacesAndSelfTo<FeetColorizer>().AsSingle();
 
-        // TODO: Update
-        if (!BetterBeatSaberConfig.Instance.HideMenuEnvironment)
-            return;
-        
-        EnvironmentHider.LoadMenuGameObjects();
-        EnvironmentHider.SetMenuEnvironment(!BetterBeatSaberConfig.Instance.HideMenuEnvironment);
+        LoadMenuGameObjects();
 
+        if (BetterBeatSaberConfig.Instance.HideMenuEnvironment)
+            SetMenuEnvironment(false);
+        
+        BetterBeatSaberConfig.Instance.HideMenuEnvironment.OnValueChanged += HideMenuEnvironmentOnOnValueChanged;
+        
+    }
+
+    public void Dispose() =>
+        BetterBeatSaberConfig.Instance.HideMenuEnvironment.OnValueChanged -= HideMenuEnvironmentOnOnValueChanged;
+    
+    private static readonly List<string> MenuGameObjectsName = [
+        "MenuFogRing",
+        "BackgroundGradient",
+        "BasicMenuGround",
+        "Notes",
+        "PileOfNotes"
+    ];
+    
+    private static readonly List<GameObject> MenuGameObjects = [];
+
+    private static void HideMenuEnvironmentOnOnValueChanged(bool state) =>
+        SetMenuEnvironment(!state);
+    
+    private static void LoadMenuGameObjects() {
+        MenuGameObjects.Clear();
+        foreach (var gameObjectName in MenuGameObjectsName) {
+            var gameObject = GameObject.Find(gameObjectName);
+            if(gameObject != null)
+                MenuGameObjects.Add(gameObject);
+        }
+    }
+
+    private static void SetMenuEnvironment(bool value) {
+        foreach (var gameObject in MenuGameObjects)
+            gameObject.SetActive(value);
     }
 
 }

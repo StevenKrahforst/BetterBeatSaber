@@ -4,6 +4,8 @@ namespace BetterBeatSaber.Extensions;
 
 public static class ColorExtensions {
 
+    public static readonly Color None = new (0f, 0f, 0f, 0f);
+    
     public static Color WithAlpha(this Color color, float alpha) {
         color.a = alpha;
         return color;

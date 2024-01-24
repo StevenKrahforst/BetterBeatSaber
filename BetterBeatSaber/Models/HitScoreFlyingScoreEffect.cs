@@ -17,6 +17,7 @@ public sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
     private static readonly Color Color0 = new(1f, 0f, 0f);
 
     private NoteCutInfo? _noteCutInfo;
+    private Colorizer? _colorizer;
 
     public override void InitAndPresent(IReadonlyCutScoreBuffer cutScoreBuffer, float duration, Vector3 targetPos, Color color) {
         
@@ -46,9 +47,16 @@ public sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
     }
 
     protected override void ManualUpdate(float t) {
-        var color = _color.WithAlpha(_fadeAnimationCurve.Evaluate(t));
-        _text.color = color;
-        _maxCutDistanceScoreIndicator.color = color;
+        
+        var alpha = _fadeAnimationCurve.Evaluate(t);
+        if (_colorizer != null) {
+            _colorizer.alpha = alpha;
+        } else {
+            var color = _color.WithAlpha(alpha);
+            _text.color = color;
+            _maxCutDistanceScoreIndicator.color = color;
+        }
+        
     }
 
     public override void HandleCutScoreBufferDidChange(CutScoreBuffer cutScoreBuffer) {
@@ -74,9 +82,9 @@ public sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
 
     private void Judge(CutScoreBuffer cutScoreBuffer, int? assumedAfterCutScore = null) {
 
-        var colorizer = gameObject.GetComponentInChildren<Colorizer>();
-        if (colorizer != null)
-            Destroy(colorizer);
+        _colorizer = gameObject.GetComponentInChildren<Colorizer>();
+        if (_colorizer != null)
+            Destroy(_colorizer);
         
         var before = cutScoreBuffer.beforeCutScore;
         var after = assumedAfterCutScore ?? cutScoreBuffer.afterCutScore;
@@ -117,23 +125,35 @@ public sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
 
         size = (int) (size * BetterBeatSaberConfig.Instance.HitScoreScale);
 
-        if(BloomFontProvider.Instance != null)
-            BloomFontProvider.Instance.SetBloom(ref _text, BetterBeatSaberConfig.Instance.HitScoreGlow);
+        if(BetterBloomFontProvider.Instance != null)
+            BetterBloomFontProvider.Instance.SetBloom(ref _text, BetterBeatSaberConfig.Instance.HitScoreGlow);
         
         _text.richText = true;
 
-        if (color.HasValue) {
-            _text.text = $"<color=#{color.Value.ToHex()}><size={size}%>{(before < 70 ? "<" : "")}{accuracy}{(after < 30 ? ">" : "")}</size></color>";
+        if (BetterBeatSaberConfig.Instance.HitScoreTotalScore) {
+            if (color.HasValue) {
+                _text.text = $"<color=#{color.Value.ToHex()}><size={size}%>{total}</size></color>";
+            } else {
+                _text.text = $"<size={size}%>{total}</size>";
+                _colorizer = _text.gameObject.AddComponent<Colorizer>();
+                _colorizer.text = _text;
+            }
         } else {
-            _text.text = $"<size={size}%>{(before < 70 ? "<" : "")}{accuracy}{(after < 30 ? ">" : "")}</size>";
-            _text.gameObject.AddComponent<Colorizer>().text = _text;
+            if (color.HasValue) {
+                _text.text = $"<color=#{color.Value.ToHex()}><size={size}%>{(before < 70 ? "<" : "")}{accuracy}{(after < 30 ? ">" : "")}</size></color>";
+            } else {
+                _text.text = $"<size={size}%>{(before < 70 ? "<" : "")}{accuracy}{(after < 30 ? ">" : "")}</size>";
+                _colorizer = _text.gameObject.AddComponent<Colorizer>();
+                _colorizer.text = _text;
+            }
         }
         
     }
 
     private sealed class Colorizer : MonoBehaviour {
 
-        public TMP_Text? text;
+        public TextMeshPro? text;
+        public float alpha;
 
         private void Update() {
 
@@ -141,7 +161,7 @@ public sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
                 return;
             
             text.ForceMeshUpdate();
-
+            
             var length = text.textInfo.characterInfo.Length;
             
             var steps = Steps(length);
@@ -153,38 +173,38 @@ public sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
                 var characterInfo = text.textInfo.characterInfo[index];
                 if (!characterInfo.isVisible || characterInfo.character == ' ')
                     continue;
-                    
+                
                 var colors = text.textInfo.meshInfo[characterInfo.materialReferenceIndex].colors32;
-                    
+                
                 var vertexIndex = text.textInfo.characterInfo[index].vertexIndex;
                 
                 colors[vertexIndex + 0] = gradients[index].bottomLeft;
                 colors[vertexIndex + 1] = gradients[index].topLeft;
                 colors[vertexIndex + 2] = gradients[index].bottomRight;
                 colors[vertexIndex + 3] = gradients[index].topRight;
-                    
+                
             }
             
             text.UpdateVertexData(TMP_VertexDataUpdateFlags.All);
 
         }
         
-        private static Color[] Steps(int amount) {
+        private Color[] Steps(int amount) {
             
             amount += 2;
-                    
-            var start = RGB.Instance.FirstColor;
-            var end = RGB.Instance.ThirdColor;
-                    
+            
+            var start = RGB.Instance.FirstColor.WithAlpha(alpha);
+            var end = RGB.Instance.ThirdColor.WithAlpha(alpha);
+            
             var result = new Color[amount];
             var r = (end.r - start.r) / (amount - 1);
             var g = (end.g - start.g) / (amount - 1);
             var b = (end.b - start.b) / (amount - 1);
             var a = (end.a - start.a) / (amount - 1);
-                    
+            
             for (var index = 0; index < amount; index++)
                 result[index] = new Color(start.r + r * index, start.g + g * index, start.b + b * index, start.a + a * index);
-
+            
             return result;
             
         }

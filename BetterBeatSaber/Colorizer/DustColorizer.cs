@@ -9,9 +9,12 @@ namespace BetterBeatSaber.Colorizer;
 internal sealed class DustColorizer : IInitializable, ITickable {
     
     private ParticleSystem? _particleSystem;
-    
-    public void Initialize() =>
-        _particleSystem = GameObject.Find("DustPS").GetComponent<ParticleSystem>();
+
+    public void Initialize() {
+        _particleSystem = GameObject.Find("DustPS")?.GetComponent<ParticleSystem>();
+        if(_particleSystem == null)
+            BetterBeatSaber.Instance.Logger.Warn("No Dust Particles found, skipping colorization, ig Kinsi doesn't like dust ...");
+    }
 
     public void Tick() {
         if (_particleSystem != null)

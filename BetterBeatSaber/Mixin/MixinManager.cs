@@ -3,18 +3,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using BetterBeatSaber.Config;
+using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Utilities;
+
+using HarmonyLib;
+
 using IPA.Loader;
 using IPA.Logging;
 
 namespace BetterBeatSaber.Mixin;
 
+// TODO: Update
 public sealed class MixinManager : IDisposable {
 
     private const BindingFlags OriginalMethodBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
     private const BindingFlags PatchedMethodBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly;
     
     public Assembly? Assembly { get; }
-    public HarmonyLib.Harmony Harmony { get; }
+    public Harmony Harmony { get; }
     
     private Logger Logger { get; }
     
@@ -24,7 +31,7 @@ public sealed class MixinManager : IDisposable {
 
     // ReSharper disable once ConvertToPrimaryConstructor
     public MixinManager(string id, Assembly? assembly = null) {
-        Harmony = new HarmonyLib.Harmony(id);
+        Harmony = new Harmony(id);
         Assembly = assembly;
         Logger = BetterBeatSaber.Instance.Logger.GetChildLogger("MixinManager").GetChildLogger(id);
     }
@@ -61,9 +68,6 @@ public sealed class MixinManager : IDisposable {
     
     public void Initialize() {
         try {
-         
-            var amount = 0;
-        
             foreach (var type in _mixins) {
             
                 var mixinAttribute = type.GetCustomAttribute<MixinAttribute>();
@@ -92,38 +96,105 @@ public sealed class MixinManager : IDisposable {
                     Logger.Info($"Skipping Mixin {type.Name} because it should not run");
                     continue;
                 }
-            
-                foreach (var method in type.GetMethods(PatchedMethodBindingFlags)) {
-                    foreach (var customAttribute in method.GetCustomAttributes()) {
+
+                if (mixinAttribute.ConflictsWith.Any(conflictWith => PluginManager.GetPluginFromId(conflictWith) != null)) {
+                    Logger.Warn($"Skipping {mixinAttribute.Type.FullName} because it would conflict with another Plugin");
+                    continue;
+                }
+
+                var patch = true;
+                
+                var toggleableMixinAttribute = type.GetCustomAttribute<ToggleableMixinAttribute>();
+                if (toggleableMixinAttribute != null) {
+
+                    /*if (!toggleableMixinAttribute.ConfigType.IsSubclassOf(typeof(Config<>))) {
+                        Logger.Warn($"Type {toggleableMixinAttribute.ConfigType.FullName} is not a subclass of Config<>");
+                        continue;
+                    }*/
                     
-                        if (customAttribute is not MixinMethodAttribute mixinMethodAttribute)
-                            continue;
-                 
-                        var originalMethod = mixinAttribute.Type.GetMethods(OriginalMethodBindingFlags).FirstOrDefault(methodInfo => methodInfo.Name == mixinMethodAttribute.MethodName);
-                        if (originalMethod == null) {
-                            Logger.Warn($"Could not find method {mixinMethodAttribute.MethodName} in type {mixinAttribute.Type.FullName}");
-                            continue;
+                    var observable = (ObservableValue<bool>) toggleableMixinAttribute.ConfigType.GetProperty(toggleableMixinAttribute.PropertyName)!.GetValue(BetterBeatSaberConfig.Instance)!;
+                    
+                    observable.OnValueChanged += value => {
+                        if (value) {
+                            Logger.Debug($"Enabled Mixin {type.FullName}");
+                            Patch(type, ref mixinAttribute);
+                        } else {
+                            Logger.Debug($"Disabled Mixin {type.FullName}");
+                            Unpatch(type, ref mixinAttribute);
                         }
+                    };
 
-                        if (!Patch(originalMethod, method, mixinMethodAttribute.At))
-                            continue;
-                    
-                        Logger.Debug($"Ran Mixin for {mixinAttribute} ({mixinMethodAttribute.MethodName})");
-                    
-                        amount++;
+                    patch = observable.CurrentValue;
 
-                    }
                 }
                 
-                // TODO: Add MixinProperties
-            
+                if(!patch)
+                    continue;
+                
+                Patch(type, ref mixinAttribute);
+                
             }
-        
-            Logger.Debug($"Ran {amount} Mixins");
-            
         } catch (Exception exception) {
             Logger.Error("Failed to run Mixins");
             Logger.Error(exception);
+        }
+    }
+
+    private void Patch(Type type, ref MixinAttribute mixinAttribute) {
+        foreach (var method in type.GetMethods(PatchedMethodBindingFlags)) {
+            foreach (var customAttribute in method.GetCustomAttributes()) {
+                if (customAttribute is MixinMethodAttribute mixinMethodAttribute) {
+                    
+                    if (mixinMethodAttribute.ConflictsWith.Any(conflictWith => PluginManager.GetPluginFromId(conflictWith) != null)) {
+                        Logger.Warn($"Skipping {mixinMethodAttribute.MethodName} for {mixinAttribute.Type.FullName} because it would conflict with another Plugin");
+                        continue;
+                    }
+                        
+                    var originalMethod = mixinAttribute.Type!.GetMethods(OriginalMethodBindingFlags).FirstOrDefault(methodInfo => methodInfo.Name == mixinMethodAttribute.MethodName);
+                    if (originalMethod == null) {
+                        Logger.Warn($"Could not find method {mixinMethodAttribute.MethodName} in type {mixinAttribute.Type.FullName}");
+                        continue;
+                    }
+                        
+                    if (!Patch(originalMethod, method, mixinMethodAttribute.At))
+                        continue;
+                    
+                    Logger.Debug($"Ran Mixin for {mixinAttribute.Type.FullName} ({mixinMethodAttribute.MethodName})");
+                    
+                } else if (customAttribute is MixinHandlerAttribute mixinHandlerAttribute) { // TODO: Maybe move to second loop
+                    if(mixinHandlerAttribute.Action.HasFlag(MixinAction.Patch))
+                        method.Invoke(null, method.GetParameters().Length == 1 ? [ MixinAction.Patch ] : Enumerable.Empty<object>().ToArray());
+                } // TODO: Add MixinProperties
+            }
+        }
+    }
+
+    private void Unpatch(Type type, ref MixinAttribute mixinAttribute) {
+        foreach (var method in type.GetMethods(PatchedMethodBindingFlags)) {
+            foreach (var customAttribute in method.GetCustomAttributes()) {
+                if (customAttribute is MixinMethodAttribute mixinMethodAttribute) {
+                    
+                    if (mixinMethodAttribute.ConflictsWith.Any(conflictWith => PluginManager.GetPluginFromId(conflictWith) != null)) {
+                        Logger.Warn($"Skipping {mixinMethodAttribute.MethodName} for {mixinAttribute.Type.FullName} because it would conflict with another Plugin");
+                        continue;
+                    }
+                        
+                    var originalMethod = mixinAttribute.Type.GetMethods(OriginalMethodBindingFlags).FirstOrDefault(methodInfo => methodInfo.Name == mixinMethodAttribute.MethodName);
+                    if (originalMethod == null) {
+                        Logger.Warn($"Could not find method {mixinMethodAttribute.MethodName} in type {mixinAttribute.Type.FullName}");
+                        continue;
+                    }
+                        
+                    if (!Unpatch(originalMethod, method))
+                        continue;
+                    
+                    Logger.Debug($"Ran Mixin for {mixinAttribute.Type.FullName} ({mixinMethodAttribute.MethodName})");
+                    
+                } else if (customAttribute is MixinHandlerAttribute mixinHandlerAttribute) {
+                    if(mixinHandlerAttribute.Action.HasFlag(MixinAction.Unpatch))
+                        method.Invoke(null, method.GetParameters().Length == 1 ? [ MixinAction.Unpatch ] : Enumerable.Empty<object>().ToArray());
+                } // TODO: Add MixinProperties
+            }
         }
     }
 
@@ -159,9 +230,28 @@ public sealed class MixinManager : IDisposable {
             return false;
         }
     }
+
+    private bool Unpatch(MethodBase originalMethod, MethodInfo patchedMethod) {
+        try {
+            Harmony.Unpatch(originalMethod, patchedMethod);
+            return true;
+        } catch (Exception exception) {
+            Logger.Error($"Failed to unpatch method {originalMethod.Name} in {originalMethod.DeclaringType?.FullName}");
+            Logger.Error(exception);
+            return false;
+        }
+    }
     
     // ReSharper disable once SuggestBaseTypeForParameter
     private static bool IsValidMixin(Type type) =>
         type.GetCustomAttribute<MixinAttribute>() != null || type.GetCustomAttribute<MixinPluginAttribute>() != null;
+
+    private static HarmonyPatchType ToHarmonyPatchType(MixinAt at) =>
+        at switch {
+            MixinAt.Pre => HarmonyPatchType.Prefix,
+            MixinAt.Post => HarmonyPatchType.Postfix,
+            MixinAt.Trans => HarmonyPatchType.Transpiler,
+            _ => throw new ArgumentOutOfRangeException(nameof(at), at, null)
+        };
 
 }

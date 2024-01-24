@@ -10,9 +10,9 @@ using Zenject;
 
 namespace BetterBeatSaber.Providers;
 
-public sealed class BloomFontProvider : IInitializable {
+public sealed class BetterBloomFontProvider : IInitializable {
 
-    public static BloomFontProvider? Instance { get; private set; }
+    public static BetterBloomFontProvider? Instance { get; private set; }
     
     [Inject]
     private readonly MaterialProvider _materialProvider = null!;
@@ -31,7 +31,7 @@ public sealed class BloomFontProvider : IInitializable {
             return;
         
         BloomFont = DefaultFont.Clone();
-        BloomFont.name = DefaultFont.name + " Bloom";
+        BloomFont.name = "Font Bloom";
         BloomFont.material = _materialProvider.DistanceFieldMaterial;
 
     }

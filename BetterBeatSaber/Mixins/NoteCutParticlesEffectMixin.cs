@@ -1,4 +1,5 @@
 ﻿using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Utilities;
 
 using UnityEngine;
@@ -12,6 +13,7 @@ namespace BetterBeatSaber.Mixins;
 [Mixin(typeof(NoteCutParticlesEffect))]
 internal static class NoteCutParticlesEffectMixin {
 
+    // TODO: Check if already being done by smth else
     [MixinMethod(nameof(SpawnParticles), MixinAt.Pre)]
     private static bool SpawnParticles(ref Color32 color) {
         

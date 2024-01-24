@@ -1,4 +1,5 @@
 ﻿using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Utilities;
 
 using UnityEngine;
@@ -19,9 +20,9 @@ internal static class CustomNoteControllerMixin {
         switch (BetterBeatSaberConfig.Instance.ColorizeCustomNoteOutlines) {
             case true when outline == null:
                 outline = ___activeNote.gameObject.AddComponent<Outline>();
-                outline.OutlineWidth = BetterBeatSaberConfig.Instance.NoteOutlines.OutlinesWidth;
+                outline.OutlineWidth = BetterBeatSaberConfig.Instance.NoteOutlines.Width;
                 outline.Visibility = BetterBeatSaberConfig.Instance.NoteOutlines.Visibility;
-                outline.Glowing = BetterBeatSaberConfig.Instance.NoteOutlines.Glow;
+                outline.Glowing = BetterBeatSaberConfig.Instance.NoteOutlines.Bloom;
                 break;
             case false when outline != null:
                 Object.Destroy(outline);

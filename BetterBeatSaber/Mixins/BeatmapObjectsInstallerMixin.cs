@@ -1,5 +1,6 @@
 ﻿using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Mixin.Attributes;
 
 using IPA.Utilities;
 

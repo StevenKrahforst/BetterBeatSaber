@@ -49,6 +49,9 @@
             <HintPath>$(BeatSaberPluginsDirectory)\BSML.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="Colors">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\Colors.dll</HintPath>
+        </Reference>
         <Reference Include="GameplayCore">
             <HintPath>$(BeatSaberManagedDirectory)\GameplayCore.dll</HintPath>
             <Private>False</Private>
@@ -85,6 +88,9 @@
             <HintPath>$(BeatSaberPluginsDirectory)\SiraUtil.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="SongCore">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Plugins\SongCore.dll</HintPath>
+        </Reference>
         <Reference Include="Unity.TextMeshPro">
             <HintPath>$(BeatSaberManagedDirectory)\Unity.TextMeshPro.dll</HintPath>
             <Private>False</Private>
@@ -103,6 +109,9 @@
         <Reference Include="UnityEngine.ParticleSystemModule">
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.ParticleSystemModule.dll</HintPath>
             <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.PhysicsModule">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.TextCoreModule">
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreModule.dll</HintPath>
@@ -164,9 +173,12 @@
         <Compile Include="Colorizer\ObstacleColorizer.cs" />
         <Compile Include="Colorizer\PlayersPlaceColorizer.cs" />
         <Compile Include="Colorizer\UIElementColorizer.cs" />
+        <Compile Include="Config\Attributes\ConflictsWithAttribute.cs" />
         <Compile Include="Config\Attributes\RequiresRestartAttribute.cs" />
         <Compile Include="Config\Config.cs" />
+        <Compile Include="Config\ConfigManager.cs" />
         <Compile Include="Config\Converters\ColorConverter.cs" />
+        <Compile Include="Config\Converters\ObservableValueConverter.cs" />
         <Compile Include="Config\Converters\QuaternionConverter.cs" />
         <Compile Include="Config\Converters\Vector2Converter.cs" />
         <Compile Include="Config\Converters\Vector3Converter.cs" />
@@ -210,6 +222,8 @@
         <Compile Include="Mixins\DeltaRankCounterVisualManagerMixin.cs" />
         <Compile Include="Mixins\EffectPoolsManualInstallerMixin.cs" />
         <Compile Include="Mixins\FCPCounterControllerMixin.cs" />
+        <Compile Include="Mixins\FPSCounter\FpsCounterCountersPlusMixin.cs" />
+        <Compile Include="Mixins\FPSCounter\FpsTargetPercentageColorValueConverterMixin.cs" />
         <Compile Include="Mixins\LightSwitchEventEffectMixin.cs" />
         <Compile Include="Mixins\MainMenuViewControllerMixin.cs" />
         <Compile Include="Mixins\MissedNoteEffectSpawnerMixin.cs" />
@@ -217,30 +231,40 @@
         <Compile Include="Mixins\NoteCutParticlesEffectMixin.cs" />
         <Compile Include="Mixins\NoteDebrisMixin.cs" />
         <Compile Include="Mixins\ObstacleControllerMixin.cs" />
-        <Compile Include="Mixins\RankModelMixin.cs" />
         <Compile Include="Mixins\SaberBurnMarkAreaMixin.cs" />
+        <Compile Include="Mixins\SceneManagerMixin.cs" />
         <Compile Include="Mixins\SpectrogramMixin.cs" />
         <Compile Include="Mixins\StandardLevelDetailViewMixin.cs" />
         <Compile Include="Mixins\StaticEnvironmentLightsMixin.cs" />
         <Compile Include="Mixins\UnityMixin.cs" />
-        <Compile Include="Mixin\Mixin.cs" />
+        <Compile Include="Mixin\Attributes\MixinAttribute.cs" />
+        <Compile Include="Mixin\Attributes\MixinHandlerAttribute.cs" />
+        <Compile Include="Mixin\Attributes\MixinMethodAttribute.cs" />
+        <Compile Include="Mixin\Attributes\MixinPluginAttribute.cs" />
+        <Compile Include="Mixin\Attributes\MixinPropertyAttribute.cs" />
+        <Compile Include="Mixin\Attributes\ToggleableMixinAttribute.cs" />
+        <Compile Include="Mixin\MixinAction.cs" />
         <Compile Include="Mixin\MixinAt.cs" />
-        <Compile Include="Mixin\MixinAttribute.cs" />
         <Compile Include="Mixin\MixinManager.cs" />
-        <Compile Include="Mixin\MixinMethodAttribute.cs" />
-        <Compile Include="Mixin\MixinPluginAttribute.cs" />
-        <Compile Include="Mixin\MixinPropertyAttribute.cs" />
         <Compile Include="Models\HitScoreFlyingScoreEffect.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
-        <Compile Include="Providers\BloomFontProvider.cs" />
+        <Compile Include="Providers\BetterBloomFontProvider.cs" />
         <Compile Include="Providers\MaterialProvider.cs" />
-        <Compile Include="UI\AsyncListView.cs" />
-        <Compile Include="UI\FlowController.cs" />
-        <Compile Include="UI\ListCell.cs" />
-        <Compile Include="UI\ListView.cs" />
-        <Compile Include="UI\ModifierView.cs" />
-        <Compile Include="UI\View.cs" />
-        <Compile Include="Utilities\EnvironmentHider.cs" />
+        <Compile Include="UI\MainFlowCoordinator.cs" />
+        <Compile Include="UI\Main\MainView.cs" />
+        <Compile Include="UI\Main\MainViewBombs.cs" />
+        <Compile Include="UI\Main\MainViewColorizers.cs" />
+        <Compile Include="UI\Main\MainViewExtras.cs" />
+        <Compile Include="UI\Main\MainViewHudModifier.cs" />
+        <Compile Include="UI\Main\MainViewNotes.cs" />
+        <Compile Include="UI\Main\MainViewTweaks.cs" />
+        <Compile Include="UI\ModifierView\ModifierView.cs" />
+        <Compile Include="UI\SDK\AsyncListView.cs" />
+        <Compile Include="UI\SDK\FlowController.cs" />
+        <Compile Include="UI\SDK\ListCell.cs" />
+        <Compile Include="UI\SDK\ListView.cs" />
+        <Compile Include="UI\SDK\View.cs" />
+        <Compile Include="Utilities\ObservableValue.cs" />
         <Compile Include="Utilities\Outline.cs" />
         <Compile Include="Utilities\PersistentSingleton.cs" />
         <Compile Include="Utilities\RGB.cs" />
@@ -252,7 +276,10 @@
         <EmbeddedResource Include="manifest.json" />
 
         <EmbeddedResource Include="Resources\resources" />
-        
+
+        <EmbeddedResource Include="UI\Main\MainView.bsml" />
+        <EmbeddedResource Include="UI\ModifierView\ModifierView.bsml" />
+
     </ItemGroup>
     
     <ItemGroup>

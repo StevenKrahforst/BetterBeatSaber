@@ -1,0 +1,176 @@
+﻿<vertical child-control-height='false' pref-width='100' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='- https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+    <tab-selector tab-tag='tabs' select-cell='OnTabSelected' />
+    <horizontal>
+        <tab tab-name='Hud Modifier' tags='tabs'>
+            <horizontal min-width='120' min-height='70' horizontal-fit='PreferredSize'>
+                <settings-scroll-view>
+                    <modifier-container spacing='5'>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Combo' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Enable' value='ComboHudModifierEnable' apply-on-change='true' />
+                            <checkbox-setting text='Glow / Bloom' value='ComboHudModifierGlow' apply-on-change='true' />
+                        </vertical>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Energy' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Enable' value='EnergyHudModifierEnable' apply-on-change='true' />
+                            <checkbox-setting text='Glow / Bloom' value='EnergyHudModifierGlow' apply-on-change='true' />
+                            <checkbox-setting text='Shake on Combo Break' value='EnergyHudModifierShakeOnComboBreak' apply-on-change='true' />
+                            <increment-setting text='Shake Start Intensity' value='EnergyHudModifierShakeStartIntensity' apply-on-change='true' min='1.0' max='50.0' increment='0.5' hover-hint='How strong the shake is at the start' />
+                            <increment-setting text='Shake Intensity' value='EnergyHudModifierShakeIntensity' apply-on-change='true' min='0.0' max='20.0' increment='0.5' hover-hint='How much the intensity should be increased on every combo break / miss' />
+                            <increment-setting text='Shake Start Duration' value='EnergyHudModifierShakeStartDuration' apply-on-change='true' min='0.25' max='20.0' increment='0.25' hover-hint='How long should the shake last (in seconds)' />
+                            <increment-setting text='Shake Duration' value='EnergyHudModifierShakeDuration' apply-on-change='true' min='0.0' max='10.0' increment='0.2' hover-hint='How much time should be added on every combo break / miss (in seconds)' />
+                        </vertical>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Multiplier' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Enable' value='MultiplierHudModifierEnable' apply-on-change='true' />
+                            <checkbox-setting text='Glow / Bloom' value='MultiplierHudModifierGlow' apply-on-change='true' />
+                        </vertical>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Progress' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Enable' value='ProgressHudModifierEnable' apply-on-change='true' />
+                            <checkbox-setting text='Glow / Bloom' value='ProgressHudModifierGlow' apply-on-change='true' />
+                        </vertical>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Score' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Enable' value='ScoreHudModifierEnable' apply-on-change='true' />
+                            <checkbox-setting text='Glow / Bloom' value='ScoreHudModifierGlow' apply-on-change='true' />
+                        </vertical>
+                    </modifier-container>
+                </settings-scroll-view>
+            </horizontal>
+        </tab>
+        <tab tab-name='Tweaks' tags='tabs'>
+            <horizontal min-width='120' min-height='70' horizontal-fit='PreferredSize'>
+                <settings-scroll-view>
+                    <modifier-container spacing='5'>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Tweaks' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Hide Miss Texts' value='HideMissTexts' apply-on-change='true' />
+                            <checkbox-setting text='Disable Cut Particles' value='DisableCutParticles' apply-on-change='true' />
+                            <checkbox-setting text='Disable Bomb Explosion Effect' value='DisableBombExplosionEffect' apply-on-change='true' />
+                            <checkbox-setting text='Disable April Fools And Earth Day Stuff' value='DisableAprilFoolsAndEarthDayStuff' apply-on-change='true' />
+                            <checkbox-setting text='Disable Combo Break Effect' value='DisableComboBreakEffect' apply-on-change='true' />
+                            <checkbox-setting text='Hide Editor Button' value='HideEditorButton' apply-on-change='true' />
+                            <checkbox-setting text='Hide Promotion Button' value='HidePromotionButton' apply-on-change='true' />
+                            <checkbox-setting text='Disable Menu CameraNoise' value='DisableMenuCameraNoise' apply-on-change='true' />
+                            <checkbox-setting text='Transparent Obstacles' value='TransparentObstacles' apply-on-change='true' />
+                            <checkbox-setting text='Hide Level Environment' value='HideLevelEnvironment' apply-on-change='true' />
+                            <checkbox-setting text='Hide Menu Environment' value='HideMenuEnvironment' apply-on-change='true' />
+                        </vertical>
+                    </modifier-container>
+                </settings-scroll-view>
+            </horizontal>
+        </tab>
+        <tab tab-name='Colorizers' tags='tabs'>
+            <horizontal min-width='120' min-height='70' horizontal-fit='PreferredSize'>
+                <settings-scroll-view>
+                    <modifier-container spacing='5'>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Game' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Colorize Dust' value='ColorizeDust' apply-on-change='true' />
+                            <checkbox-setting text='Colorize Feet' value='ColorizeFeet' apply-on-change='true' />
+                            <checkbox-setting text='Colorize Players Place Border' value='ColorizePlayersPlace' apply-on-change='true' />
+                            <checkbox-setting text='Colorize Burn Marks' value='ColorizeBurnMarks' apply-on-change='true' />
+                            <checkbox-setting text='Colorize Obstacles' value='ColorizeObstacles' apply-on-change='true' />
+                            <checkbox-setting text='Colorize Cut Particles' value='ColorizeCutParticles' apply-on-change='true' />
+                            <checkbox-setting text='Colorize ReeSabers' value='ColorizeReeSabers' apply-on-change='true' />
+                        </vertical>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='UI' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Colorize Buttons' value='ColorizeButtons' apply-on-change='true' />
+                            <checkbox-setting text='Colorize Menu Buttons' value='ColorizeMenuButtons' apply-on-change='true' />
+                            <checkbox-setting text='Colorize PBOT' value='ColorizePBOT' apply-on-change='true' />
+                            <checkbox-setting text='Colorize FC Percentage' value='ColorizeFCPercentage' apply-on-change='true' />
+                            <checkbox-setting text='Colorize FPS Counter' value='ColorizeFPSCounter' apply-on-change='true' />
+                        </vertical>
+                    </modifier-container>
+                </settings-scroll-view>
+            </horizontal>
+        </tab>
+        <tab tab-name='Extras' tags='tabs'>
+            <horizontal min-width='120' min-height='70' horizontal-fit='PreferredSize'>
+                <settings-scroll-view>
+                    <modifier-container spacing='5'>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Hit Scores' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Enable' value='HitScoreEnable' apply-on-change='true' />
+                            <checkbox-setting text='Glow' value='HitScoreGlow' apply-on-change='true' />
+                            <slider-setting text='Scale' value='HitScoreScale' apply-on-change='true' min='25' max='150' increment='5' />
+                            <checkbox-setting text='Total Score' value='HitScoreTotalScore' apply-on-change='true' />
+                        </vertical>
+                    </modifier-container>
+                </settings-scroll-view>
+            </horizontal>
+        </tab>
+        <tab tab-name='Notes' tags='tabs'>
+            <horizontal min-width='120' min-height='70' horizontal-fit='PreferredSize'>
+                <settings-scroll-view>
+                    <modifier-container spacing='5'>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Notes' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <slider-setting text='Size' value='NoteSize' apply-on-change='true' min='10' max='200' increment='5' />
+                            <checkbox-setting text='Colorize Debris' value='ColorizeNoteDebris' apply-on-change='true' />
+                        </vertical>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Outlines' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Enable' value='NoteOutlinesEnable' apply-on-change='true' />
+                            <checkbox-setting text='Glow / Bloom' value='NoteOutlinesGlow' apply-on-change='true' />
+                            <increment-setting text='Width' value='NoteOutlinesWidth' apply-on-change='true' min='0.5' max='20' increment='0.5' />
+                            <!-- Visibility -->
+                            <checkbox-setting text='Enable for Custom Notes' value='ColorizeCustomNoteOutlines' apply-on-change='true' />
+                        </vertical>
+                    </modifier-container>
+                </settings-scroll-view>
+            </horizontal>
+        </tab>
+        <tab tab-name='Bombs' tags='tabs'>
+            <horizontal min-width='120' min-height='70' horizontal-fit='PreferredSize'>
+                <settings-scroll-view>
+                    <modifier-container spacing='5'>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Bombs' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <slider-setting text='Size' value='BombSize' apply-on-change='true' min='10' max='200' increment='5' />
+                            <checkbox-setting text='Colorize' value='BombColorize' apply-on-change='true' />
+                            <checkbox-setting text='RGB' value='BombRGB' apply-on-change='true' />
+                            <color-setting text='First Color' value='BombFirstColor' apply-on-change='true' />
+                            <color-setting text='Second Color' value='BombSecondColor' apply-on-change='true' />
+                        </vertical>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Outlines' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Enable' value='BombOutlinesEnable' apply-on-change='true' />
+                            <checkbox-setting text='Glow / Bloom' value='BombOutlinesEnable' apply-on-change='true' />
+                            <increment-setting text='Width' value='BombOutlinesWidth' apply-on-change='true' min='0.5' max='20' increment='0.5' />
+                            <!-- Visibility -->
+                        </vertical>
+                    </modifier-container>
+                </settings-scroll-view>
+            </horizontal>
+        </tab>
+    </horizontal>
+</vertical>

@@ -2,7 +2,7 @@
 
 using HarmonyLib;
 
-namespace BetterBeatSaber.Mixin;
+namespace BetterBeatSaber.Mixin.Attributes;
 
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class MixinPropertyAttribute : Attribute {

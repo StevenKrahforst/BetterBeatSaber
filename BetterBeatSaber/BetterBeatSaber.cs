@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Reflection;
 
+using BetterBeatSaber.Config;
 using BetterBeatSaber.Installer;
 using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Utilities;
@@ -35,6 +36,8 @@ public sealed class BetterBeatSaber {
 
     internal MixinManager MixinManager { get; private set; }
     
+    public ConfigManager ConfigManager { get; private set; }
+    
     [Init]
     public BetterBeatSaber([UsedImplicitly] Logger logger, [UsedImplicitly] Zenjector zenjector) {
 
@@ -42,12 +45,15 @@ public sealed class BetterBeatSaber {
         
         Logger = logger;
         Zenjector = zenjector;
-
+        
+        ConfigManager = new ConfigManager();
+        
         // ReSharper disable once ObjectCreationAsStatement
         new BetterBeatSaberConfig("BetterBeatSaber");
         
         PluginInitInjector.AddInjector(typeof(BetterBeatSaber), (_, _, _) => this);
         PluginInitInjector.AddInjector(typeof(MixinManager), CreateMixinManager);
+        PluginInitInjector.AddInjector(typeof(ConfigManager), CreateConfigManager);
         
         MixinManager = new MixinManager("BetterBeatSaber", Assembly.GetExecutingAssembly());
         MixinManager.AddMixins();
@@ -78,6 +84,8 @@ public sealed class BetterBeatSaber {
             ExplorerStandalone.CreateInstance();
         #endif
         
+        UI.MainFlowCoordinator.Initialize();
+        
     }
 
     [OnExit]
@@ -106,8 +114,11 @@ public sealed class BetterBeatSaber {
 
     }
     
-    private static MixinManager CreateMixinManager(object? previous, ParameterInfo param, PluginMetadata pluginMetadata) {
-        return new MixinManager(pluginMetadata);
+    private static ConfigManager CreateConfigManager(object? previous, ParameterInfo param, PluginMetadata pluginMetadata) {
+        return Instance.ConfigManager;
     }
+    
+    private static MixinManager CreateMixinManager(object? _, ParameterInfo __, PluginMetadata pluginMetadata) =>
+        new(pluginMetadata);
     
 }

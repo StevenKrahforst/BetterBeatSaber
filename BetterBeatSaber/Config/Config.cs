@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 
 using BetterBeatSaber.Config.Converters;
@@ -10,7 +11,9 @@ using Newtonsoft.Json.Serialization;
 
 namespace BetterBeatSaber.Config;
 
-public abstract class Config<T> where T : Config<T> {
+public class Config;
+
+public abstract class Config<T> : Config where T : Config<T> {
 
     public static T Instance { get; private set; } = null!;
     
@@ -20,11 +23,14 @@ public abstract class Config<T> where T : Config<T> {
         NullValueHandling = NullValueHandling.Ignore,
         DefaultValueHandling = DefaultValueHandling.Populate,
         TypeNameHandling = TypeNameHandling.Auto,
-        Converters = new List<JsonConverter>() {
+        ObjectCreationHandling = ObjectCreationHandling.Replace,
+        Converters = new List<JsonConverter> {
             new StringEnumConverter(),
             new ColorConverter(),
             new Vector3Converter(),
-            new QuaternionConverter()
+            new QuaternionConverter(),
+            new ObservableValueConverter<bool>(),
+            new ObservableValueConverter<float>()
         },
         ContractResolver = new DefaultContractResolver {
             NamingStrategy = new SnakeCaseNamingStrategy()
@@ -43,7 +49,12 @@ public abstract class Config<T> where T : Config<T> {
 
     public void Load() {
         if (File.Exists(Path)) {
-            JsonConvert.PopulateObject(File.ReadAllText(Path), this, SerializerSettings);
+            try {
+                JsonConvert.PopulateObject(File.ReadAllText(Path), this, SerializerSettings);
+            } catch (Exception exception) {
+                BetterBeatSaber.Instance.Logger.Error("Failed to load config file! Using default values instead.");
+                BetterBeatSaber.Instance.Logger.Error(exception);
+            }
         } else Save();
     }
 
@@ -51,5 +62,7 @@ public abstract class Config<T> where T : Config<T> {
         File.WriteAllText(Path, JsonConvert.SerializeObject(this, SerializerSettings));
 
     // Resources.FindObjectsOfTypeAll<MenuTransitionsHelper>().FirstOrDefault()?.RestartGame();
-    
+
+    public abstract event PropertyChangedEventHandler? PropertyChanged;
+
 }

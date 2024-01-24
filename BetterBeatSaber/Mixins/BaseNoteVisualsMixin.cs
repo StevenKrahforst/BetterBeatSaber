@@ -1,4 +1,5 @@
 ﻿using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Utilities;
 
 using UnityEngine;
@@ -39,9 +40,9 @@ internal static class BaseNoteVisualsMixin {
         if(outline == null)
             outline = noteController.gameObject.AddComponent<Outline>();
         
-        outline.OutlineWidth = outlineConfig.OutlinesWidth;
+        outline.OutlineWidth = outlineConfig.Width;
         outline.Visibility = outlineConfig.Visibility;
-        outline.Glowing = outlineConfig.Glow;
+        outline.Glowing = outlineConfig.Bloom;
         
     }
 
