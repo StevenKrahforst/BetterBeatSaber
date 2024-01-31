@@ -153,60 +153,11 @@ public sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
     private sealed class Colorizer : MonoBehaviour {
 
         public TextMeshPro? text;
-        public float alpha;
+        public float alpha = 1f;
 
         private void Update() {
-
-            if (text == null)
-                return;
-            
-            text.ForceMeshUpdate();
-            
-            var length = text.textInfo.characterInfo.Length;
-            
-            var steps = Steps(length);
-            var gradients = new VertexGradient[length];
-            for (var index = 0; index < length; index++) {
-
-                gradients[index] = new VertexGradient(steps[index], steps[index + 1], steps[index], steps[index + 1]);
-                    
-                var characterInfo = text.textInfo.characterInfo[index];
-                if (!characterInfo.isVisible || characterInfo.character == ' ')
-                    continue;
-                
-                var colors = text.textInfo.meshInfo[characterInfo.materialReferenceIndex].colors32;
-                
-                var vertexIndex = text.textInfo.characterInfo[index].vertexIndex;
-                
-                colors[vertexIndex + 0] = gradients[index].bottomLeft;
-                colors[vertexIndex + 1] = gradients[index].topLeft;
-                colors[vertexIndex + 2] = gradients[index].bottomRight;
-                colors[vertexIndex + 3] = gradients[index].topRight;
-                
-            }
-            
-            text.UpdateVertexData(TMP_VertexDataUpdateFlags.All);
-
-        }
-        
-        private Color[] Steps(int amount) {
-            
-            amount += 2;
-            
-            var start = RGB.Instance.FirstColor.WithAlpha(alpha);
-            var end = RGB.Instance.ThirdColor.WithAlpha(alpha);
-            
-            var result = new Color[amount];
-            var r = (end.r - start.r) / (amount - 1);
-            var g = (end.g - start.g) / (amount - 1);
-            var b = (end.b - start.b) / (amount - 1);
-            var a = (end.a - start.a) / (amount - 1);
-            
-            for (var index = 0; index < amount; index++)
-                result[index] = new Color(start.r + r * index, start.g + g * index, start.b + b * index, start.a + a * index);
-            
-            return result;
-            
+            if (text != null)
+                text.ApplyGradient(RGB.Instance.FirstColor.WithAlpha(alpha), RGB.Instance.ThirdColor.WithAlpha(alpha));
         }
 
     }

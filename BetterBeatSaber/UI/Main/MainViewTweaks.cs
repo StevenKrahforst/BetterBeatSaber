@@ -8,13 +8,13 @@ public partial class MainView {
     }
     
     public bool DisableCutParticles {
-        get => BetterBeatSaberConfig.Instance.DisableCutParticles;
-        set => BetterBeatSaberConfig.Instance.DisableCutParticles = value;
+        get => BetterBeatSaberConfig.Instance.DisableCutParticles.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.DisableCutParticles.SetValue(value);
     }
     
     public bool DisableBombExplosionEffect {
-        get => BetterBeatSaberConfig.Instance.DisableBombExplosionEffect;
-        set => BetterBeatSaberConfig.Instance.DisableBombExplosionEffect = value;
+        get => BetterBeatSaberConfig.Instance.DisableBombExplosionEffect.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.DisableBombExplosionEffect.SetValue(value);
     }
     
     public bool DisableAprilFoolsAndEarthDayStuff {
@@ -48,13 +48,18 @@ public partial class MainView {
     }
     
     public bool HideLevelEnvironment {
-        get => BetterBeatSaberConfig.Instance.HideLevelEnvironment;
-        set => BetterBeatSaberConfig.Instance.HideLevelEnvironment = value;
+        get => BetterBeatSaberConfig.Instance.HideLevelEnvironment.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.HideLevelEnvironment.SetValue(value);
     }
     
     public bool HideMenuEnvironment {
-        get => BetterBeatSaberConfig.Instance.HideMenuEnvironment;
-        set => BetterBeatSaberConfig.Instance.HideMenuEnvironment = value;
+        get => BetterBeatSaberConfig.Instance.HideMenuEnvironment.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.HideMenuEnvironment.SetValue(value);
+    }
+    
+    public bool DisableDust {
+        get => BetterBeatSaberConfig.Instance.DisableDust.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.DisableDust.SetValue(value);
     }
 
 }

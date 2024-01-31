@@ -1,5 +1,6 @@
 ﻿using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Providers;
 
 using TMPro;
@@ -10,7 +11,7 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
-[MixinPlugin("PBOT", "PBOT.Managers.DeltaRankCounterVisualManager")]
+[Mixin("PBOT", "PBOT.Managers.DeltaRankCounterVisualManager")]
 internal static class DeltaRankCounterVisualManagerMixin {
 
     [MixinMethod(nameof(CounterInit), MixinAt.Post)]

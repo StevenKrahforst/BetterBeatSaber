@@ -44,8 +44,8 @@ public partial class MainView {
     #region UI Colorizers
 
     public bool ColorizeButtons {
-        get => BetterBeatSaberConfig.Instance.ColorizeButtons;
-        set => BetterBeatSaberConfig.Instance.ColorizeButtons = value;
+        get => BetterBeatSaberConfig.Instance.ColorizeButtons.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.ColorizeButtons.SetValue(value);
     }
     
     public bool ColorizeMenuButtons {
@@ -71,6 +71,11 @@ public partial class MainView {
         set => BetterBeatSaberConfig.Instance.ColorizeFPSCounter = value;
     }
 
+    public bool ColorizeMenuPillars {
+        get => BetterBeatSaberConfig.Instance.ColorizeMenuPillars.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.ColorizeMenuPillars.SetValue(value);
+    }
+    
     #endregion
 
 }

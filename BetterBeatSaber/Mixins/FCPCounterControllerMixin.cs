@@ -1,5 +1,6 @@
 ﻿using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Providers;
 
 using TMPro;
@@ -10,7 +11,7 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
-[MixinPlugin("FCPercentage", "FCPercentage.FCPCounter.FCPCounterController")]
+[Mixin("FCPercentage", "FCPercentage.FCPCounter.FCPCounterController")]
 internal static class FCPCounterControllerMixin {
 
     [MixinMethod(nameof(InitCounterText), MixinAt.Post)]

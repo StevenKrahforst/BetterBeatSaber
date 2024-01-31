@@ -1,4 +1,4 @@
-﻿namespace BetterBeatSaber.Mixin;
+﻿namespace BetterBeatSaber.Mixin.Enums;
 
 public enum MixinAt {
 

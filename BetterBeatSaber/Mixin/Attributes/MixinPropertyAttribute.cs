@@ -1,20 +1,20 @@
 ﻿using System;
 
+using BetterBeatSaber.Mixin.Enums;
+
 using HarmonyLib;
 
 namespace BetterBeatSaber.Mixin.Attributes;
 
 [AttributeUsage(AttributeTargets.Method)]
-public sealed class MixinPropertyAttribute : Attribute {
+public sealed class MixinPropertyAttribute(
+    string propertyName,
+    MixinAt at,
+    MethodType methodType
+) : Attribute {
 
-    public string PropertyName { get; set; }
-    public MixinAt At { get; set; }
-    public MethodType MethodType { get; set; }
-
-    public MixinPropertyAttribute(string propertyName, MixinAt at, MethodType methodType) {
-        PropertyName = propertyName;
-        At = at;
-        MethodType = methodType;
-    }
+    public string PropertyName { get; set; } = propertyName;
+    public MixinAt At { get; set; } = at;
+    public MethodType MethodType { get; set; } = methodType;
 
 }

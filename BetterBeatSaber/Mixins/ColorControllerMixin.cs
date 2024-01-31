@@ -2,8 +2,8 @@
 using System.Linq;
 using System.Reflection;
 
-using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Utilities;
 
 using IPA.Loader;
@@ -14,7 +14,7 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
-[MixinPlugin("ReeSabers", "ReeSabers.ColorController")]
+[Mixin("ReeSabers", "ReeSabers.ColorController")]
 [ToggleableMixin(typeof(BetterBeatSaberConfig), nameof(BetterBeatSaberConfig.ColorizeReeSabers))]
 internal static class ColorControllerMixin {
 

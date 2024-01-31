@@ -2,15 +2,13 @@
 
 namespace BetterBeatSaber.Mixin.Attributes;
 
-[AttributeUsage(AttributeTargets.Class)]
-public sealed class ToggleableMixinAttribute : Attribute {
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
+public sealed class ToggleableMixinAttribute(
+    Type configType,
+    string propertyName
+) : Attribute {
 
-    public Type ConfigType { get; }
-    public string PropertyName { get; }
-
-    public ToggleableMixinAttribute(Type configType, string propertyName) {
-        ConfigType = configType;
-        PropertyName = propertyName;
-    }
+    public Type ConfigType { get; } = configType;
+    public string PropertyName { get; } = propertyName;
 
 }

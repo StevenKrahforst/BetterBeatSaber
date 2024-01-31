@@ -17,8 +17,6 @@ public sealed class ObservableValueConverter<T> : JsonConverter<ObservableValue<
 
     public override ObservableValue<T> ReadJson(JsonReader reader, Type objectType, ObservableValue<T>? existingValue, bool hasExistingValue, JsonSerializer serializer) {
 
-        Console.WriteLine(reader.Path + " - " + reader.ValueType?.Name + " - " + typeof(T).Name);
-        
         T value;
         if (reader.ValueType != typeof(T)) {
             if (reader.ValueType == typeof(double))

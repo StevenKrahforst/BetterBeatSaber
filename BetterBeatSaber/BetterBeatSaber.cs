@@ -6,6 +6,8 @@ using BetterBeatSaber.Installer;
 using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Utilities;
 
+using Hive.Versioning;
+
 using IPA;
 using IPA.Loader;
 
@@ -37,7 +39,8 @@ public sealed class BetterBeatSaber {
     internal MixinManager MixinManager { get; private set; }
     
     public ConfigManager ConfigManager { get; private set; }
-    
+    public Version Version { get; } = new("2.3.0");
+
     [Init]
     public BetterBeatSaber([UsedImplicitly] Logger logger, [UsedImplicitly] Zenjector zenjector) {
 
@@ -63,7 +66,9 @@ public sealed class BetterBeatSaber {
     [OnStart]
     public void Start() {
         
-        MixinManager.Initialize();
+        MixinManager.Patch();
+        
+        Zenjector.Install<AppInstaller>(Location.App);
         
         Zenjector.Install<MenuAndPlayerInstaller>(Location.Menu | Location.Player);
         
@@ -76,7 +81,7 @@ public sealed class BetterBeatSaber {
         
         Zenjector.Expose<ComboUIController>("Environment");
         Zenjector.Expose<GameEnergyUIPanel>("Environment");
-
+        
         Utilities.SharedCoroutineStarter.Instance.StartCoroutine(LoadAssets());
         
         #if DEBUG
@@ -90,7 +95,7 @@ public sealed class BetterBeatSaber {
 
     [OnExit]
     public void Exit() {
-        MixinManager.Exit();
+        MixinManager.Unpatch();
     }
 
     private static IEnumerator LoadAssets() {
@@ -111,7 +116,7 @@ public sealed class BetterBeatSaber {
         Outline.OutlineMaskMaterialSource = (maskMatRequest.asset as Material)!;
         
         assetBundle.Unload(false);
-
+        
     }
     
     private static ConfigManager CreateConfigManager(object? previous, ParameterInfo param, PluginMetadata pluginMetadata) {

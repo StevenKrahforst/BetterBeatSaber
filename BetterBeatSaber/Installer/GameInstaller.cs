@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 
 using BetterBeatSaber.Colorizer;
+using BetterBeatSaber.Discord;
+using BetterBeatSaber.Extensions;
 using BetterBeatSaber.HudModifier;
 
 using UnityEngine;
@@ -23,9 +25,6 @@ public sealed class GameInstaller : Zenject.Installer {
     
     public override void InstallBindings() {
 
-        if (BetterBeatSaberConfig.Instance.ColorizeDust)
-            Container.BindInterfacesAndSelfTo<DustColorizer>().AsSingle();
-        
         if (BetterBeatSaberConfig.Instance.ColorizeFeet)
             Container.BindInterfacesAndSelfTo<FeetColorizer>().AsSingle();
         
@@ -81,8 +80,12 @@ public sealed class GameInstaller : Zenject.Installer {
 
         [Inject]
         private readonly GameplayCoreSceneSetupData _setupData;
+
+        [Inject]
+        private readonly DiscordManager _discordManager;
         
         public void Initialize() {
+            _discordManager.UpdateCurrentActivity(_setupData.difficultyBeatmap.level.songName, largeImageKey: $"https://cdn.beatsaver.com/{_setupData.difficultyBeatmap.level.GetHash().ToLower()}.jpg");
             Console.WriteLine("L: " + _setupData.difficultyBeatmap.level.levelID);
         }
 

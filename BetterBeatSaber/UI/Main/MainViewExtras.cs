@@ -25,5 +25,19 @@ public partial class MainView {
     }
 
     #endregion
+
+    #region Other
+
+    public bool SendTelemetry {
+        get => BetterBeatSaberConfig.Instance.SendTelemetry;
+        set => BetterBeatSaberConfig.Instance.SendTelemetry = value;
+    }
+    
+    public bool DiscordRichPresence {
+        get => BetterBeatSaberConfig.Instance.DiscordRichPresence.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.DiscordRichPresence.SetValue(value);
+    }
+
+    #endregion
     
 }

@@ -19,5 +19,26 @@ public static class ColorExtensions {
 
     public static string ToHex(this Color color) =>
         ColorUtility.ToHtmlStringRGB(color);
+
+    public static Color[] Steps(this Color start, Color end, int amount) =>
+        Steps(amount, start, end);
+    
+    public static Color[] Steps(int amount, Color start, Color end) {
+        
+        amount += 2;
+        
+        var result = new Color[amount];
+        
+        var r = (end.r - start.r) / (amount - 1);
+        var g = (end.g - start.g) / (amount - 1);
+        var b = (end.b - start.b) / (amount - 1);
+        var a = (end.a - start.a) / (amount - 1);
+        
+        for (var index = 0; index < amount; index++)
+            result[index] = new Color(start.r + r * index, start.g + g * index, start.b + b * index, start.a + a * index);
+        
+        return result;
+        
+    }
     
 }

@@ -1,29 +1,22 @@
 ﻿using System;
-using System.Linq;
+
+using BetterBeatSaber.Mixin.TypeResolvers;
 
 namespace BetterBeatSaber.Mixin.Attributes;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class MixinAttribute : Attribute {
+public sealed class MixinAttribute(
+    TypeResolver typeResolver,
+    string[] conflictsWith
+) : Attribute {
 
-    public Type? Type { get; set; }
-    public string[] ConflictsWith { get; set; }
+    public TypeResolver TypeResolver { get; } = typeResolver;
+    public string[] ConflictsWith { get; } = conflictsWith;
 
-    // ReSharper disable once MemberCanBeProtected.Global
-    public MixinAttribute(string typeName, params string[] conflictsWith)  {
-        // ReSharper disable once VirtualMemberCallInConstructor
-        Type = ResolveType(typeName);
-        ConflictsWith = conflictsWith;
-    }
+    public MixinAttribute(Type type, params string[] conflictsWith) : this(new TypeProvider(type), conflictsWith) { }
 
-    public MixinAttribute(Type type, params string[] conflictsWith) {
-        Type = type;
-        ConflictsWith = conflictsWith;
-    }
+    public MixinAttribute(string typeName, params string[] conflictsWith) : this(new AppDomainResolver(typeName), conflictsWith) { }
 
-    protected virtual Type? ResolveType(string typeName) =>
-        AppDomain.CurrentDomain.GetAssemblies().Reverse().Select(assembly => assembly.GetType(typeName)).FirstOrDefault(type => type != null);
-    
-    public virtual bool ShouldRun() => true;
+    public MixinAttribute(string plugin, string typeName, params string[] conflictsWith) : this(new PluginResolver(plugin, typeName), conflictsWith) { }
 
 }

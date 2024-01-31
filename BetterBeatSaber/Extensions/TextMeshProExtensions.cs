@@ -1,19 +1,47 @@
 ﻿using TMPro;
 
-#if !PRE_130
 using UnityEngine;
-#endif
 
 namespace BetterBeatSaber.Extensions;
 
-// ReSharper disable once InconsistentNaming
-public static class TMP_FontAssetExtensions {
+public static class TextMeshProExtensions {
 
+    public static void ApplyGradient(this TMP_Text text, Color start, Color end) {
+        
+        text.ForceMeshUpdate();
+        
+        var length = text.textInfo.characterInfo.Length;
+        
+        var steps = start.Steps(end, length);
+        var gradients = new VertexGradient[length];
+        for (var index = 0; index < length; index++) {
+            
+            gradients[index] = new VertexGradient(steps[index], steps[index + 1], steps[index], steps[index + 1]);
+            
+            var characterInfo = text.textInfo.characterInfo[index];
+            if (!characterInfo.isVisible || characterInfo.character == ' ')
+                continue;
+            
+            var colors = text.textInfo.meshInfo[characterInfo.materialReferenceIndex].colors32;
+            
+            var vertexIndex = text.textInfo.characterInfo[index].vertexIndex;
+            
+            colors[vertexIndex + 0] = gradients[index].bottomLeft;
+            colors[vertexIndex + 1] = gradients[index].topLeft;
+            colors[vertexIndex + 2] = gradients[index].bottomRight;
+            colors[vertexIndex + 3] = gradients[index].topRight;
+            
+        }
+            
+        text.UpdateVertexData(TMP_VertexDataUpdateFlags.All);
+        
+    }
+    
     public static TMP_FontAsset Clone(this TMP_FontAsset original) {
 
-        #if PRE_130
+#if PRE_130
         return TMP_FontAsset.CreateFontAsset(original.sourceFontFile);
-        #else
+#else
         
         if (original.atlasPopulationMode == AtlasPopulationMode.Dynamic && original.sourceFontFile != null)
             return TMP_FontAsset.CreateFontAsset(original.sourceFontFile);
@@ -42,8 +70,8 @@ public static class TMP_FontAssetExtensions {
         
         return instance;
 
-        #endif
+#endif
         
     }
-    
+
 }

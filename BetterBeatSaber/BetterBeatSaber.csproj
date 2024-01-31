@@ -21,7 +21,8 @@
     <PropertyGroup>
         <BeatSaberVersion>1.29.1</BeatSaberVersion>
         <BeatSaberVersionNumber>129</BeatSaberVersionNumber>
-        <BeatSaberDirectory>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDirectory>
+        <BeatSaberDir>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDir>
+        <BeatSaberDirectory>$(BeatSaberDir)</BeatSaberDirectory>
         <BeatSaberManagedDirectory>$(BeatSaberDirectory)\Beat Saber_Data\Managed</BeatSaberManagedDirectory>
         <BeatSaberLibsDirectory>$(BeatSaberDirectory)\Libs</BeatSaberLibsDirectory>
         <BeatSaberPluginsDirectory>$(BeatSaberDirectory)\Plugins</BeatSaberPluginsDirectory>
@@ -50,7 +51,8 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="Colors">
-          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\Colors.dll</HintPath>
+            <HintPath>$(BeatSaberManagedDirectory)\Colors.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="GameplayCore">
             <HintPath>$(BeatSaberManagedDirectory)\GameplayCore.dll</HintPath>
@@ -88,15 +90,13 @@
             <HintPath>$(BeatSaberPluginsDirectory)\SiraUtil.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="SongCore">
-          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Plugins\SongCore.dll</HintPath>
-        </Reference>
         <Reference Include="Unity.TextMeshPro">
             <HintPath>$(BeatSaberManagedDirectory)\Unity.TextMeshPro.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.AnimationModule">
-          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.AnimationModule.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="UnityEngine.AssetBundleModule">
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.AssetBundleModule.dll</HintPath>
@@ -109,9 +109,6 @@
         <Reference Include="UnityEngine.ParticleSystemModule">
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.ParticleSystemModule.dll</HintPath>
             <Private>False</Private>
-        </Reference>
-        <Reference Include="UnityEngine.PhysicsModule">
-          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.TextCoreModule">
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreModule.dll</HintPath>
@@ -168,8 +165,9 @@
     <ItemGroup>
         <Compile Include="Colorizer\BombColorizer.cs" />
         <Compile Include="Colorizer\BurnMarkAreaColorizer.cs" />
-        <Compile Include="Colorizer\DustColorizer.cs" />
         <Compile Include="Colorizer\FeetColorizer.cs" />
+        <Compile Include="Colorizer\GameColorizer.cs" />
+        <Compile Include="Colorizer\MenuSignColorizer.cs" />
         <Compile Include="Colorizer\ObstacleColorizer.cs" />
         <Compile Include="Colorizer\PlayersPlaceColorizer.cs" />
         <Compile Include="Colorizer\UIElementColorizer.cs" />
@@ -183,8 +181,16 @@
         <Compile Include="Config\Converters\Vector2Converter.cs" />
         <Compile Include="Config\Converters\Vector3Converter.cs" />
         <Compile Include="Config\Enums\RestartType.cs" />
+        <Compile Include="Discord\DiscordManager.cs" />
+        <Compile Include="Discord\SDK\ActivityManager.cs" />
+        <Compile Include="Discord\SDK\Constants.cs" />
+        <Compile Include="Discord\SDK\Core.cs" />
+        <Compile Include="Discord\SDK\ImageManager.cs" />
+        <Compile Include="Discord\SDK\LobbyManager.cs" />
+        <Compile Include="Discord\SDK\StorageManager.cs" />
+        <Compile Include="Discord\SDK\StoreManager.cs" />
         <Compile Include="Extensions\BeatmapExtensions.cs" />
-        <Compile Include="Extensions\TMP_FontAssetExtensions.cs" />
+        <Compile Include="Extensions\TextMeshProExtensions.cs" />
     </ItemGroup>
     
     <ItemGroup>
@@ -205,9 +211,11 @@
         <Compile Include="HudModifier\ProgressHudModifier.cs" />
         <Compile Include="HudModifier\RemoveBackgroundHudModifier.cs" />
         <Compile Include="HudModifier\ScoreHudModifier.cs" />
+        <Compile Include="Installer\AppInstaller.cs" />
         <Compile Include="Installer\GameInstaller.cs" />
         <Compile Include="Installer\MenuAndPlayerInstaller.cs" />
         <Compile Include="Installer\MenuInstaller.cs" />
+        <Compile Include="Manager\ColorManager.cs" />
         <Compile Include="Mixins\BaseNoteVisualsMixin.cs" />
         <Compile Include="Mixins\BeatmapDataMixin.cs" />
         <Compile Include="Mixins\BeatmapObjectsInstallerMixin.cs" />
@@ -226,13 +234,13 @@
         <Compile Include="Mixins\FPSCounter\FpsTargetPercentageColorValueConverterMixin.cs" />
         <Compile Include="Mixins\LightSwitchEventEffectMixin.cs" />
         <Compile Include="Mixins\MainMenuViewControllerMixin.cs" />
+        <Compile Include="Mixins\MenuPillarsManagerMixin.cs" />
         <Compile Include="Mixins\MissedNoteEffectSpawnerMixin.cs" />
         <Compile Include="Mixins\NoteControllerMixin.cs" />
         <Compile Include="Mixins\NoteCutParticlesEffectMixin.cs" />
         <Compile Include="Mixins\NoteDebrisMixin.cs" />
         <Compile Include="Mixins\ObstacleControllerMixin.cs" />
         <Compile Include="Mixins\SaberBurnMarkAreaMixin.cs" />
-        <Compile Include="Mixins\SceneManagerMixin.cs" />
         <Compile Include="Mixins\SpectrogramMixin.cs" />
         <Compile Include="Mixins\StandardLevelDetailViewMixin.cs" />
         <Compile Include="Mixins\StaticEnvironmentLightsMixin.cs" />
@@ -240,12 +248,21 @@
         <Compile Include="Mixin\Attributes\MixinAttribute.cs" />
         <Compile Include="Mixin\Attributes\MixinHandlerAttribute.cs" />
         <Compile Include="Mixin\Attributes\MixinMethodAttribute.cs" />
-        <Compile Include="Mixin\Attributes\MixinPluginAttribute.cs" />
         <Compile Include="Mixin\Attributes\MixinPropertyAttribute.cs" />
         <Compile Include="Mixin\Attributes\ToggleableMixinAttribute.cs" />
-        <Compile Include="Mixin\MixinAction.cs" />
-        <Compile Include="Mixin\MixinAt.cs" />
+        <Compile Include="Mixin\Enums\MixinAction.cs" />
+        <Compile Include="Mixin\Enums\MixinAt.cs" />
+        <Compile Include="Mixin\Enums\MixinError.cs" />
+        <Compile Include="Mixin\Mixin.cs" />
+        <Compile Include="Mixin\MixinException.cs" />
+        <Compile Include="Mixin\MixinHandler.cs" />
         <Compile Include="Mixin\MixinManager.cs" />
+        <Compile Include="Mixin\MixinMethod.cs" />
+        <Compile Include="Mixin\MixinObject.cs" />
+        <Compile Include="Mixin\TypeResolvers\AppDomainResolver.cs" />
+        <Compile Include="Mixin\TypeResolvers\PluginResolver.cs" />
+        <Compile Include="Mixin\TypeResolvers\TypeProvider.cs" />
+        <Compile Include="Mixin\TypeResolvers\TypeResolver.cs" />
         <Compile Include="Models\HitScoreFlyingScoreEffect.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Providers\BetterBloomFontProvider.cs" />

@@ -1,5 +1,6 @@
 ﻿using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 
 using UnityEngine;
 
@@ -9,7 +10,7 @@ namespace BetterBeatSaber.Mixins.FPSCounter;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
-[MixinPlugin("FPSCounter", "FPS_Counter.Converters.FpsTargetPercentageColorValueConverter")]
+[Mixin("FPSCounter", "FPS_Counter.Converters.FpsTargetPercentageColorValueConverter")]
 internal static class FpsTargetPercentageColorValueConverterMixin {
 
     private const float RGBThreshold = .975f;

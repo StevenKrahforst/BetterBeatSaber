@@ -8,6 +8,7 @@ using UnityEngine.Rendering;
 
 namespace BetterBeatSaber.Utilities; 
 
+// TODO: Update
 public sealed class Outline : MonoBehaviour {
 
     private static readonly int ColorMaskProperty = Shader.PropertyToID("_ColorMask");

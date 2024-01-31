@@ -1,5 +1,7 @@
 ﻿using System;
 
+using BetterBeatSaber.Mixin.Enums;
+
 namespace BetterBeatSaber.Mixin.Attributes;
 
 [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]

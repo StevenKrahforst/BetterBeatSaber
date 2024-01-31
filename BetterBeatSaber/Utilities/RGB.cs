@@ -1,7 +1,10 @@
-﻿using UnityEngine;
+﻿using System;
+
+using UnityEngine;
 
 namespace BetterBeatSaber.Utilities;
 
+[Obsolete("ColorManager is now used instead of RGB")]
 internal sealed class RGB : PersistentSingleton<RGB> {
 
     public Color FirstColor { get; private set; }

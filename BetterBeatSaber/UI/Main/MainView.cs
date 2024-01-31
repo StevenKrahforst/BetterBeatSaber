@@ -17,6 +17,9 @@ public partial class MainView : BSMLAutomaticViewController {
         }
     }
     
+    [UIAction(nameof(OnTabSelected))]
+    private void OnTabSelected(SegmentedControl _, int __) {}
+    
     /*[UIAction(nameof(OnTabSelected))]
     // ReSharper disable once UnusedMember.Local
     private void OnTabSelected(SegmentedControl _, int index) {

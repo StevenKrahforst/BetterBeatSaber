@@ -169,8 +169,8 @@ public partial class MainView {
     }
     
     public bool ColorizeNoteDebris {
-        get => BetterBeatSaberConfig.Instance.ColorizeNoteDebris;
-        set => BetterBeatSaberConfig.Instance.ColorizeNoteDebris = value;
+        get => BetterBeatSaberConfig.Instance.ColorizeNoteDebris.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.ColorizeNoteDebris.SetValue(value);
     }
     
     #region Outlines

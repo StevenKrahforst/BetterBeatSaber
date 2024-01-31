@@ -1,5 +1,6 @@
 ﻿using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 
 namespace BetterBeatSaber.Mixins;
 
@@ -8,9 +9,10 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable InconsistentNaming
 
 [Mixin(typeof(LightSwitchEventEffect))]
+[ToggleableMixin(typeof(BetterBeatSaberConfig), nameof(BetterBeatSaberConfig.HideLevelEnvironment))]
 internal static class LightSwitchEventEffectMixin {
 
     [MixinMethod(nameof(Start), MixinAt.Pre)]
-    private static bool Start() => !BetterBeatSaberConfig.Instance.HideLevelEnvironment;
+    private static bool Start() => false;
 
 }

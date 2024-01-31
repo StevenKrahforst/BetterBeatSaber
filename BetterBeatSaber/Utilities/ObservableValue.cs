@@ -12,9 +12,10 @@ public class ObservableValue<T> {
         CurrentValue = defaultValue;
     }
 
-    public void SetValue(T value) {
+    public void SetValue(T value, bool invokeChange = true) {
         CurrentValue = value;
-        OnValueChanged?.Invoke(value);
+        if(invokeChange)
+            OnValueChanged?.Invoke(value);
     }
     
     public static implicit operator T(ObservableValue<T> observableValue) => observableValue.CurrentValue;

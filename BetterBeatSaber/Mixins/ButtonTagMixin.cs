@@ -1,6 +1,7 @@
 ﻿using BetterBeatSaber.Colorizer;
 using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 
 using UnityEngine;
 
@@ -10,14 +11,12 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
-[MixinPlugin("BeatSaberMarkupLanguage", "BeatSaberMarkupLanguage.Tags.ButtonTag")]
+[Mixin("BeatSaberMarkupLanguage", "BeatSaberMarkupLanguage.Tags.ButtonTag")]
+[ToggleableMixin(typeof(BetterBeatSaberConfig), nameof(BetterBeatSaberConfig.ColorizeButtons))]
 internal static class ButtonTagMixin {
 
     [MixinMethod(nameof(CreateObject), MixinAt.Post)]
-    private static void CreateObject(GameObject __result) {
-        if (!BetterBeatSaberConfig.Instance.ColorizeButtons)
-            return;
+    private static void CreateObject(GameObject __result) =>
         __result.AddComponent<ImageViewColorizer>();
-    }
 
 }

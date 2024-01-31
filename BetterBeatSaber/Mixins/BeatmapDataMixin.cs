@@ -1,5 +1,6 @@
 ﻿using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 
 namespace BetterBeatSaber.Mixins;
 
@@ -8,9 +9,10 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable InconsistentNaming
 
 [Mixin(typeof(BeatmapData))]
+[ToggleableMixin(typeof(BetterBeatSaberConfig), nameof(BetterBeatSaberConfig.HideLevelEnvironment))]
 internal static class BeatmapDataMixin {
 
     [MixinMethod(nameof(InsertBeatmapEventData), MixinAt.Pre)]
-    private static bool InsertBeatmapEventData() => !BetterBeatSaberConfig.Instance.HideLevelEnvironment;
+    private static bool InsertBeatmapEventData() => false;
 
 }

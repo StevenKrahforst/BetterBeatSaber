@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
+using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Providers;
 using BetterBeatSaber.Utilities;
 
@@ -41,7 +42,7 @@ public sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, I
     private Color _color;
     private Color _secondColor;
 
-    private List<Rank> _ranks;
+    private List<Rank> _ranks = null!;
 
     public void Initialize() {
 
@@ -69,12 +70,12 @@ public sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, I
         var secondColor = _rgb ? RGB.Instance.SecondColor : _secondColor;
         
         if (_gradient) {
+
+            if (_rankText != null)
+                _rankText.ApplyGradient(firstColor, secondColor);
             
-            if(_rankText != null)
-                ApplyGradient(ref _rankText, firstColor, secondColor);
-                
-            if(_scoreText != null)
-                ApplyGradient(ref _scoreText, firstColor, secondColor);
+            if (_scoreText != null)
+                _scoreText.ApplyGradient(firstColor, secondColor);
             
         } else {
 
@@ -87,37 +88,6 @@ public sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, I
         }
     }
 
-    private static void ApplyGradient(ref TextMeshProUGUI text, Color start, Color end) {
-        
-        text.ForceMeshUpdate();
-            
-        var length = text.textInfo.characterInfo.Length;
-        
-        var steps = Steps(length, start, end);
-        var gradients = new VertexGradient[length];
-        for (var index = 0; index < length; index++) {
-
-            gradients[index] = new VertexGradient(steps[index], steps[index + 1], steps[index], steps[index + 1]);
-                    
-            var characterInfo = text.textInfo.characterInfo[index];
-            if (!characterInfo.isVisible || characterInfo.character == ' ')
-                continue;
-                
-            var colors = text.textInfo.meshInfo[characterInfo.materialReferenceIndex].colors32;
-                
-            var vertexIndex = text.textInfo.characterInfo[index].vertexIndex;
-                
-            colors[vertexIndex + 0] = gradients[index].bottomLeft;
-            colors[vertexIndex + 1] = gradients[index].topLeft;
-            colors[vertexIndex + 2] = gradients[index].bottomRight;
-            colors[vertexIndex + 3] = gradients[index].topRight;
-                
-        }
-            
-        text.UpdateVertexData(TMP_VertexDataUpdateFlags.All);
-        
-    }
-    
     public void Dispose() =>
         _relativeScoreAndImmediateRankCounter.relativeScoreOrImmediateRankDidChangeEvent -= OnRelativeScoreOrImmediateRankDidChangeEvent;
 
@@ -144,23 +114,6 @@ public sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, I
         
     }
     
-    private static Color[] Steps(int amount, Color start, Color end) {
-        
-        amount += 2;
-        
-        var result = new Color[amount];
-        var r = (end.r - start.r) / (amount - 1);
-        var g = (end.g - start.g) / (amount - 1);
-        var b = (end.b - start.b) / (amount - 1);
-        var a = (end.a - start.a) / (amount - 1);
-        
-        for (var index = 0; index < amount; index++)
-            result[index] = new Color(start.r + r * index, start.g + g * index, start.b + b * index, start.a + a * index);
-        
-        return result;
-        
-    }
-
     public sealed class Options : BaseOptions {
 
         public List<Rank> Ranks { get; } = [

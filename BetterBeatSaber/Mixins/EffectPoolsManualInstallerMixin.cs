@@ -5,6 +5,7 @@ using System.Reflection.Emit;
 
 using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Models;
 
 using HarmonyLib;

@@ -1,5 +1,6 @@
 ﻿using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Utilities;
 
 using UnityEngine;
@@ -28,7 +29,7 @@ internal static class NoteCutParticlesEffectMixin {
     }
 
     [MixinMethod(nameof(Awake), MixinAt.Pre)]
-    private static bool Awake() =>
-        BetterBeatSaberConfig.Instance.DisableCutParticles;
+    [ToggleableMixin(typeof(BetterBeatSaberConfig), nameof(BetterBeatSaberConfig.DisableCutParticles))]
+    private static bool Awake() => false;
 
 }

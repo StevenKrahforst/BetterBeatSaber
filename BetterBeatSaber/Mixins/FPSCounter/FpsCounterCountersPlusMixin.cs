@@ -1,5 +1,6 @@
 ﻿using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Providers;
 using BetterBeatSaber.Utilities;
 
@@ -13,7 +14,7 @@ namespace BetterBeatSaber.Mixins.FPSCounter;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
-[MixinPlugin("FPSCounter", "FPS_Counter.Counters.FpsCounterCountersPlus")]
+[Mixin("FPSCounter", "FPS_Counter.Counters.FpsCounterCountersPlus")]
 internal static class FpsCounterCountersPlusMixin {
 
     [MixinMethod("CounterInit", MixinAt.Post)]

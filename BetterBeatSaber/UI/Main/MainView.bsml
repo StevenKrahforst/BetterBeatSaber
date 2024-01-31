@@ -68,6 +68,7 @@
                             <checkbox-setting text='Transparent Obstacles' value='TransparentObstacles' apply-on-change='true' />
                             <checkbox-setting text='Hide Level Environment' value='HideLevelEnvironment' apply-on-change='true' />
                             <checkbox-setting text='Hide Menu Environment' value='HideMenuEnvironment' apply-on-change='true' />
+                            <checkbox-setting text='Disable Dust' value='DisableDust' apply-on-change='true' />
                         </vertical>
                     </modifier-container>
                 </settings-scroll-view>
@@ -98,6 +99,7 @@
                             <checkbox-setting text='Colorize PBOT' value='ColorizePBOT' apply-on-change='true' />
                             <checkbox-setting text='Colorize FC Percentage' value='ColorizeFCPercentage' apply-on-change='true' />
                             <checkbox-setting text='Colorize FPS Counter' value='ColorizeFPSCounter' apply-on-change='true' />
+                            <checkbox-setting text='Colorize Colorize Menu Pillars' value='ColorizeMenuPillars' apply-on-change='true' />
                         </vertical>
                     </modifier-container>
                 </settings-scroll-view>
@@ -115,6 +117,13 @@
                             <checkbox-setting text='Glow' value='HitScoreGlow' apply-on-change='true' />
                             <slider-setting text='Scale' value='HitScoreScale' apply-on-change='true' min='25' max='150' increment='5' />
                             <checkbox-setting text='Total Score' value='HitScoreTotalScore' apply-on-change='true' />
+                        </vertical>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Other' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Send Telemetry Data' value='SendTelemetry' apply-on-change='true' />
+                            <checkbox-setting text='Enable Discord RPC' value='DiscordRichPresence' apply-on-change='true' />
                         </vertical>
                     </modifier-container>
                 </settings-scroll-view>

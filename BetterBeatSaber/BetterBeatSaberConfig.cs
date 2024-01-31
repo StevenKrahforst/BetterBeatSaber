@@ -12,16 +12,23 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
 
     // ReSharper disable once ConvertToPrimaryConstructor
     public BetterBeatSaberConfig(string name) : base(name) { }
+
+    public bool SendTelemetry { get; set; } = true;
+    
+    [ConflictsWith("bsrpc")]
+    public ObservableValue<bool> DiscordRichPresence { get; set; } = true;
+    
+    public ObservableValue<float> ColorUpdateDurationTime { get; set; } = 5f;
     
     #region Game Colorization
 
-    public bool ColorizeDust { get; set; } = true;
+    public ObservableValue<bool> ColorizeDust { get; set; } = true;
     public bool ColorizeFeet { get; set; } = true;
     public bool ColorizePlayersPlace { get; set; } = true;
     public bool ColorizeBurnMarks { get; set; } = true;
     public bool ColorizeObstacles { get; set; } = true;
     public bool ColorizeCutParticles { get; set; } = true;
-    public bool ColorizeNoteDebris { get; set; } = true;
+    public ObservableValue<bool> ColorizeNoteDebris { get; set; } = true;
     public ObservableValue<bool> ColorizeReeSabers { get; set; } = true;
     
     public Outline.OutlineConfig NoteOutlines { get; set; } = new();
@@ -29,11 +36,14 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     
     public bool ColorizeCustomNoteOutlines { get; set; } = true;
     
+    public ObservableValue<bool> ColorizeMenuPillars { get; set; } = true;
+    public ObservableValue<bool> ColorizeMenuSign { get; set; } = true;
+    
     #endregion
 
     #region UI Colorization
 
-    public bool ColorizeButtons { get; set; } = true;
+    public ObservableValue<bool> ColorizeButtons { get; set; } = true;
     public bool ColorizeMenuButtons { get; set; } = true;
     
     // ReSharper disable once InconsistentNaming
@@ -52,8 +62,9 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     public ObservableValue<float> BombSize { get; set; } = 1.2f;
     
     public bool HideMissTexts { get; set; } = true;
-    public bool DisableCutParticles { get; set; } = true;
-    public bool DisableBombExplosionEffect { get; set; } = true;
+    public ObservableValue<bool> DisableCutParticles { get; set; } = true;
+    public ObservableValue<bool> DisableDust { get; set; } = true;
+    public ObservableValue<bool> DisableBombExplosionEffect { get; set; } = true;
     public bool DisableAprilFoolsAndEarthDayStuff { get; set; } = true;
     public bool DisableComboBreakEffect { get; set; } = true;
     public bool HideEditorButton { get; set; } = true;

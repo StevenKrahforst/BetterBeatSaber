@@ -1,5 +1,6 @@
 ﻿using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 
 namespace BetterBeatSaber.Mixins;
 
@@ -8,9 +9,10 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable InconsistentNaming
 
 [Mixin(typeof(BombExplosionEffect))]
+[ToggleableMixin(typeof(BetterBeatSaberConfig), nameof(BetterBeatSaberConfig.DisableBombExplosionEffect))]
 internal static class BombExplosionEffectMixin {
 
     [MixinMethod(nameof(SpawnExplosion), MixinAt.Pre)]
-    private static bool SpawnExplosion() => !BetterBeatSaberConfig.Instance.DisableBombExplosionEffect;
+    private static bool SpawnExplosion() => false;
 
 }

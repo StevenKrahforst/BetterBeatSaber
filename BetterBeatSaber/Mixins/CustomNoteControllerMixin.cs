@@ -1,5 +1,5 @@
-﻿using BetterBeatSaber.Mixin;
-using BetterBeatSaber.Mixin.Attributes;
+﻿using BetterBeatSaber.Mixin.Attributes;
+using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Utilities;
 
 using UnityEngine;
@@ -10,7 +10,7 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
-[MixinPlugin("Custom Notes", "CustomNotes.Managers.CustomNoteController")]
+[Mixin("Custom Notes", "CustomNotes.Managers.CustomNoteController")]
 internal static class CustomNoteControllerMixin {
 
     [MixinMethod(nameof(Visuals_DidInit), MixinAt.Post)]
