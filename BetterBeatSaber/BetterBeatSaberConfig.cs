@@ -23,8 +23,8 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     #region Game Colorization
 
     public ObservableValue<bool> ColorizeDust { get; set; } = true;
-    public bool ColorizeFeet { get; set; } = true;
-    public bool ColorizePlayersPlace { get; set; } = true;
+    public ObservableValue<bool> ColorizeFeet { get; set; } = true;
+    public ObservableValue<bool> ColorizePlayersPlace { get; set; } = true;
     public bool ColorizeBurnMarks { get; set; } = true;
     public bool ColorizeObstacles { get; set; } = true;
     public bool ColorizeCutParticles { get; set; } = true;

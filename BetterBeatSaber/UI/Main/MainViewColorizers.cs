@@ -5,18 +5,18 @@ public partial class MainView {
     #region Game Colorizers
 
     public bool ColorizeDust {
-        get => BetterBeatSaberConfig.Instance.ColorizeDust;
-        set => BetterBeatSaberConfig.Instance.ColorizeDust = value;
+        get => BetterBeatSaberConfig.Instance.ColorizeDust.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.ColorizeDust.SetValue(value);
     }
     
     public bool ColorizeFeet {
-        get => BetterBeatSaberConfig.Instance.ColorizeFeet;
-        set => BetterBeatSaberConfig.Instance.ColorizeFeet = value;
+        get => BetterBeatSaberConfig.Instance.ColorizeFeet.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.ColorizeFeet.SetValue(value);
     }
     
     public bool ColorizePlayersPlace {
-        get => BetterBeatSaberConfig.Instance.ColorizePlayersPlace;
-        set => BetterBeatSaberConfig.Instance.ColorizePlayersPlace = value;
+        get => BetterBeatSaberConfig.Instance.ColorizePlayersPlace.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.ColorizePlayersPlace.SetValue(value);
     }
     
     public bool ColorizeBurnMarks {

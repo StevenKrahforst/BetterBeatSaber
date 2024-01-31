@@ -166,7 +166,7 @@
         <Compile Include="Colorizer\BombColorizer.cs" />
         <Compile Include="Colorizer\BurnMarkAreaColorizer.cs" />
         <Compile Include="Colorizer\FeetColorizer.cs" />
-        <Compile Include="Colorizer\GameColorizer.cs" />
+        <Compile Include="Colorizer\DustColorizer.cs" />
         <Compile Include="Colorizer\MenuSignColorizer.cs" />
         <Compile Include="Colorizer\ObstacleColorizer.cs" />
         <Compile Include="Colorizer\PlayersPlaceColorizer.cs" />

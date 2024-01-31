@@ -25,14 +25,10 @@ public sealed class GameInstaller : Zenject.Installer {
     
     public override void InstallBindings() {
 
-        if (BetterBeatSaberConfig.Instance.ColorizeFeet)
-            Container.BindInterfacesAndSelfTo<FeetColorizer>().AsSingle();
-        
-        if (BetterBeatSaberConfig.Instance.ColorizePlayersPlace)
-            Container.BindInterfacesAndSelfTo<PlayersPlaceColorizer>().AsSingle();
-        
-        // TODO: Maybe check if they are enabled?!
-        
+        Container.BindInterfacesAndSelfTo<DustColorizer>().AsSingle();
+        Container.BindInterfacesAndSelfTo<FeetColorizer>().AsSingle();
+        Container.BindInterfacesAndSelfTo<PlayersPlaceColorizer>().AsSingle();
+
         BindHudModifier<ComboHudModifier>();
         BindHudModifier<EnergyHudModifier>();
         BindHudModifier<MultiplierHudModifier>();
@@ -40,6 +36,7 @@ public sealed class GameInstaller : Zenject.Installer {
         BindHudModifier<RemoveBackgroundHudModifier>();
         BindHudModifier<ScoreHudModifier>();
 
+        // TODO: Update
         Container.BindInterfacesAndSelfTo<EnvironmentHider>().AsSingle();
         
         if (!BetterBeatSaberConfig.Instance.HideLevelEnvironment)
