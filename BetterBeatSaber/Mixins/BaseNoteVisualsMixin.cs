@@ -1,5 +1,4 @@
-﻿using BetterBeatSaber.Mixin;
-using BetterBeatSaber.Mixin.Attributes;
+﻿using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Utilities;
 
@@ -35,15 +34,17 @@ internal static class BaseNoteVisualsMixin {
     }
     
     // ReSharper disable once SuggestBaseTypeForParameter
-    private static void AddOutlines(NoteController noteController, Outline.OutlineConfig outlineConfig) {
-        
+    private static void AddOutlines(NoteController noteController, Outline.Config outlineConfig) {
+
         var outline = noteController.gameObject.GetComponent<Outline>();
-        if(outline == null)
+        if (outline == null)
             outline = noteController.gameObject.AddComponent<Outline>();
-        
-        outline.OutlineWidth = outlineConfig.Width;
+
+        outline.OutlineMode = Outline.Mode.OutlineAll;
+        outline.Width = outlineConfig.Width;
+        outline.Bloom = outlineConfig.Bloom;
         outline.Visibility = outlineConfig.Visibility;
-        outline.Glowing = outlineConfig.Bloom;
+        outline.RGB = true;
         
     }
 

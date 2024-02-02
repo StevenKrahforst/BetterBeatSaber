@@ -1,5 +1,4 @@
-﻿using BetterBeatSaber.Enums;
-using BetterBeatSaber.Utilities;
+﻿using BetterBeatSaber.Utilities;
 
 using UnityEngine;
 
@@ -68,7 +67,7 @@ public partial class MainView {
         set => BetterBeatSaberConfig.Instance.BombOutlines.Width = value;
     }
     
-    public Visibility BombOutlinesVisibility {
+    public Enums.Visibility BombOutlinesVisibility {
         get => BetterBeatSaberConfig.Instance.BombOutlines.Visibility;
         set => BetterBeatSaberConfig.Instance.BombOutlines.Visibility = value;
     }

@@ -28,11 +28,12 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     public bool ColorizeBurnMarks { get; set; } = true;
     public bool ColorizeObstacles { get; set; } = true;
     public bool ColorizeCutParticles { get; set; } = true;
+    public bool ColorizeArcs { get; set; } = true;
     public ObservableValue<bool> ColorizeNoteDebris { get; set; } = true;
     public ObservableValue<bool> ColorizeReeSabers { get; set; } = true;
     
-    public Outline.OutlineConfig NoteOutlines { get; set; } = new();
-    public Outline.OutlineConfig BombOutlines { get; set; } = new();
+    public Outline.Config NoteOutlines { get; set; } = new();
+    public Outline.Config BombOutlines { get; set; } = new();
     
     public bool ColorizeCustomNoteOutlines { get; set; } = true;
     

@@ -1,12 +1,12 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Linq;
 using System.Reflection;
 
 using BetterBeatSaber.Config;
 using BetterBeatSaber.Installer;
 using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Utilities;
-
-using Hive.Versioning;
 
 using IPA;
 using IPA.Loader;
@@ -18,8 +18,9 @@ using SiraUtil.Zenject;
 using UnityEngine;
 
 using Logger = IPA.Logging.Logger;
+using Version = Hive.Versioning.Version;
 
-#if DEBUG
+#if !DEBUG
 using UnityExplorer;
 #endif
 
@@ -83,8 +84,8 @@ public sealed class BetterBeatSaber {
         Zenjector.Expose<GameEnergyUIPanel>("Environment");
         
         Utilities.SharedCoroutineStarter.Instance.StartCoroutine(LoadAssets());
-        
-        #if DEBUG
+
+        #if !DEBUG
         if (Environment.GetCommandLineArgs().Contains("--explorer"))
             ExplorerStandalone.CreateInstance();
         #endif
@@ -107,13 +108,13 @@ public sealed class BetterBeatSaber {
         if (assetBundle == null)
             yield break;
 
-        var fillMatRequest = assetBundle.LoadAssetAsync<Material>("OutlineFill");
-        yield return fillMatRequest;
-        Outline.OutlineFillMaterialSource = (fillMatRequest.asset as Material)!;
+        var maskMaterialRequest = assetBundle.LoadAssetAsync<Material>("Outline Mask");
+        yield return maskMaterialRequest;
+        Outline.MaskMaterial = (maskMaterialRequest.asset as Material)!;
         
-        var maskMatRequest = assetBundle.LoadAssetAsync<Material>("OutlineMask");
-        yield return maskMatRequest;
-        Outline.OutlineMaskMaterialSource = (maskMatRequest.asset as Material)!;
+        var fillMaterialRequest = assetBundle.LoadAssetAsync<Material>("Outline Fill");
+        yield return fillMaterialRequest;
+        Outline.FillMaterial = (fillMaterialRequest.asset as Material)!;
         
         assetBundle.Unload(false);
         

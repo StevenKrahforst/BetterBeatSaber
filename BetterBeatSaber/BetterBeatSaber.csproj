@@ -50,6 +50,9 @@
             <HintPath>$(BeatSaberPluginsDirectory)\BSML.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="CameraUtils">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Plugins\CameraUtils.dll</HintPath>
+        </Reference>
         <Reference Include="Colors">
             <HintPath>$(BeatSaberManagedDirectory)\Colors.dll</HintPath>
             <Private>False</Private>
@@ -191,6 +194,7 @@
         <Compile Include="Discord\SDK\StoreManager.cs" />
         <Compile Include="Extensions\BeatmapExtensions.cs" />
         <Compile Include="Extensions\TextMeshProExtensions.cs" />
+        <Compile Include="Mixins\SliderControllerMixin.cs" />
     </ItemGroup>
     
     <ItemGroup>
@@ -291,7 +295,6 @@
     <ItemGroup>
 
         <EmbeddedResource Include="manifest.json" />
-
         <EmbeddedResource Include="Resources\resources" />
 
         <EmbeddedResource Include="UI\Main\MainView.bsml" />

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 
-using BetterBeatSaber.Enums;
 using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Utilities;
 
@@ -130,14 +129,14 @@ public partial class MainView {
         _noteRightOutline = _noteLeft.AddComponent<Outline>();
 
         _noteLeftOutline.enabled = NoteOutlinesEnable;
-        _noteLeftOutline.OutlineWidth = NoteOutlinesWidth;
+        _noteLeftOutline.Width = NoteOutlinesWidth;
         _noteLeftOutline.Visibility = NoteOutlinesVisibility;
-        _noteLeftOutline.Glowing = NoteOutlinesGlow;
+        _noteLeftOutline.Bloom = NoteOutlinesGlow;
 
         _noteRightOutline.enabled = NoteOutlinesEnable;
-        _noteRightOutline.OutlineWidth = NoteOutlinesWidth;
+        _noteRightOutline.Width = NoteOutlinesWidth;
         _noteRightOutline.Visibility = NoteOutlinesVisibility;
-        _noteRightOutline.Glowing = NoteOutlinesGlow;
+        _noteRightOutline.Bloom = NoteOutlinesGlow;
         
         _noteLeft.SetActive(true);
         _noteRight.SetActive(true);
@@ -198,9 +197,9 @@ public partial class MainView {
         set {
             BetterBeatSaberConfig.Instance.NoteOutlines.Bloom.SetValue(value);
             if (value && _noteLeftOutline != null)
-                _noteLeftOutline.Glowing = value;
+                _noteLeftOutline.Bloom = value;
             if (value && _noteRightOutline != null)
-                _noteRightOutline.Glowing = value;
+                _noteRightOutline.Bloom = value;
         }
     }
     
@@ -209,13 +208,13 @@ public partial class MainView {
         set {
             BetterBeatSaberConfig.Instance.NoteOutlines.Width.SetValue(value);
             if (_noteLeftOutline != null)
-                _noteLeftOutline.OutlineWidth = value;
+                _noteLeftOutline.Width = value;
             if (_noteRightOutline != null)
-                _noteRightOutline.OutlineWidth = value;
+                _noteRightOutline.Width = value;
         }
     }
     
-    public Visibility NoteOutlinesVisibility {
+    public Enums.Visibility NoteOutlinesVisibility {
         get => BetterBeatSaberConfig.Instance.NoteOutlines.Visibility;
         set => BetterBeatSaberConfig.Instance.NoteOutlines.Visibility = value;
     }

@@ -49,6 +49,7 @@ Thumbs.db
 website/
 UIColorizer/
 BetterBeatSaber.Online/
+BetterBeatSaber.Resources/
 
 # Private
 UnityMixin.cs

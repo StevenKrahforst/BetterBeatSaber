@@ -1,162 +1,235 @@
 ﻿using System.Linq;
 
 using BetterBeatSaber.Enums;
-using BetterBeatSaber.Extensions;
 
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace BetterBeatSaber.Utilities; 
+// Heavily modified version of https://github.com/chrisnolet/QuickOutline
 
-// TODO: Update
+namespace BetterBeatSaber.Utilities;
+
 public sealed class Outline : MonoBehaviour {
 
-    private static readonly int ColorMaskProperty = Shader.PropertyToID("_ColorMask");
-    
-    private static readonly int VisibilityProperty = Shader.PropertyToID("_Visibility");
-    
-    private static readonly int ColorProperty = Shader.PropertyToID("_OutlineColor");
-    private static readonly int Color1Property = Shader.PropertyToID("_OutlineColor1");
-    private static readonly int WidthProperty = Shader.PropertyToID("_OutlineWidth");
+    #region Shader IDs
 
-    private static readonly int ZTest = Shader.PropertyToID("_ZTest");
-    
-    private const ColorWriteMask GlowingMask = ColorWriteMask.All;
-    private const ColorWriteMask GlowingDisabledMask = ColorWriteMask.All & ~ColorWriteMask.Alpha;
-    
-    internal static Material OutlineMaskMaterialSource = null!;
-    internal static Material OutlineFillMaterialSource = null!;
+    private static readonly int ZTestProperty = Shader.PropertyToID("_ZTest");
+    private static readonly int ColorMaskProperty = Shader.PropertyToID("_ColorMask");
+    private static readonly int VisibilityProperty = Shader.PropertyToID("_Visibility");
+    private static readonly int FirstColorProperty = Shader.PropertyToID("_FirstColor");
+    private static readonly int SecondColorProperty = Shader.PropertyToID("_SecondColor");
+    private static readonly int WidthProperty = Shader.PropertyToID("_Width");
+        
+    #endregion
+
+    #region Constants
+
+    private const ColorWriteMask BloomMask = ColorWriteMask.All;
+    private const ColorWriteMask NoBloomMask = BloomMask & ~ColorWriteMask.Alpha;
+
+    #endregion
+        
+    #region Materials
+
+    internal static Material MaskMaterial = null!;
+    internal static Material FillMaterial = null!;
+
+    #endregion
+
+    public enum Mode {
+
+        OutlineAll,
+        OutlineVisible,
+        OutlineHidden,
+        OutlineAndSilhouette,
+        SilhouetteOnly
+
+    }
+
+    #region Fields
 
     private bool _needsUpdate;
-    
-    private Visibility _visibility = Visibility.Everywhere;
+    private MeshRenderer[] _renderers = null!;
+
+    #endregion
+        
+    #region Properties
+
+    private Mode _mode;
+    public Mode OutlineMode {
+        get => _mode;
+        set {
+                
+            // ReSharper disable once SwitchStatementHandlesSomeKnownEnumValuesWithDefault
+            switch (value) {
+                case Mode.OutlineAll:
+                    _maskMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.Always);
+                    _fillMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.Always);
+                    break;
+                case Mode.OutlineVisible:
+                    _maskMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.Always);
+                    _fillMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.LessEqual);
+                    break;
+                case Mode.OutlineHidden:
+                    _maskMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.Always);
+                    _fillMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.Greater);
+                    break;
+                case Mode.OutlineAndSilhouette:
+                    _maskMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.LessEqual);
+                    _fillMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.Always);
+                    break;
+                case Mode.SilhouetteOnly:
+                    _maskMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.LessEqual);
+                    _fillMaterialPropertyBlock.SetFloat(ZTestProperty, (float) CompareFunction.Greater);
+                    Width = 0f;
+                    break;
+            }
+
+            _mode = value;
+            
+            _needsUpdate = true;
+                
+        }
+    }
+
+    public ColorWriteMask ColorMask {
+        get => (ColorWriteMask) _fillMaterialPropertyBlock.GetFloat(ColorMaskProperty);
+        set {
+            _fillMaterialPropertyBlock.SetFloat(ColorMaskProperty, (float)value);
+            _needsUpdate = true;
+        }
+    }
+
     public Visibility Visibility {
-        get => _visibility;
+        get => (Visibility) _fillMaterialPropertyBlock.GetInt(VisibilityProperty);
         set {
-            _visibility = value;
+            _fillMaterialPropertyBlock.SetInt(VisibilityProperty, (int) value);
             _needsUpdate = true;
         }
     }
-    
-    private Color _color = Color.white.WithAlpha(0f);
+
     public Color Color {
-        get => _color;
         set {
-            _color = value;
+            FirstColor = value;
+            SecondColor = value;
+        }
+    }
+        
+    public Color FirstColor {
+        get => _fillMaterialPropertyBlock.GetColor(FirstColorProperty);
+        set {
+            _fillMaterialPropertyBlock.SetColor(FirstColorProperty, value);
             _needsUpdate = true;
         }
     }
-    
-    private float _width = 4f;
-    public float OutlineWidth {
-        get => _width;
+        
+    public Color SecondColor {
+        get => _fillMaterialPropertyBlock.GetColor(SecondColorProperty);
         set {
-            _width = value;
+            _fillMaterialPropertyBlock.SetColor(SecondColorProperty, value);
             _needsUpdate = true;
         }
     }
 
-    public bool RGB { get; set; } = true;
-
-    private bool _glowing = true;
-    public bool Glowing {
-        get => _glowing;
+    public float Width {
+        get => _fillMaterialPropertyBlock.GetFloat(WidthProperty);
         set {
-            _glowing = value;
+            _fillMaterialPropertyBlock.SetFloat(WidthProperty, value);
             _needsUpdate = true;
         }
     }
-    
-    private MeshRenderer[]? _renderers;
-    
-    private Material _maskMaterial = null!;
-    private Material _fillMaterial = null!;
+        
+    #endregion
+
+    #region Beat Saber
+
+    public bool Bloom {
+        // ReSharper disable once CompareOfFloatsByEqualityOperator
+        get => _fillMaterialPropertyBlock.GetFloat(ColorMaskProperty) == (float) BloomMask;
+        set {
+            _fillMaterialPropertyBlock.SetFloat(ColorMaskProperty, (float) (value ? BloomMask : NoBloomMask));
+            _needsUpdate = true;
+        }
+    }
+
+    public bool RGB { get; set; }
+
+    #endregion
+
+    #region Static Properties
+
+    private MaterialPropertyBlock _maskMaterialPropertyBlock;
+    private MaterialPropertyBlock _fillMaterialPropertyBlock;
+
+    #endregion
     
     private void Awake() {
-
-        _renderers = GetComponentsInChildren<MeshRenderer>();
-        if (_renderers.Length > 1)
-            _renderers = _renderers.Where(x => x.gameObject.name != "NoteArrowGlow" && x.gameObject.name != "NoteCircleGlow").ToArray();
         
-        _maskMaterial = Instantiate(OutlineMaskMaterialSource);
-        _fillMaterial = Instantiate(OutlineFillMaterialSource);
-
-        _maskMaterial.name = "OutlineMask (Instance)";
-        _fillMaterial.name = "OutlineFill (Instance)";
-
-        _needsUpdate = true;
-
-    }
-    
-    private void Update() {
+        _maskMaterialPropertyBlock = new MaterialPropertyBlock();
+        _fillMaterialPropertyBlock = new MaterialPropertyBlock();
         
-        if (!_needsUpdate)
-            return;
-        
-        _needsUpdate = false;
+        _renderers = gameObject.GetComponentsInChildren<MeshRenderer>().Where(x => x.gameObject.name == "NoteCube").ToArray();
         
         UpdateMaterialProperties();
         
     }
-    
-    private void FixedUpdate() {
-        
-        if (!RGB)
-            return;
-        
-        _fillMaterial.SetColor(ColorProperty, Utilities.RGB.Instance.FirstColor);
-        _fillMaterial.SetColor(Color1Property, Utilities.RGB.Instance.SecondColor);
-        
+
+    private void Update() {
+        if (RGB) {
+            FirstColor = Manager.ColorManager.Instance!.FirstColor;
+            SecondColor = Manager.ColorManager.Instance.SecondColor;
+        }
+        if (_needsUpdate)
+            UpdateMaterialProperties();
     }
 
     private void OnEnable() {
-        
-        if (_renderers == null)
-            return;
-        
-        foreach (var renderer in _renderers) {
-            var materials = renderer.sharedMaterials.ToList();
-            materials.Add(_maskMaterial);
-            materials.Add(_fillMaterial);
-            renderer.materials = materials.ToArray();
+        foreach (var r in _renderers) {
+            
+            var materials = r.sharedMaterials.ToList();
+            
+            materials.Add(MaskMaterial);
+            materials.Add(FillMaterial);
+            
+            r.materials = materials.ToArray();
+            
         }
-        
     }
 
     private void OnDisable() {
-        
-        if (_renderers == null)
-            return;
-        
-        foreach (var renderer in _renderers) {
-            var materials = renderer.sharedMaterials.ToList();
-            materials.Remove(_maskMaterial);
-            materials.Remove(_fillMaterial);
-            renderer.materials = materials.ToArray();
+        foreach (var r in _renderers) {
+            
+            var materials = r.sharedMaterials.ToList();
+            
+            materials.Remove(MaskMaterial);
+            materials.Remove(FillMaterial);
+            
+            r.materials = materials.ToArray();
+            
         }
-        
     }
-
+        
     private void OnDestroy() {
-        Destroy(_maskMaterial);
-        Destroy(_fillMaterial);
+        foreach (var r in _renderers)
+            for (var i = 0; i < r.sharedMaterials.Length; i++)
+                r.SetPropertyBlock(null, i);
     }
 
     private void UpdateMaterialProperties() {
-        
-        _fillMaterial.SetInt(VisibilityProperty, (int) _visibility);
-        
-        if(!RGB)
-            _fillMaterial.SetColor(ColorProperty, _color);
-        
-        _fillMaterial.SetFloat(WidthProperty, _width);
-        _fillMaterial.SetFloat(ColorMaskProperty, (float) (_glowing ? GlowingMask : GlowingDisabledMask));
-        _maskMaterial.SetFloat(ZTest, (float) CompareFunction.Always);
-        _fillMaterial.SetFloat(ZTest, (float) CompareFunction.Always);
-        
+        if(_needsUpdate)
+            _needsUpdate = false;
+        foreach (var r in _renderers) {
+            for (var i = 0; i < r.sharedMaterials.Length; i++) {
+                var sharedMaterial = r.sharedMaterials[i];
+                if(sharedMaterial == MaskMaterial)
+                    r.SetPropertyBlock(_maskMaterialPropertyBlock, i);
+                else if(sharedMaterial == FillMaterial)
+                    r.SetPropertyBlock(_fillMaterialPropertyBlock, i);
+            }
+        }
     }
-
-    public class OutlineConfig {
+    
+    public class Config {
 
         public ObservableValue<bool> Enable { get; set; } = true;
         public ObservableValue<bool> Bloom { get; set; } = true;
