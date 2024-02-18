@@ -2,7 +2,6 @@
 
 using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Providers;
-using BetterBeatSaber.Utilities;
 
 using JetBrains.Annotations;
 
@@ -26,6 +25,10 @@ internal sealed class MultiplierHudModifier : HudModifier, IInitializable, ITick
     [UsedImplicitly]
     [Inject]
     private readonly MaterialProvider _materialProvider = null!;
+    
+    [UsedImplicitly]
+    [Inject]
+    private readonly Manager.ColorManager _colorManager = null!;
     
     private int _currentMultiplier;
 
@@ -63,11 +66,11 @@ internal sealed class MultiplierHudModifier : HudModifier, IInitializable, ITick
                 _foreground.color = Color.yellow.LerpHSV(Color.green, _foreground.fillAmount);
                 break;
             case 4:
-                _background.color = Color.green.LerpHSV(RGB.Instance.FirstColor, _foreground.fillAmount).WithAlpha(.25f);
-                _foreground.color = Color.green.LerpHSV(RGB.Instance.FirstColor, _foreground.fillAmount);
+                _background.color = Color.green.LerpHSV(_colorManager.FirstColor, _foreground.fillAmount).WithAlpha(.25f);
+                _foreground.color = Color.green.LerpHSV(_colorManager.FirstColor, _foreground.fillAmount);
                 break;
             case 8:
-                _background.color = RGB.Instance.FirstColor;
+                _background.color = _colorManager.FirstColor;
                 break;
         }
         

@@ -8,7 +8,6 @@ using Zenject;
 
 namespace BetterBeatSaber.Colorizer; 
 
-// TODO: On disable change back to default
 internal sealed class FeetColorizer : IInitializable, IDisposable, ITickable {
 
     [UsedImplicitly]

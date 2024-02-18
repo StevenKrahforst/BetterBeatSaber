@@ -2,13 +2,20 @@
 
 public enum MixinError {
 
-    MissingMixinAttribute,
-    ConflictsWithPlugin,
+    // General
+    Conflict,
+
+    // Mixin / Mixin Type
     PluginNotFound,
     TypeNotFound,
-    ShouldNotPatch,
-    MissingOriginalMethod,
-    AmbiguousMatchForOriginalMethod,
+    
+    // Original Method
+    OriginalMethodNotFound,
+    OriginalMethodAmbiguousMatch,
+    
+    // Patching
+    UnsupportedOperation,
+    
     UnknownError
 
 }

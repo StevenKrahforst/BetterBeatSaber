@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
 
+using BetterBeatSaber.Interops;
+
 using JetBrains.Annotations;
 
 using UnityEngine;
@@ -9,7 +11,6 @@ using Zenject;
 
 namespace BetterBeatSaber.Colorizer;
 
-// TODO: On disable change back to default
 public sealed class DustColorizer : IInitializable, IDisposable, ITickable {
 
     [UsedImplicitly]
@@ -21,12 +22,12 @@ public sealed class DustColorizer : IInitializable, IDisposable, ITickable {
     
     public void Initialize() {
         
-        _enabled = BetterBeatSaberConfig.Instance.ColorizeDust && !BetterBeatSaberConfig.Instance.DisableDust;
+        _enabled = BetterBeatSaberConfig.Instance.ColorizeDust.CurrentValue && !Tweaks55.Instance.DisableCutParticles.CurrentValue;
         
         FetchDustParticleSystem();
-        
+
+        Tweaks55.Instance.DisableGlobalParticles.OnValueChanged += OnDisableCutParticlesValueChanged;
         BetterBeatSaberConfig.Instance.ColorizeDust.OnValueChanged += OnColorizeDustValueChanged;
-        BetterBeatSaberConfig.Instance.DisableDust.OnValueChanged += OnDisableDustValueChanged;
 
     }
 
@@ -36,20 +37,19 @@ public sealed class DustColorizer : IInitializable, IDisposable, ITickable {
             _particleSystem.startColor = _colorManager.FirstColor.ColorWithAlpha(_particleSystem.colorOverLifetime.color.Evaluate(_particleSystem.time).a);
 #pragma warning restore CS0618 // Type or member is obsolete
     }
-    
+
     public void Dispose() {
+        Tweaks55.Instance.DisableGlobalParticles.OnValueChanged -= OnDisableCutParticlesValueChanged;
         BetterBeatSaberConfig.Instance.ColorizeDust.OnValueChanged -= OnColorizeDustValueChanged;
-        BetterBeatSaberConfig.Instance.DisableDust.OnValueChanged -= OnDisableDustValueChanged;
-    }
-
-    private void OnColorizeDustValueChanged(bool state) {
-        _enabled = state && !BetterBeatSaberConfig.Instance.DisableDust;
-    }
-
-    private void OnDisableDustValueChanged(bool state) {
-        _enabled = !state && BetterBeatSaberConfig.Instance.ColorizeDust;
     }
     
+    private void OnDisableCutParticlesValueChanged(bool state) =>
+        _enabled = !state && BetterBeatSaberConfig.Instance.ColorizeDust.CurrentValue;
+    
+    // TODO: On disable change back to default ig???
+    private void OnColorizeDustValueChanged(bool state) =>
+        _enabled = state && !Tweaks55.Instance.DisableGlobalParticles;
+
     private void FetchDustParticleSystem() =>
         _particleSystem = Resources.FindObjectsOfTypeAll<ParticleSystem>().FirstOrDefault(particleSystem => particleSystem.name == "DustPS");
 

@@ -21,17 +21,17 @@ public partial class MainView {
     
     public bool ColorizeBurnMarks {
         get => BetterBeatSaberConfig.Instance.ColorizeBurnMarks;
-        set => BetterBeatSaberConfig.Instance.ColorizeBurnMarks = value;
+        set => BetterBeatSaberConfig.Instance.ColorizeBurnMarks.SetValue(value);
     }
     
     public bool ColorizeObstacles {
         get => BetterBeatSaberConfig.Instance.ColorizeObstacles;
-        set => BetterBeatSaberConfig.Instance.ColorizeObstacles = value;
+        set => BetterBeatSaberConfig.Instance.ColorizeObstacles.SetValue(value);
     }
     
     public bool ColorizeCutParticles {
         get => BetterBeatSaberConfig.Instance.ColorizeCutParticles;
-        set => BetterBeatSaberConfig.Instance.ColorizeCutParticles = value;
+        set => BetterBeatSaberConfig.Instance.ColorizeCutParticles.SetValue(value);
     }
     
     public bool ColorizeReeSabers {

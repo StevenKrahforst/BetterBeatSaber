@@ -1,7 +1,7 @@
 ﻿using System.Net;
 using System.Net.Sockets;
 
-namespace BetterBeatSaber.Manager;
+namespace BetterBeatSaber.Online.Manager;
 
 public sealed class NotificationManager {
 

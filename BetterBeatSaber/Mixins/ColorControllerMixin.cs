@@ -4,7 +4,6 @@ using System.Reflection;
 
 using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
-using BetterBeatSaber.Utilities;
 
 using IPA.Loader;
 
@@ -58,15 +57,18 @@ internal static class ColorControllerMixin {
     
     [MixinMethod(nameof(Update), MixinAt.Pre)]
     private static bool Update(object __instance) {
+
+        if (Manager.ColorManager.Instance == null)
+            return false;
         
         if(!_isInitialized)
             Initialize();
 
-        var hsbTransform = _hsbTransformConstructor.Invoke(new[] { Enum.Parse(_colorTransformType, "HueOverride"), RGB.Instance.FirstHue, 1f, _value, 1f })!;
+        var hsbTransform = _hsbTransformConstructor.Invoke([ Enum.Parse(_colorTransformType, "HueOverride"), Manager.ColorManager.Instance.FirstColorHue, 1f, _value, 1f ])!;
 
         var observableValue = _observableField.GetValue(__instance)!;
 
-        _setValueMethod.Invoke(observableValue, new[] { hsbTransform, __instance });
+        _setValueMethod.Invoke(observableValue, [ hsbTransform, __instance ]);
         
         _isDirtyField.SetValue(__instance, false);
         

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 
 using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
+using BetterBeatSaber.Mixin.Exceptions;
 using BetterBeatSaber.Utilities;
 
 using HarmonyLib;
@@ -14,53 +15,48 @@ using IPA.Logging;
 
 namespace BetterBeatSaber.Mixin;
 
-public sealed class MixinManager : IDisposable {
+public sealed class MixinManager(
+    string id,
+    Assembly assembly
+) : IDisposable {
+
+    #region Constants
 
     internal const BindingFlags OriginalMethodBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
     internal const BindingFlags PatchedMethodBindingFlags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.DeclaredOnly;
     
-    public Assembly? Assembly { get; }
-    public Harmony Harmony { get; }
+    public const int DefaultPriority = 1000;
+    
+    #endregion
+    
+    public Assembly Assembly { get; } = assembly;
+    public Harmony Harmony { get; } = new(id);
 
-    private IList<Mixin> Mixins { get; } = new List<Mixin>();
+    /// <summary>
+    /// DO NOT DIRECTLY MODIFY THIS LIST
+    /// </summary>
+    public IList<Mixin> Mixins { get; } = new List<Mixin>();
     
-    internal Logger Logger { get; }
-    
+    internal Logger Logger { get; } = BetterBeatSaber.Instance.Logger.GetChildLogger("MixinManager").GetChildLogger(id);
+
     public MixinManager(PluginMetadata pluginMetadata) : this(pluginMetadata.Id, pluginMetadata.Assembly) { }
 
-    // ReSharper disable once ConvertToPrimaryConstructor
-    public MixinManager(string id, Assembly? assembly = null) {
-        Harmony = new Harmony(id);
-        Assembly = assembly;
-        Logger = BetterBeatSaber.Instance.Logger.GetChildLogger("MixinManager").GetChildLogger(id);
-    }
+    #region Add / Register
 
-    #region Add
-
-    public void AddMixins() {
-        
-        var assembly = Assembly ?? new StackTrace().GetFrame(1).GetMethod()?.DeclaringType?.Assembly;
-        if (assembly == null) {
-            Logger.Warn("Cannot register mixins for null assembly");
-            return;
-        }
-        
-        AddMixins(assembly);
-        
-    }
+    public void AddMixins() =>
+        AddMixins(Assembly);
 
     public void AddMixins(Assembly assembly) =>
         AddMixins(assembly.GetTypes());
 
     public void AddMixins(IEnumerable<Type> types) {
         foreach (var type in types) {
+            // Try catch here in order to not stop the entire process if one mixin fails to register
             try {
                 AddMixin(type);
             } catch(MixinException exception) {
-                if (exception.Error != MixinError.MissingMixinAttribute) {
-                    Logger.Error(exception.Message);
-                    Logger.Debug(exception);
-                }
+                Logger.Error(exception.Message);
+                Logger.Debug(exception);
             } catch (Exception exception) {
                 Logger.Warn("Failed to register mixins");
                 Logger.Error(exception);
@@ -69,67 +65,84 @@ public sealed class MixinManager : IDisposable {
     }
 
     private void AddMixin(Type type) {
-        
-        var mixinAttribute = type.GetCustomAttribute<MixinAttribute>();
-        if (mixinAttribute == null)
-            throw new MixinException(MixinError.MissingMixinAttribute, $"{type.FullName} is missing the MixinAttribute");
-        
-        var mixin = new Mixin(this, type, mixinAttribute.TypeResolver, mixinAttribute.ConflictsWith);
-        
-        var methods = new List<MixinMethod>();
-        var actionHandlers = new List<MethodInfo>();
-        
-        foreach (var method in type.GetMethods(PatchedMethodBindingFlags)) {
 
-            var mixinHandlerAttribute = method.GetCustomAttribute<MixinHandlerAttribute>();
-            if (mixinHandlerAttribute != null) {
-                actionHandlers.Add(method);
+        var mixinAttributes = type.GetCustomAttributes<MixinAttribute>().ToArray();
+        if (mixinAttributes.Length == 0)
+            return;
+        
+        foreach (var mixinAttribute in mixinAttributes) {
+            
+            if(mixinAttribute == null)
                 continue;
+            
+            var mixin = new Mixin(this, type, mixinAttribute.TypeResolver, mixinAttribute.ConflictsWith);
+        
+            var methods = new List<MixinMethod>();
+            var actionHandlers = new List<MethodInfo>();
+            
+            foreach (var method in type.GetMethods(PatchedMethodBindingFlags)) {
+
+                var mixinHandlerAttribute = method.GetCustomAttribute<MixinHandlerAttribute>();
+                if (mixinHandlerAttribute != null) {
+                    actionHandlers.Add(method);
+                    continue;
+                }
+
+                methods.AddRange(method.GetCustomAttributes<MixinMethodAttribute>().Select(mixinMethodAttribute => new MixinMethod(this, mixin, mixinMethodAttribute.MethodName, method, mixinMethodAttribute.At, mixinMethodAttribute.Priority, mixinMethodAttribute.ConflictsWith, mixinMethodAttribute.Before, mixinMethodAttribute.After)));
+
             }
             
-            foreach (var mixinMethodAttribute in method.GetCustomAttributes<MixinMethodAttribute>())
-                methods.Add(new MixinMethod(this, mixin, mixinMethodAttribute.MethodName, method, mixinMethodAttribute.At, mixinMethodAttribute.ConflictsWith));
+            var toggleableMixinAttribute = type.GetCustomAttribute<ToggleableMixinAttribute>();
+            if (toggleableMixinAttribute != null) {
+                try {
+                    var observable = GetObservableBoolean(toggleableMixinAttribute.ConfigType, toggleableMixinAttribute.PropertyName);
+                    if (observable != null) {
+                        foreach (var mixinMethod in methods) {
+                            mixinMethod.ShouldPatch = observable.CurrentValue;
+                            mixinMethod.ListenToChanges(observable);
+                        }
+                    } else {
+                        Logger.Warn($"Could not find property {toggleableMixinAttribute.PropertyName} in type {toggleableMixinAttribute.ConfigType.FullName}");
+                    }
+                } catch (InvalidCastException) {
+                    Logger.Error($"Couldn't cast config property to ObservableValue<bool> in Mixin {type.FullName}");
+                }
+            }
             
-        }
-        
-        var toggleableMixinAttribute = type.GetCustomAttribute<ToggleableMixinAttribute>();
-        if (toggleableMixinAttribute != null) {
-            var observable = GetObservableBoolean(toggleableMixinAttribute.ConfigType, toggleableMixinAttribute.PropertyName);
-            if (observable != null) {
-                foreach (var mixinMethod in methods) {
+            foreach (var mixinMethod in methods) {
+                
+                toggleableMixinAttribute = mixinMethod.PatchMethod.GetCustomAttribute<ToggleableMixinAttribute>();
+                if(toggleableMixinAttribute == null)
+                    continue;
+
+                try {
+                    
+                    var observable = GetObservableBoolean(toggleableMixinAttribute.ConfigType, toggleableMixinAttribute.PropertyName);
+                    if (observable == null) {
+                        Logger.Warn(
+                            $"Could not find property {toggleableMixinAttribute.PropertyName} in type {toggleableMixinAttribute.ConfigType.FullName}");
+                        continue;
+                    }
+
                     mixinMethod.ShouldPatch = observable.CurrentValue;
                     mixinMethod.ListenToChanges(observable);
+                    
+                } catch (InvalidCastException) {
+                    Logger.Error($"Couldn't cast config property to ObservableValue<bool> in Mixin {type.FullName}");
                 }
-            } else {
-                Logger.Warn($"Could not find property {toggleableMixinAttribute.PropertyName} in type {toggleableMixinAttribute.ConfigType.FullName}");
-            }
-        }
-        
-        foreach (var mixinMethod in methods) {
-            
-            toggleableMixinAttribute = mixinMethod.PatchMethod.GetCustomAttribute<ToggleableMixinAttribute>();
-            if(toggleableMixinAttribute == null)
-                continue;
-            
-            var observable = GetObservableBoolean(toggleableMixinAttribute.ConfigType, toggleableMixinAttribute.PropertyName);
-            if (observable == null) {
-                Logger.Warn($"Could not find property {toggleableMixinAttribute.PropertyName} in type {toggleableMixinAttribute.ConfigType.FullName}");
-                continue;
+                
             }
 
-            mixinMethod.ShouldPatch = observable.CurrentValue;
-            mixinMethod.ListenToChanges(observable);
+            mixin.Methods = methods;
+            mixin.ActionHandlers = actionHandlers;
+
+            Mixins.Add(mixin);
             
+            mixin.RunActionHandlers(MixinAction.Register);
+            
+            Logger.Debug($"Registered Mixin: {type.FullName} with {methods.Count} method{(methods.Count != 1 ? "s" : string.Empty)}");
+        
         }
-
-        mixin.Methods = methods;
-        mixin.ActionHandlers = actionHandlers;
-
-        Mixins.Add(mixin);
-        
-        mixin.RunActionHandlers(MixinAction.Register);
-        
-        Logger.Debug($"Registered Mixin: {type.FullName} with {methods.Count} method{(methods.Count != 1 ? "s" : string.Empty)}");
         
     }
     

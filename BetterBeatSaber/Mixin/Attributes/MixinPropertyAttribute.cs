@@ -6,6 +6,7 @@ using HarmonyLib;
 
 namespace BetterBeatSaber.Mixin.Attributes;
 
+// TODO: Implement
 [AttributeUsage(AttributeTargets.Method)]
 public sealed class MixinPropertyAttribute(
     string propertyName,

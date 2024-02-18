@@ -2,6 +2,7 @@
 using System.Linq;
 
 using BetterBeatSaber.Mixin.Enums;
+using BetterBeatSaber.Mixin.Exceptions;
 
 namespace BetterBeatSaber.Mixin.TypeResolvers;
 
@@ -17,7 +18,7 @@ public sealed class AppDomainResolver(string typeName) : TypeResolver(typeName) 
             .FirstOrDefault(type => type != null);
         
         if(type == null)
-            throw new MixinException(MixinError.TypeNotFound, $"Type {TypeName} not found in current AppDomain");
+            throw new MixinNotFoundException(MixinError.TypeNotFound, $"Type {TypeName} not found in current AppDomain");
         
         return type;
         

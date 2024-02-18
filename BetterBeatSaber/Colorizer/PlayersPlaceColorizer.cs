@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 using JetBrains.Annotations;
 
@@ -8,9 +9,10 @@ using Zenject;
 
 namespace BetterBeatSaber.Colorizer; 
 
-// TODO: On disable change back to default
 internal sealed class PlayersPlaceColorizer : IInitializable, IDisposable, ITickable {
 
+    public const string GameObjectName = "PlayersPlace";
+    
     [UsedImplicitly]
     [Inject]
     private readonly Manager.ColorManager _colorManager = null!;
@@ -20,12 +22,12 @@ internal sealed class PlayersPlaceColorizer : IInitializable, IDisposable, ITick
 
     public void Initialize() {
 
-        _enabled = BetterBeatSaberConfig.Instance.ColorizePlayersPlace.CurrentValue;
-        
         FetchRectangleFakeGlow();
         
         BetterBeatSaberConfig.Instance.ColorizePlayersPlace.OnValueChanged += OnColorizePlayersPlaceValueChanged;
-        
+
+        OnColorizePlayersPlaceValueChanged(BetterBeatSaberConfig.Instance.ColorizePlayersPlace.CurrentValue);
+
     }
 
     public void Tick() {
@@ -37,12 +39,12 @@ internal sealed class PlayersPlaceColorizer : IInitializable, IDisposable, ITick
         BetterBeatSaberConfig.Instance.ColorizePlayersPlace.OnValueChanged -= OnColorizePlayersPlaceValueChanged;
     
     private void OnColorizePlayersPlaceValueChanged(bool state) {
-        _enabled = true;
+        _enabled = state && BetterBeatSaberConfig.Instance.IgnoredLevelGameObjects.Contains(GameObjectName);
         if (!state && _rectangleFakeGlow != null)
             _rectangleFakeGlow.color = Color.white;
     }
     
     private void FetchRectangleFakeGlow() =>
-        _rectangleFakeGlow = GameObject.Find("PlayersPlace/RectangleFakeGlow").GetComponent<RectangleFakeGlow>();
+        _rectangleFakeGlow = GameObject.Find("PlayersPlace/RectangleFakeGlow")?.GetComponent<RectangleFakeGlow>();
 
 }

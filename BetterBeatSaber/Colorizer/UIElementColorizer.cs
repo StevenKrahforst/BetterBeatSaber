@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 
 using BetterBeatSaber.Extensions;
-using BetterBeatSaber.Utilities;
 
 using HMUI;
 
@@ -36,21 +35,26 @@ public abstract class UIElementColorizer<T> : MonoBehaviour {
     }
 
     private void Update() {
+
+        if (Manager.ColorManager.Instance == null)
+            return;
+        
         if (_isImageView) {
             foreach (var imageView in _images.Cast<ImageView>()) {
                 if (imageView.name == "Icon") {
-                    imageView.color0 = RGB.Instance.FirstColor;
-                    imageView.color1 = RGB.Instance.SecondColor;
+                    imageView.color0 = Manager.ColorManager.Instance.FirstColor;
+                    imageView.color1 = Manager.ColorManager.Instance.SecondColor;
                 } else {
-                    imageView.color0 = RGB.Instance.FirstColor.WithAlpha(alpha);
-                    imageView.color1 = RGB.Instance.SecondColor.WithAlpha(alpha);
+                    imageView.color0 = Manager.ColorManager.Instance.FirstColor.WithAlpha(alpha);
+                    imageView.color1 = Manager.ColorManager.Instance.SecondColor.WithAlpha(alpha);
                 }
             }
         } else {
             foreach (var image in _images.Cast<Image>()) {
-                image.color = RGB.Instance.FirstColor;
+                image.color = Manager.ColorManager.Instance.FirstColor;
             }
         }
+        
     }
 
 }

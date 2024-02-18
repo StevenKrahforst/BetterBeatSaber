@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 
-using BetterBeatSaber.Utilities;
-
 using UnityEngine;
 
 namespace BetterBeatSaber.Colorizer;
@@ -19,12 +17,12 @@ internal sealed class BurnMarkAreaColorizer : MonoBehaviour {
 
     private void Update() {
         
-        if (_lineRenderers == null)
+        if (_lineRenderers == null || Manager.ColorManager.Instance == null)
             return;
         
         foreach (var renderer in _lineRenderers) {
-            renderer.startColor = RGB.Instance.FirstColor;
-            renderer.endColor = RGB.Instance.SecondColor;
+            renderer.startColor = Manager.ColorManager.Instance.FirstColor;
+            renderer.endColor = Manager.ColorManager.Instance.SecondColor;
         }
         
     }

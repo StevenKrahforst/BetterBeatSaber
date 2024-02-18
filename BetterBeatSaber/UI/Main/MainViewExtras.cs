@@ -10,8 +10,8 @@ public partial class MainView {
     }
     
     public bool HitScoreGlow {
-        get => BetterBeatSaberConfig.Instance.HitScoreGlow;
-        set => BetterBeatSaberConfig.Instance.HitScoreGlow = value;
+        get => BetterBeatSaberConfig.Instance.HitScoreBloom;
+        set => BetterBeatSaberConfig.Instance.HitScoreBloom = value;
     }
     
     public float HitScoreScale {
@@ -22,20 +22,6 @@ public partial class MainView {
     public bool HitScoreTotalScore {
         get => BetterBeatSaberConfig.Instance.HitScoreTotalScore;
         set => BetterBeatSaberConfig.Instance.HitScoreTotalScore = value;
-    }
-
-    #endregion
-
-    #region Other
-
-    public bool SendTelemetry {
-        get => BetterBeatSaberConfig.Instance.SendTelemetry;
-        set => BetterBeatSaberConfig.Instance.SendTelemetry = value;
-    }
-    
-    public bool DiscordRichPresence {
-        get => BetterBeatSaberConfig.Instance.DiscordRichPresence.CurrentValue;
-        set => BetterBeatSaberConfig.Instance.DiscordRichPresence.SetValue(value);
     }
 
     #endregion

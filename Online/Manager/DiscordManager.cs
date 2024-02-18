@@ -5,7 +5,7 @@ using Discord;
 
 using Zenject;
 
-namespace BetterBeatSaber.Discord;
+namespace BetterBeatSaber.Online.Manager;
 
 public sealed class DiscordManager : IInitializable, ITickable {
 

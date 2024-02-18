@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 
 using BetterBeatSaber.Mixin.Enums;
+using BetterBeatSaber.Mixin.Exceptions;
 
 using HarmonyLib;
 
@@ -11,71 +12,81 @@ using IPA.Loader;
 
 namespace BetterBeatSaber.Mixin;
 
-internal sealed class MixinMethod(
+public sealed class MixinMethod(
     MixinManager mixinManager,
     Mixin mixin,
     string originalMethodName,
     MethodInfo patchMethod,
     MixinAt at,
-    IEnumerable<string> conflictsWith
+    int priority = MixinManager.DefaultPriority,
+    IEnumerable<string>? conflictsWith = null,
+    IEnumerable<string>? before = null,
+    IEnumerable<string>? after = null
 ) : MixinObject(mixinManager) {
 
     public Mixin Mixin { get; } = mixin;
     
+    public string OriginalMethodName { get; } = originalMethodName;
     public MethodInfo PatchMethod { get; } = patchMethod;
     public MixinAt At { get; } = at;
-    public IEnumerable<string> ConflictsWith { get; } = conflictsWith;
+    
+    public int Priority { get; } = priority;
+    
+    public IEnumerable<string>? ConflictsWith { get; } = conflictsWith;
+    public IEnumerable<string>? Before { get; } = before;
+    public IEnumerable<string>? After { get; } = after;
 
-    public bool IsPatched { get; set; }
     public bool ShouldPatch { get; set; } = true;
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
+    public bool IsPatched { get; private set; }
 
-    public MethodInfo OriginalMethod {
-        get {
-            try {
+    internal MethodInfo GetOriginalMethod(int differentApproach = 0) {
+        try {
+            
+            if(differentApproach == 0)
                 return Mixin
                     .TypeResolver
                     .ResolveType()
-                    .GetMethod(originalMethodName, MixinManager.OriginalMethodBindingFlags)!;
-            } catch(MixinException exception) {
-                throw;
-            } catch(NullReferenceException exception) {
-                throw new MixinException(MixinError.MissingOriginalMethod, $"Mixin {Mixin.Type.FullName} is missing original method {originalMethodName}", exception);
-            } catch (AmbiguousMatchException _) {
-                try {
-                    return Mixin
-                        .TypeResolver
-                        .ResolveType()
-                        .GetMethods(MixinManager.OriginalMethodBindingFlags)
-                        .FirstOrDefault(method => method.Name == originalMethodName)!;
-                } catch (Exception exception) {
-                    throw new MixinException(MixinError.AmbiguousMatchForOriginalMethod, $"Mixin {Mixin.Type.FullName} has ambiguous match for original method {originalMethodName} and while trying to take an alternative route, an error occurred", exception);
-                }
-            } catch (Exception exception) {
-                throw new MixinException(MixinError.UnknownError, exception);
-            }
+                    .GetMethod(OriginalMethodName, MixinManager.OriginalMethodBindingFlags)!;
+
+            return Mixin
+                .TypeResolver
+                .ResolveType()
+                .GetMethods(MixinManager.OriginalMethodBindingFlags)
+                .FirstOrDefault(method => method.Name == OriginalMethodName)!;
+
+        } catch(NullReferenceException exception) {
+            throw new MixinOriginalMethodNotFoundException(MixinError.OriginalMethodNotFound, this, exception);
+        } catch (AmbiguousMatchException exception) {
+            if(differentApproach == 1)
+                throw new MixinOriginalMethodNotFoundException(MixinError.OriginalMethodAmbiguousMatch, this, exception);
+            return GetOriginalMethod(differentApproach+1);
+        } catch (Exception exception) {
+            throw new MixinObjectException(MixinError.UnknownError, this, exception);
         }
     }
     
     internal override void Patch() {
 
         if (!ShouldPatch)
-            throw new MixinException(MixinError.ShouldNotPatch, $"Mixin {Mixin.Type.FullName} should not be patched");
+            return;
         
-        if(ConflictsWith.Any(plugin => PluginManager.GetPluginFromId(plugin) != null))
-            throw new MixinException(MixinError.ConflictsWithPlugin, $"Mixin {Mixin.Type.FullName} conflicts with another Plugin");
+        var conflict = ConflictsWith?.FirstOrDefault(plugin => PluginManager.GetPluginFromId(plugin) != null);
+        if(conflict != null)
+            throw new MixinConflictException(this, conflict);
 
         switch (At) {
             case MixinAt.Pre:
-                MixinManager.Harmony.Patch(OriginalMethod, prefix: new HarmonyMethod(PatchMethod));
+                MixinManager.Harmony.Patch(GetOriginalMethod(), prefix: new HarmonyMethod(PatchMethod, Priority, Before?.ToArray(), After?.ToArray()));
                 break;
             case MixinAt.Post:
-                MixinManager.Harmony.Patch(OriginalMethod, postfix: new HarmonyMethod(PatchMethod));
+                MixinManager.Harmony.Patch(GetOriginalMethod(), postfix: new HarmonyMethod(PatchMethod, Priority, Before?.ToArray(), After?.ToArray()));
                 break;
             case MixinAt.Trans:
-                MixinManager.Harmony.Patch(OriginalMethod, transpiler: new HarmonyMethod(PatchMethod));
+                MixinManager.Harmony.Patch(GetOriginalMethod(), transpiler: new HarmonyMethod(PatchMethod, Priority, Before?.ToArray(), After?.ToArray()));
                 break;
             default:
-                throw new NotSupportedException();
+                throw new MixinObjectException(MixinError.UnsupportedOperation, this);
         }
         
         IsPatched = true;
@@ -83,11 +94,8 @@ internal sealed class MixinMethod(
     }
 
     internal override void Unpatch() {
-        
-        MixinManager.Harmony.Unpatch(OriginalMethod, PatchMethod);
-        
+        MixinManager.Harmony.Unpatch(GetOriginalMethod(), PatchMethod);
         IsPatched = false;
-        
     }
     
 }

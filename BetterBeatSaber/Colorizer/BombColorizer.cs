@@ -1,6 +1,4 @@
-﻿using BetterBeatSaber.Utilities;
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace BetterBeatSaber.Colorizer; 
 
@@ -15,10 +13,10 @@ internal sealed class BombColorizer : MonoBehaviour {
 
     private void Update() {
 
-        if (_sharedMaterial == null || !BetterBeatSaberConfig.Instance.Bombs.Colorize)
+        if (_sharedMaterial == null || !BetterBeatSaberConfig.Instance.Bombs.Colorize || Manager.ColorManager.Instance == null)
             return;
 
-        _sharedMaterial.SetColor(SimpleColor, RGB.Instance.FirstColor);
+        _sharedMaterial.SetColor(SimpleColor, Manager.ColorManager.Instance.FirstColor);
 
     }
 

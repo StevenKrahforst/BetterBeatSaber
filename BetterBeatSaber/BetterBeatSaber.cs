@@ -3,7 +3,6 @@ using System.Collections;
 using System.Linq;
 using System.Reflection;
 
-using BetterBeatSaber.Config;
 using BetterBeatSaber.Installer;
 using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Utilities;
@@ -15,12 +14,14 @@ using JetBrains.Annotations;
 
 using SiraUtil.Zenject;
 
+using SongCore;
+
 using UnityEngine;
 
 using Logger = IPA.Logging.Logger;
 using Version = Hive.Versioning.Version;
 
-#if !DEBUG
+#if DEBUG
 using UnityExplorer;
 #endif
 
@@ -39,7 +40,6 @@ public sealed class BetterBeatSaber {
 
     internal MixinManager MixinManager { get; private set; }
     
-    public ConfigManager ConfigManager { get; private set; }
     public Version Version { get; } = new("2.3.0");
 
     [Init]
@@ -50,14 +50,11 @@ public sealed class BetterBeatSaber {
         Logger = logger;
         Zenjector = zenjector;
         
-        ConfigManager = new ConfigManager();
-        
         // ReSharper disable once ObjectCreationAsStatement
         new BetterBeatSaberConfig("BetterBeatSaber");
         
         PluginInitInjector.AddInjector(typeof(BetterBeatSaber), (_, _, _) => this);
         PluginInitInjector.AddInjector(typeof(MixinManager), CreateMixinManager);
-        PluginInitInjector.AddInjector(typeof(ConfigManager), CreateConfigManager);
         
         MixinManager = new MixinManager("BetterBeatSaber", Assembly.GetExecutingAssembly());
         MixinManager.AddMixins();
@@ -85,7 +82,13 @@ public sealed class BetterBeatSaber {
         
         Utilities.SharedCoroutineStarter.Instance.StartCoroutine(LoadAssets());
 
-        #if !DEBUG
+        Collections.RegisterCapability("Chroma");
+        Collections.RegisterCapability("Chroma Lighting Events");
+        
+        //Chroma Lighting Events
+        //Chroma
+        
+        #if DEBUG
         if (Environment.GetCommandLineArgs().Contains("--explorer"))
             ExplorerStandalone.CreateInstance();
         #endif
@@ -118,10 +121,6 @@ public sealed class BetterBeatSaber {
         
         assetBundle.Unload(false);
         
-    }
-    
-    private static ConfigManager CreateConfigManager(object? previous, ParameterInfo param, PluginMetadata pluginMetadata) {
-        return Instance.ConfigManager;
     }
     
     private static MixinManager CreateMixinManager(object? _, ParameterInfo __, PluginMetadata pluginMetadata) =>

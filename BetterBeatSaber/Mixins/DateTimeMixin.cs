@@ -1,6 +1,5 @@
 ﻿using System;
 
-using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
 

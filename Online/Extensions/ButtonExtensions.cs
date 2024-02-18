@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UI;
 
-namespace BetterBeatSaber.Extensions; 
+namespace BetterBeatSaber.Online.Extensions; 
 
 public static class ButtonExtensions {
 

@@ -1,6 +1,5 @@
 ﻿using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Providers;
-using BetterBeatSaber.Utilities;
 
 using TMPro;
 
@@ -126,7 +125,7 @@ public sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
         size = (int) (size * BetterBeatSaberConfig.Instance.HitScoreScale);
 
         if(BetterBloomFontProvider.Instance != null)
-            BetterBloomFontProvider.Instance.SetBloom(ref _text, BetterBeatSaberConfig.Instance.HitScoreGlow);
+            BetterBloomFontProvider.Instance.SetBloom(ref _text, BetterBeatSaberConfig.Instance.HitScoreBloom);
         
         _text.richText = true;
 
@@ -156,8 +155,8 @@ public sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
         public float alpha = 1f;
 
         private void Update() {
-            if (text != null)
-                text.ApplyGradient(RGB.Instance.FirstColor.WithAlpha(alpha), RGB.Instance.ThirdColor.WithAlpha(alpha));
+            if (text != null && Manager.ColorManager.Instance != null)
+                text.ApplyGradient(Manager.ColorManager.Instance.FirstColor.WithAlpha(alpha), Manager.ColorManager.Instance.ThirdColor.WithAlpha(alpha));
         }
 
     }

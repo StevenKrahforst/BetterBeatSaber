@@ -4,7 +4,7 @@ using BetterBeatSaber.Mixin.TypeResolvers;
 
 namespace BetterBeatSaber.Mixin.Attributes;
 
-[AttributeUsage(AttributeTargets.Class)]
+[AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
 public sealed class MixinAttribute(
     TypeResolver typeResolver,
     string[] conflictsWith

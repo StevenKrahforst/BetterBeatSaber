@@ -38,7 +38,9 @@ internal static class BaseNoteVisualsMixin {
 
         var outline = noteController.gameObject.GetComponent<Outline>();
         if (outline == null)
-            outline = noteController.gameObject.AddComponent<Outline>();
+            outline = noteController is GameNoteController
+                ? noteController.gameObject.AddComponent<NoteOutline>()
+                : noteController.gameObject.AddComponent<Outline>();
 
         outline.OutlineMode = Outline.Mode.OutlineAll;
         outline.Width = outlineConfig.Width;

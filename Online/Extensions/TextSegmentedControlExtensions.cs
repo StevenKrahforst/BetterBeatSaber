@@ -1,6 +1,6 @@
 ﻿using HMUI;
 
-namespace BetterBeatSaber.Extensions; 
+namespace BetterBeatSaber.Online.Extensions; 
 
 public static class TextSegmentedControlExtensions {
 

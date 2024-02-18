@@ -31,7 +31,6 @@ internal sealed class ProgressHudModifier : HudModifier, IInitializable, ITickab
     public void Initialize() {
         
         var progress = _songProgressUIController.transform.Find("Progress");
-
         if (progress == null)
             return;
 

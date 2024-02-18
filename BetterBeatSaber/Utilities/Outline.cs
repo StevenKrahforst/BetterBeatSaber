@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using BetterBeatSaber.Enums;
 
@@ -9,7 +11,7 @@ using UnityEngine.Rendering;
 
 namespace BetterBeatSaber.Utilities;
 
-public sealed class Outline : MonoBehaviour {
+public class Outline : MonoBehaviour {
 
     #region Shader IDs
 
@@ -49,7 +51,7 @@ public sealed class Outline : MonoBehaviour {
     #region Fields
 
     private bool _needsUpdate;
-    private MeshRenderer[] _renderers = null!;
+    protected IEnumerable<MeshRenderer> Renderers = Enumerable.Empty<MeshRenderer>();
 
     #endregion
         
@@ -138,7 +140,7 @@ public sealed class Outline : MonoBehaviour {
             _needsUpdate = true;
         }
     }
-        
+    
     #endregion
 
     #region Beat Saber
@@ -157,9 +159,9 @@ public sealed class Outline : MonoBehaviour {
     #endregion
 
     #region Static Properties
-
-    private MaterialPropertyBlock _maskMaterialPropertyBlock;
-    private MaterialPropertyBlock _fillMaterialPropertyBlock;
+    
+    private MaterialPropertyBlock _maskMaterialPropertyBlock = null!;
+    private MaterialPropertyBlock _fillMaterialPropertyBlock = null!;
 
     #endregion
     
@@ -167,24 +169,27 @@ public sealed class Outline : MonoBehaviour {
         
         _maskMaterialPropertyBlock = new MaterialPropertyBlock();
         _fillMaterialPropertyBlock = new MaterialPropertyBlock();
-        
-        _renderers = gameObject.GetComponentsInChildren<MeshRenderer>().Where(x => x.gameObject.name == "NoteCube").ToArray();
+
+        UpdateRenderers();
         
         UpdateMaterialProperties();
-        
+
     }
 
     private void Update() {
+        
         if (RGB) {
             FirstColor = Manager.ColorManager.Instance!.FirstColor;
             SecondColor = Manager.ColorManager.Instance.SecondColor;
         }
+        
         if (_needsUpdate)
             UpdateMaterialProperties();
+        
     }
 
     private void OnEnable() {
-        foreach (var r in _renderers) {
+        foreach (var r in Renderers) {
             
             var materials = r.sharedMaterials.ToList();
             
@@ -197,7 +202,7 @@ public sealed class Outline : MonoBehaviour {
     }
 
     private void OnDisable() {
-        foreach (var r in _renderers) {
+        foreach (var r in Renderers) {
             
             var materials = r.sharedMaterials.ToList();
             
@@ -210,7 +215,7 @@ public sealed class Outline : MonoBehaviour {
     }
         
     private void OnDestroy() {
-        foreach (var r in _renderers)
+        foreach (var r in Renderers)
             for (var i = 0; i < r.sharedMaterials.Length; i++)
                 r.SetPropertyBlock(null, i);
     }
@@ -218,7 +223,7 @@ public sealed class Outline : MonoBehaviour {
     private void UpdateMaterialProperties() {
         if(_needsUpdate)
             _needsUpdate = false;
-        foreach (var r in _renderers) {
+        foreach (var r in Renderers) {
             for (var i = 0; i < r.sharedMaterials.Length; i++) {
                 var sharedMaterial = r.sharedMaterials[i];
                 if(sharedMaterial == MaskMaterial)
@@ -228,6 +233,9 @@ public sealed class Outline : MonoBehaviour {
             }
         }
     }
+
+    protected virtual void UpdateRenderers() =>
+        Renderers = gameObject.GetComponentsInChildren<MeshRenderer>();
     
     public class Config {
 

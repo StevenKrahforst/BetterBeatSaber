@@ -1,5 +1,4 @@
 ﻿using BetterBeatSaber.Colorizer;
-using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
 
@@ -11,6 +10,7 @@ namespace BetterBeatSaber.Mixins;
 // ReSharper disable UnusedMember.Local
 // ReSharper disable InconsistentNaming
 
+// TODO: Update
 [Mixin(typeof(MainMenuViewController))]
 internal static class MainMenuViewControllerMixin {
 

@@ -6,7 +6,7 @@ namespace BetterBeatSaber.UI.Main;
 
 public partial class MainView {
 
-    private GameObject? _bomb;
+    /*private GameObject? _bomb;
     private Outline? _bombOutline;
 
     private void CreateBomb() {
@@ -21,7 +21,7 @@ public partial class MainView {
     private void DestroyBomb() {
         Destroy(_bombOutline);
         Destroy(_bomb);
-    }
+    }*/
 
     #region Config
 

@@ -5,7 +5,6 @@ using System.Reflection;
 
 using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Providers;
-using BetterBeatSaber.Utilities;
 
 using JetBrains.Annotations;
 
@@ -30,6 +29,10 @@ public sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, I
     [UsedImplicitly]
     [Inject]
     private readonly BetterBloomFontProvider _bloomFontProvider = null!;
+    
+    [UsedImplicitly]
+    [Inject]
+    private readonly Manager.ColorManager _colorManager = null!;
     
     private TextMeshProUGUI? _rankText;
     private TextMeshProUGUI? _scoreText;
@@ -66,8 +69,8 @@ public sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, I
 
     public void Tick() {
 
-        var firstColor = _rgb ? RGB.Instance.FirstColor : _color;
-        var secondColor = _rgb ? RGB.Instance.SecondColor : _secondColor;
+        var firstColor = _rgb ? _colorManager.FirstColor : _color;
+        var secondColor = _rgb ? _colorManager.SecondColor : _secondColor;
         
         if (_gradient) {
 

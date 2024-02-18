@@ -58,17 +58,11 @@
                                 <text text='Tweaks' font-size='5' bold='true' align='Center' />
                             </horizontal>
                             <checkbox-setting text='Hide Miss Texts' value='HideMissTexts' apply-on-change='true' />
-                            <checkbox-setting text='Disable Cut Particles' value='DisableCutParticles' apply-on-change='true' />
-                            <checkbox-setting text='Disable Bomb Explosion Effect' value='DisableBombExplosionEffect' apply-on-change='true' />
                             <checkbox-setting text='Disable April Fools And Earth Day Stuff' value='DisableAprilFoolsAndEarthDayStuff' apply-on-change='true' />
-                            <checkbox-setting text='Disable Combo Break Effect' value='DisableComboBreakEffect' apply-on-change='true' />
                             <checkbox-setting text='Hide Editor Button' value='HideEditorButton' apply-on-change='true' />
                             <checkbox-setting text='Hide Promotion Button' value='HidePromotionButton' apply-on-change='true' />
-                            <checkbox-setting text='Disable Menu CameraNoise' value='DisableMenuCameraNoise' apply-on-change='true' />
-                            <checkbox-setting text='Transparent Obstacles' value='TransparentObstacles' apply-on-change='true' />
                             <checkbox-setting text='Hide Level Environment' value='HideLevelEnvironment' apply-on-change='true' />
                             <checkbox-setting text='Hide Menu Environment' value='HideMenuEnvironment' apply-on-change='true' />
-                            <checkbox-setting text='Disable Dust' value='DisableDust' apply-on-change='true' />
                         </vertical>
                     </modifier-container>
                 </settings-scroll-view>
@@ -117,13 +111,6 @@
                             <checkbox-setting text='Glow' value='HitScoreGlow' apply-on-change='true' />
                             <slider-setting text='Scale' value='HitScoreScale' apply-on-change='true' min='25' max='150' increment='5' />
                             <checkbox-setting text='Total Score' value='HitScoreTotalScore' apply-on-change='true' />
-                        </vertical>
-                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
-                            <horizontal pref-width='90'>
-                                <text text='Other' font-size='5' bold='true' align='Center' />
-                            </horizontal>
-                            <checkbox-setting text='Send Telemetry Data' value='SendTelemetry' apply-on-change='true' />
-                            <checkbox-setting text='Enable Discord RPC' value='DiscordRichPresence' apply-on-change='true' />
                         </vertical>
                     </modifier-container>
                 </settings-scroll-view>

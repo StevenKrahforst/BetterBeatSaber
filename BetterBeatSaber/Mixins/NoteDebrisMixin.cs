@@ -1,7 +1,5 @@
-﻿using BetterBeatSaber.Mixin;
-using BetterBeatSaber.Mixin.Attributes;
+﻿using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
-using BetterBeatSaber.Utilities;
 
 using UnityEngine;
 
@@ -17,12 +15,19 @@ internal static class NoteDebrisMixin {
 
     private static readonly int ColorShaderPropertyId = Shader.PropertyToID("_Color");
     
+    // ig no colorisation when paused
+    
     [MixinMethod(nameof(Init), MixinAt.Post)]
     [MixinMethod("Update", MixinAt.Post)]
     private static void Init(MaterialPropertyBlockController ____materialPropertyBlockController) {
+        
+        if (Manager.ColorManager.Instance == null)
+            return;
+        
         var materialPropertyBlock = ____materialPropertyBlockController.materialPropertyBlock;
-        materialPropertyBlock.SetColor(ColorShaderPropertyId, RGB.Instance.FirstColor);
+        materialPropertyBlock.SetColor(ColorShaderPropertyId, Manager.ColorManager.Instance.FirstColor);
         ____materialPropertyBlockController.ApplyChanges();
+        
     }
 
 }

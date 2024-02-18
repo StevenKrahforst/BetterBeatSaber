@@ -93,6 +93,9 @@
             <HintPath>$(BeatSaberPluginsDirectory)\SiraUtil.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="SongCore">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Plugins\SongCore.dll</HintPath>
+        </Reference>
         <Reference Include="Unity.TextMeshPro">
             <HintPath>$(BeatSaberManagedDirectory)\Unity.TextMeshPro.dll</HintPath>
             <Private>False</Private>
@@ -174,26 +177,16 @@
         <Compile Include="Colorizer\ObstacleColorizer.cs" />
         <Compile Include="Colorizer\PlayersPlaceColorizer.cs" />
         <Compile Include="Colorizer\UIElementColorizer.cs" />
-        <Compile Include="Config\Attributes\ConflictsWithAttribute.cs" />
-        <Compile Include="Config\Attributes\RequiresRestartAttribute.cs" />
         <Compile Include="Config\Config.cs" />
-        <Compile Include="Config\ConfigManager.cs" />
         <Compile Include="Config\Converters\ColorConverter.cs" />
         <Compile Include="Config\Converters\ObservableValueConverter.cs" />
         <Compile Include="Config\Converters\QuaternionConverter.cs" />
         <Compile Include="Config\Converters\Vector2Converter.cs" />
         <Compile Include="Config\Converters\Vector3Converter.cs" />
-        <Compile Include="Config\Enums\RestartType.cs" />
-        <Compile Include="Discord\DiscordManager.cs" />
-        <Compile Include="Discord\SDK\ActivityManager.cs" />
-        <Compile Include="Discord\SDK\Constants.cs" />
-        <Compile Include="Discord\SDK\Core.cs" />
-        <Compile Include="Discord\SDK\ImageManager.cs" />
-        <Compile Include="Discord\SDK\LobbyManager.cs" />
-        <Compile Include="Discord\SDK\StorageManager.cs" />
-        <Compile Include="Discord\SDK\StoreManager.cs" />
-        <Compile Include="Extensions\BeatmapExtensions.cs" />
+        <Compile Include="Extensions\DiContainerExtensions.cs" />
         <Compile Include="Extensions\TextMeshProExtensions.cs" />
+        <Compile Include="Interops\Tweaks55.cs" />
+        <Compile Include="Interop\Interop.cs" />
         <Compile Include="Mixins\SliderControllerMixin.cs" />
     </ItemGroup>
     
@@ -201,12 +194,10 @@
         <Compile Include="BetterBeatSaber.cs" />
         <Compile Include="BetterBeatSaberConfig.cs" />
         <Compile Include="Enums\Visibility.cs" />
-        <Compile Include="Extensions\ButtonExtensions.cs" />
         <Compile Include="Extensions\ColorExtensions.cs" />
         <Compile Include="Extensions\GameObjectExtensions.cs" />
         <Compile Include="Extensions\MonoBehaviourExtensions.cs" />
         <Compile Include="Extensions\ReflectionExtensions.cs" />
-        <Compile Include="Extensions\TextSegmentedControlExtensions.cs" />
         <Compile Include="Extensions\TypeExtensions.cs" />
         <Compile Include="HudModifier\ComboHudModifier.cs" />
         <Compile Include="HudModifier\EnergyHudModifier.cs" />
@@ -223,12 +214,9 @@
         <Compile Include="Mixins\BaseNoteVisualsMixin.cs" />
         <Compile Include="Mixins\BeatmapDataMixin.cs" />
         <Compile Include="Mixins\BeatmapObjectsInstallerMixin.cs" />
-        <Compile Include="Mixins\BlueNoiseDitheringUpdaterMixin.cs" />
-        <Compile Include="Mixins\BombExplosionEffectMixin.cs" />
         <Compile Include="Mixins\BombNoteControllerMixin.cs" />
         <Compile Include="Mixins\ButtonTagMixin.cs" />
         <Compile Include="Mixins\ColorControllerMixin.cs" />
-        <Compile Include="Mixins\ComboUIControllerMixin.cs" />
         <Compile Include="Mixins\CustomNoteControllerMixin.cs" />
         <Compile Include="Mixins\DateTimeMixin.cs" />
         <Compile Include="Mixins\DeltaRankCounterVisualManagerMixin.cs" />
@@ -248,6 +236,8 @@
         <Compile Include="Mixins\SpectrogramMixin.cs" />
         <Compile Include="Mixins\StandardLevelDetailViewMixin.cs" />
         <Compile Include="Mixins\StaticEnvironmentLightsMixin.cs" />
+        <Compile Include="Mixins\TrackLaneRingsManagerMixin.cs" />
+        <Compile Include="Mixins\TrackLaneRingsRotationEffectMixin.cs" />
         <Compile Include="Mixins\UnityMixin.cs" />
         <Compile Include="Mixin\Attributes\MixinAttribute.cs" />
         <Compile Include="Mixin\Attributes\MixinHandlerAttribute.cs" />
@@ -257,9 +247,12 @@
         <Compile Include="Mixin\Enums\MixinAction.cs" />
         <Compile Include="Mixin\Enums\MixinAt.cs" />
         <Compile Include="Mixin\Enums\MixinError.cs" />
+        <Compile Include="Mixin\Exceptions\MixinException.cs" />
+        <Compile Include="Mixin\Exceptions\MixinNotFoundException.cs" />
+        <Compile Include="Mixin\Exceptions\MixinOriginalMethodNotFoundException.cs" />
+        <Compile Include="Mixin\Exceptions\MixinConflictException.cs" />
+        <Compile Include="Mixin\Exceptions\MixinObjectException.cs" />
         <Compile Include="Mixin\Mixin.cs" />
-        <Compile Include="Mixin\MixinException.cs" />
-        <Compile Include="Mixin\MixinHandler.cs" />
         <Compile Include="Mixin\MixinManager.cs" />
         <Compile Include="Mixin\MixinMethod.cs" />
         <Compile Include="Mixin\MixinObject.cs" />
@@ -285,10 +278,10 @@
         <Compile Include="UI\SDK\ListCell.cs" />
         <Compile Include="UI\SDK\ListView.cs" />
         <Compile Include="UI\SDK\View.cs" />
+        <Compile Include="Utilities\NoteOutline.cs" />
         <Compile Include="Utilities\ObservableValue.cs" />
         <Compile Include="Utilities\Outline.cs" />
         <Compile Include="Utilities\PersistentSingleton.cs" />
-        <Compile Include="Utilities\RGB.cs" />
         <Compile Include="Utilities\SharedCoroutineStarter.cs" />
     </ItemGroup>
     

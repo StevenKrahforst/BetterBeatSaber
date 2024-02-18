@@ -1,5 +1,4 @@
 ﻿using BetterBeatSaber.Extensions;
-using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
 
@@ -8,8 +7,6 @@ using IPA.Utilities;
 using UnityEngine;
 
 namespace BetterBeatSaber.Mixins;
-
-// https://github.com/kinsi55/BeatSaber_Tweaks55/blob/master/HarmonyPatches/WallStuff.cs
 
 // ReSharper disable UnusedType.Global
 // ReSharper disable UnusedMember.Local
@@ -20,52 +17,18 @@ internal static class BeatmapObjectsInstallerMixin {
 
     private static readonly int _SimpleColor = Shader.PropertyToID("_SimpleColor");
     
-    private static readonly FieldAccessor<ObstacleController, GameObject[]>.Accessor VisualWrappersFieldAccessor = FieldAccessor<ObstacleController, GameObject[]>.GetAccessor("_visualWrappers");
-    
     private static readonly FieldAccessor<ConditionalMaterialSwitcher, Material>.Accessor FirstBombMaterialAccessor = FieldAccessor<ConditionalMaterialSwitcher, Material>.GetAccessor("_material0");
     private static readonly FieldAccessor<ConditionalMaterialSwitcher, Material>.Accessor SecondBombMaterialAccessor = FieldAccessor<ConditionalMaterialSwitcher, Material>.GetAccessor("_material1");
 
-    private static GameObject[]? _visualWrappersOriginal;
-    
     private static readonly Color DefaultBombColor = Color.black.WithAlpha(0);
 
     private static Color? FirstBombColor, SecondBombColor;
     
     [MixinMethod(nameof(InstallBindings), MixinAt.Post)]
     private static void InstallBindings(
-        ObstacleController ____obstaclePrefab,
         // ReSharper disable once SuggestBaseTypeForParameter
         BombNoteController ____bombNotePrefab
     ) {
-
-        #region Transparent Obstacles
-
-        if(_visualWrappersOriginal != null) {
-            
-            if(BetterBeatSaberConfig.Instance.TransparentObstacles)
-                return;
-
-            VisualWrappersFieldAccessor(ref ____obstaclePrefab) = _visualWrappersOriginal;
-            
-            _visualWrappersOriginal = null;
-            
-            return;
-        }
-
-        if(!BetterBeatSaberConfig.Instance.TransparentObstacles)
-            return;
-
-        _visualWrappersOriginal = VisualWrappersFieldAccessor(ref ____obstaclePrefab);
-        if(_visualWrappersOriginal?.Length != 2)
-            return;
-
-        VisualWrappersFieldAccessor(ref ____obstaclePrefab) = new[] { _visualWrappersOriginal[1] };
-        
-        _visualWrappersOriginal[0].SetActive(false);
-        
-        #endregion
-
-        #region Bomb Colors
 
         var conditionalMaterialSwitcher = ____bombNotePrefab.GetComponentInChildren<ConditionalMaterialSwitcher>();
         if(conditionalMaterialSwitcher == null)
@@ -89,8 +52,6 @@ internal static class BeatmapObjectsInstallerMixin {
                 secondBombMaterial.SetColor(_SimpleColor, SecondBombColor ?? DefaultBombColor);
                 break;
         }
-
-        #endregion
         
     }
 

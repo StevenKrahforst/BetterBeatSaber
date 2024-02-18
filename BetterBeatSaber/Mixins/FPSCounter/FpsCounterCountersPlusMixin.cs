@@ -1,8 +1,6 @@
-﻿using BetterBeatSaber.Mixin;
-using BetterBeatSaber.Mixin.Attributes;
+﻿using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Providers;
-using BetterBeatSaber.Utilities;
 
 using HMUI;
 
@@ -32,11 +30,11 @@ internal static class FpsCounterCountersPlusMixin {
     [MixinMethod("Tick", MixinAt.Post)]
     private static void Tick(ref TMP_Text ____counterText, ref ImageView ____ringImage) {
         
-        if (!FpsTargetPercentageColorValueConverterMixin.RGB)
+        if (!FpsTargetPercentageColorValueConverterMixin.RGB || Manager.ColorManager.Instance == null)
             return;
         
-        ____counterText.color = RGB.Instance.FirstColor;
-        ____ringImage.color = RGB.Instance.FirstColor;
+        ____counterText.color = Manager.ColorManager.Instance.FirstColor;
+        ____ringImage.color = Manager.ColorManager.Instance.FirstColor;
         
     }
 

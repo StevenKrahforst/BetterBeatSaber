@@ -1,5 +1,4 @@
-﻿using BetterBeatSaber.Mixin;
-using BetterBeatSaber.Mixin.Attributes;
+﻿using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
 
 using UnityEngine;
@@ -29,7 +28,7 @@ internal static class FpsTargetPercentageColorValueConverterMixin {
         RGB = fpsTargetPercentage > RGBThreshold;
         
         __result = fpsTargetPercentage switch {
-            > RGBThreshold => Utilities.RGB.Instance.FirstColor,
+            > RGBThreshold => Manager.ColorManager.Instance?.FirstColor ?? Green,
             > .95f => Green,
             > .7f => Yellow,
             > .5f => Orange,

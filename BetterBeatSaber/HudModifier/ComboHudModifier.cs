@@ -1,7 +1,6 @@
 ﻿using System;
 
 using BetterBeatSaber.Providers;
-using BetterBeatSaber.Utilities;
 
 using HMUI;
 
@@ -28,6 +27,10 @@ internal sealed class ComboHudModifier : HudModifier, IInitializable, ITickable,
     [UsedImplicitly]
     [Inject]
     private readonly BetterBloomFontProvider _bloomFontProvider = null!;
+    
+    [UsedImplicitly]
+    [Inject]
+    private readonly Manager.ColorManager _colorManager = null!;
     
     private CurvedTextMeshPro? _comboText;
     private CurvedTextMeshPro? _comboNumText;
@@ -70,23 +73,23 @@ internal sealed class ComboHudModifier : HudModifier, IInitializable, ITickable,
     public void Tick() {
         
         if(_comboText != null)
-            _comboText.color = RGB.Instance.FirstColor;
+            _comboText.color = _colorManager.FirstColor;
         
         if (_comboBroke)
             return;
         
         if(_comboNumText != null)
-            _comboNumText.color = RGB.Instance.FirstColor;
+            _comboNumText.color = _colorManager.FirstColor;
         
         if (_topLine != null) {
-            _topLine.color0 = RGB.Instance.FirstColor;
-            _topLine.color1 = RGB.Instance.FirstColor;
+            _topLine.color0 = _colorManager.FirstColor;
+            _topLine.color1 = _colorManager.FirstColor;
         }
         
         // ReSharper disable once InvertIf
         if (_bottomLine != null) {
-            _bottomLine.color0 = RGB.Instance.FirstColor;
-            _bottomLine.color1 = RGB.Instance.FirstColor;
+            _bottomLine.color0 = _colorManager.FirstColor;
+            _bottomLine.color1 = _colorManager.FirstColor;
         }
         
     }

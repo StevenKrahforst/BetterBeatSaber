@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
 
-using BetterBeatSaber.Config.Attributes;
+using BetterBeatSaber.Colorizer;
 using BetterBeatSaber.HudModifier;
 using BetterBeatSaber.Utilities;
 
@@ -8,15 +8,12 @@ using UnityEngine;
 
 namespace BetterBeatSaber; 
 
-public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>, INotifyPropertyChanged {
+// CustomFloorPlugin check to disable hide level/menu env
+
+public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig> {
 
     // ReSharper disable once ConvertToPrimaryConstructor
     public BetterBeatSaberConfig(string name) : base(name) { }
-
-    public bool SendTelemetry { get; set; } = true;
-    
-    [ConflictsWith("bsrpc")]
-    public ObservableValue<bool> DiscordRichPresence { get; set; } = true;
     
     public ObservableValue<float> ColorUpdateDurationTime { get; set; } = 5f;
     
@@ -25,10 +22,12 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     public ObservableValue<bool> ColorizeDust { get; set; } = true;
     public ObservableValue<bool> ColorizeFeet { get; set; } = true;
     public ObservableValue<bool> ColorizePlayersPlace { get; set; } = true;
-    public bool ColorizeBurnMarks { get; set; } = true;
-    public bool ColorizeObstacles { get; set; } = true;
-    public bool ColorizeCutParticles { get; set; } = true;
-    public bool ColorizeArcs { get; set; } = true;
+    public ObservableValue<bool> ColorizeBurnMarks { get; set; } = true;
+    public ObservableValue<bool> ColorizeObstacles { get; set; } = true;
+    public ObservableValue<bool> ColorizeCutParticles { get; set; } = true;
+    public ObservableValue<bool> ColorizeMenuPillars { get; set; } = true;
+    public ObservableValue<bool> ColorizeMenuSign { get; set; } = true;
+    public ObservableValue<bool> ColorizeArcs { get; set; } = true;
     public ObservableValue<bool> ColorizeNoteDebris { get; set; } = true;
     public ObservableValue<bool> ColorizeReeSabers { get; set; } = true;
     
@@ -37,14 +36,12 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     
     public bool ColorizeCustomNoteOutlines { get; set; } = true;
     
-    public ObservableValue<bool> ColorizeMenuPillars { get; set; } = true;
-    public ObservableValue<bool> ColorizeMenuSign { get; set; } = true;
-    
     #endregion
 
     #region UI Colorization
 
     public ObservableValue<bool> ColorizeButtons { get; set; } = true;
+    // TODO: Update
     public bool ColorizeMenuButtons { get; set; } = true;
     
     // ReSharper disable once InconsistentNaming
@@ -63,30 +60,35 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     public ObservableValue<float> BombSize { get; set; } = 1.2f;
     
     public bool HideMissTexts { get; set; } = true;
-    public ObservableValue<bool> DisableCutParticles { get; set; } = true;
-    public ObservableValue<bool> DisableDust { get; set; } = true;
-    public ObservableValue<bool> DisableBombExplosionEffect { get; set; } = true;
     public bool DisableAprilFoolsAndEarthDayStuff { get; set; } = true;
-    public bool DisableComboBreakEffect { get; set; } = true;
+    // TODO: Make Observable
     public bool HideEditorButton { get; set; } = true;
+    // TODO: Make Observable
     public bool HidePromotionButton { get; set; } = true;
-    public bool DisableMenuCameraNoise { get; set; } = true;
-    public bool TransparentObstacles { get; set; } = true;
     
-    [ConflictsWith("CustomFloorPlugin")]
     public ObservableValue<bool> HideLevelEnvironment { get; set; } = true;
+    public List<string> IgnoredLevelGameObjects { get; } = [
+        PlayersPlaceColorizer.GameObjectName,
+        "DustPS"
+    ];
     
-    [ConflictsWith("CustomFloorPlugin")]
     public ObservableValue<bool> HideMenuEnvironment { get; set; } = true;
-
+    public List<string> MenuGameObjects { get; } = [
+        "MenuFogRing",
+        "BackgroundGradient",
+        "BasicMenuGround",
+        "Notes",
+        "PileOfNotes"
+    ];
+    
     #endregion
 
     #region Hit Score
 
     public ObservableValue<bool> HitScoreEnable { get; set; } = true;
-    public bool HitScoreGlow { get; set; } = true;
+    public bool HitScoreBloom { get; set; } = true;
     public float HitScoreScale { get; set; } = 1.05f;
-    public bool HitScoreTotalScore { get; set; } = false;
+    public bool HitScoreTotalScore { get; set; }
 
     #endregion
     
@@ -106,7 +108,5 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
         public Color? SecondColor { get; set; }
 
     }
-
-    public override event PropertyChangedEventHandler? PropertyChanged;
 
 }

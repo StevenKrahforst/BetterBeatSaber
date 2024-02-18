@@ -4,24 +4,30 @@ using System.Linq;
 using System.Reflection;
 
 using BetterBeatSaber.Mixin.Enums;
+using BetterBeatSaber.Mixin.Exceptions;
 using BetterBeatSaber.Mixin.TypeResolvers;
 
 using IPA.Loader;
 
+using JetBrains.Annotations;
+
 namespace BetterBeatSaber.Mixin;
 
-internal sealed class Mixin(
+public sealed class Mixin(
     MixinManager mixinManager,
     Type type,
     TypeResolver typeResolver,
-    IEnumerable<string> conflictsWith
+    IEnumerable<string>? conflictsWith
 ) : MixinObject(mixinManager) {
 
     public Type Type { get; } = type;
     public TypeResolver TypeResolver { get; } = typeResolver;
-    public IEnumerable<string> ConflictsWith { get; } = conflictsWith;
+    public IEnumerable<string>? ConflictsWith { get; } = conflictsWith;
 
+    [UsedImplicitly]
     public IEnumerable<MixinMethod> Methods { get; internal set; } = null!;
+    
+    [UsedImplicitly]
     public IEnumerable<MethodInfo> ActionHandlers { get; internal set; } = null!;
 
     internal void RunActionHandlers(MixinAction action) {
@@ -30,9 +36,10 @@ internal sealed class Mixin(
     }
 
     internal override void Patch() {
-        
-        if(ConflictsWith.Any(plugin => PluginManager.GetPluginFromId(plugin) != null))
-            throw new MixinException(MixinError.ConflictsWithPlugin, $"Mixin {Type.FullName} conflicts with another Plugin");
+
+        var conflict = ConflictsWith?.FirstOrDefault(plugin => PluginManager.GetPluginFromId(plugin) != null);
+        if(conflict != null)
+            throw new MixinConflictException(this, conflict);
         
         foreach (var mixinMethod in Methods)
             mixinMethod.Patch();

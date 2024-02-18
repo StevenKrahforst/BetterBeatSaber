@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 
 using BetterBeatSaber.Extensions;
-using BetterBeatSaber.Utilities;
 
 using UnityEngine;
 
@@ -52,7 +51,10 @@ internal sealed class ObstacleColorizer : MonoBehaviour {
 
     private void Update() {
         
-        var color = RGB.Instance.FirstColor;
+        if(Manager.ColorManager.Instance == null)
+            return;
+        
+        var color = Manager.ColorManager.Instance.FirstColor;
 
         if (_obstacleFrame != null) {
             _obstacleFrame.color = color;

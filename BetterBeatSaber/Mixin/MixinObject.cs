@@ -1,8 +1,10 @@
-﻿using BetterBeatSaber.Utilities;
+﻿using System;
+
+using BetterBeatSaber.Utilities;
 
 namespace BetterBeatSaber.Mixin;
 
-internal abstract class MixinObject(MixinManager mixinManager) {
+public abstract class MixinObject(MixinManager mixinManager) {
 
     protected MixinManager MixinManager { get; } = mixinManager;
     

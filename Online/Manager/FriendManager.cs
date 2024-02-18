@@ -1,4 +1,4 @@
-﻿namespace BetterBeatSaber.Manager;
+﻿namespace BetterBeatSaber.Online.Manager;
 
 public sealed class FriendManager {
 

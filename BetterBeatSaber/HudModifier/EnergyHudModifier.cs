@@ -5,7 +5,6 @@ using System.Reflection;
 
 using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Providers;
-using BetterBeatSaber.Utilities;
 
 using HMUI;
 
@@ -41,6 +40,10 @@ public sealed class EnergyHudModifier : HudModifier, IInitializable, ITickable, 
     [UsedImplicitly]
     [Inject]
     private readonly MaterialProvider _materialProvider = null!;
+    
+    [UsedImplicitly]
+    [Inject]
+    private readonly Manager.ColorManager _colorManager = null!;
 
     private Image? _energyBar;
 
@@ -69,7 +72,7 @@ public sealed class EnergyHudModifier : HudModifier, IInitializable, ITickable, 
 
         // ReSharper disable once CompareOfFloatsByEqualityOperator
         if (_gameplayModifiers.instaFail || (_energyCounter.energy == 1f && _gameplayModifiers.energyType == GameplayModifiers.EnergyType.Bar)) {
-            _energyBar.color = RGB.Instance.FirstColor;
+            _energyBar.color = _colorManager.FirstColor;
         }
         
     }

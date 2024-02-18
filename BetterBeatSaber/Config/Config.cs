@@ -1,6 +1,6 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.IO;
 
 using BetterBeatSaber.Config.Converters;
@@ -39,12 +39,50 @@ public abstract class Config<T> : Config where T : Config<T> {
     
     [JsonIgnore]
     public string Path { get; private set; }
+
+    [JsonIgnore]
+    public FileSystemWatcher Watcher { get; } = new() {
+        NotifyFilter = NotifyFilters.LastWrite,
+        EnableRaisingEvents = true
+    };
     
-    // ReSharper disable once ConvertToPrimaryConstructor
+    [JsonIgnore]
+    private DateTime? LastSaveTime { get; set; }
+    
+    [JsonIgnore]
+    private DateTime? LastInvokeTime { get; set; }
+    
     protected Config(string name) {
+        
         Instance = (T) this;
+        
         Path = System.IO.Path.Combine(Environment.CurrentDirectory, "UserData", $"{name}.json");
+        
+        Watcher.Changed += OnChanged;
+        
+        Watcher.Path = System.IO.Path.Combine(Environment.CurrentDirectory, "UserData");
+        Watcher.Filter = $"{name}.json";
+        
         Load();
+        Save();
+        
+    }
+
+    private void OnChanged(object _, FileSystemEventArgs args) {
+        
+        if (args.ChangeType != WatcherChangeTypes.Changed)
+            return;
+        
+        if(DateTime.Now - LastSaveTime < TimeSpan.FromSeconds(3) ||
+           DateTime.Now - LastInvokeTime < TimeSpan.FromMilliseconds(25))
+            return;
+
+        SharedCoroutineStarter.instance.StartCoroutine(LoadAsync());
+        
+        Load();
+        
+        LastInvokeTime = DateTime.Now;
+        
     }
 
     public void Load() {
@@ -58,11 +96,16 @@ public abstract class Config<T> : Config where T : Config<T> {
         } else Save();
     }
 
-    public void Save() =>
+    public IEnumerator LoadAsync() {
+        Load();
+        yield break;
+    }
+
+    public void Save() {
         File.WriteAllText(Path, JsonConvert.SerializeObject(this, SerializerSettings));
-
+        LastSaveTime = DateTime.Now;
+    }
+    
     // Resources.FindObjectsOfTypeAll<MenuTransitionsHelper>().FirstOrDefault()?.RestartGame();
-
-    public abstract event PropertyChangedEventHandler? PropertyChanged;
 
 }

@@ -44,6 +44,11 @@ public abstract class PersistentSingleton<T> : MonoBehaviour where T : MonoBehav
 
     public static bool IsSingletonAvailable => !_applicationIsQuitting && _instance != null;
 
+    protected PersistentSingleton() {
+        if(_instance == null)
+            _instance = this as T;
+    }
+
     public virtual void OnEnable() => DontDestroyOnLoad(this);
 
     protected virtual void OnDestroy() => _applicationIsQuitting = true;

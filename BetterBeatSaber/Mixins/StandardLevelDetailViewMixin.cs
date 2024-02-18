@@ -1,5 +1,4 @@
 ﻿using BetterBeatSaber.Colorizer;
-using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
 

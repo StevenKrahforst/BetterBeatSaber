@@ -2,20 +2,22 @@
 
 namespace BetterBeatSaber.Utilities;
 
-public class ObservableValue<T> {
+public sealed class ObservableValue<T>(T defaultValue) {
 
     public event Action<T>? OnValueChanged;
     
-    public T CurrentValue { get; private set; }
-    
-    public ObservableValue(T defaultValue) {
-        CurrentValue = defaultValue;
-    }
+    public T CurrentValue { get; private set; } = defaultValue;
 
-    public void SetValue(T value, bool invokeChange = true) {
+    public void SetValue(T value, bool invokeChange = true, bool invokeChangeOnlyIfDifferent = true) {
+        
+        if (invokeChangeOnlyIfDifferent && Equals(CurrentValue, value))
+            return;
+        
         CurrentValue = value;
-        if(invokeChange)
-            OnValueChanged?.Invoke(value);
+        
+        if (invokeChange)
+            OnValueChanged?.Invoke(CurrentValue);
+        
     }
     
     public static implicit operator T(ObservableValue<T> observableValue) => observableValue.CurrentValue;

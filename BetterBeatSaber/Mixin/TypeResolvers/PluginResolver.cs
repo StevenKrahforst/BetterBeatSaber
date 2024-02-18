@@ -1,6 +1,7 @@
 ﻿using System;
 
 using BetterBeatSaber.Mixin.Enums;
+using BetterBeatSaber.Mixin.Exceptions;
 
 using IPA.Loader;
 
@@ -13,7 +14,7 @@ public sealed class PluginResolver(string plugin, string typeName) : TypeResolve
     public override Type ResolveType() {
 
         if (PluginManager.GetPluginFromId(Plugin) == null)
-            throw new MixinException(MixinError.PluginNotFound, $"Plugin {Plugin} not installed or found");
+            throw new MixinNotFoundException(MixinError.PluginNotFound, $"Plugin {Plugin} not installed or found");
         
         var type = PluginManager
             .GetPluginFromId(Plugin)?
@@ -21,7 +22,7 @@ public sealed class PluginResolver(string plugin, string typeName) : TypeResolve
             .GetType(TypeName);
         
         if(type == null)
-            throw new MixinException(MixinError.TypeNotFound, $"Type {TypeName} not found in Plugin {Plugin}");
+            throw new MixinNotFoundException(MixinError.TypeNotFound, $"Type {TypeName} not found in Plugin {Plugin}");
 
         return type;
 
