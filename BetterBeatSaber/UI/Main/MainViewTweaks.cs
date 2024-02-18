@@ -31,5 +31,10 @@ public partial class MainView {
         get => BetterBeatSaberConfig.Instance.HideMenuEnvironment.CurrentValue;
         set => BetterBeatSaberConfig.Instance.HideMenuEnvironment.SetValue(value);
     }
+
+    public bool FakeChroma {
+        get => BetterBeatSaberConfig.Instance.FakeChroma.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.FakeChroma.SetValue(value);
+    }
     
 }

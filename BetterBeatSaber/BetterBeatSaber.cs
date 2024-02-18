@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
 using System.Reflection;
 
 using BetterBeatSaber.Installer;
@@ -82,12 +81,6 @@ public sealed class BetterBeatSaber {
         
         Utilities.SharedCoroutineStarter.Instance.StartCoroutine(LoadAssets());
 
-        Collections.RegisterCapability("Chroma");
-        Collections.RegisterCapability("Chroma Lighting Events");
-        
-        //Chroma Lighting Events
-        //Chroma
-        
         #if DEBUG
         if (Environment.GetCommandLineArgs().Contains("--explorer"))
             ExplorerStandalone.CreateInstance();
@@ -95,6 +88,29 @@ public sealed class BetterBeatSaber {
         
         UI.MainFlowCoordinator.Initialize();
         
+        SetChroma(BetterBeatSaberConfig.Instance.FakeChroma.CurrentValue);
+        BetterBeatSaberConfig.Instance.FakeChroma.OnValueChanged += SetChroma;
+        
+    }
+
+    private static void SetChroma(bool state) {
+        if (state) {
+            
+            if(!Collections.capabilities.Contains("Chroma"))
+                Collections.RegisterCapability("Chroma");
+            
+            if(!Collections.capabilities.Contains("Chroma Lighting Events"))
+                Collections.RegisterCapability("Chroma Lighting Events");
+            
+        } else {
+            
+            if(Collections.capabilities.Contains("Chroma"))
+                Collections.DeregisterizeCapability("Chroma");
+            
+            if(Collections.capabilities.Contains("Chroma Lighting Events"))
+                Collections.DeregisterizeCapability("Chroma Lighting Events");
+            
+        }
     }
 
     [OnExit]

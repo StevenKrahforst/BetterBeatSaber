@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 
+using BetterBeatSaber.Enums;
 using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Utilities;
 
@@ -130,12 +131,12 @@ public partial class MainView {
 
         _noteLeftOutline.enabled = NoteOutlinesEnable;
         _noteLeftOutline.Width = NoteOutlinesWidth;
-        _noteLeftOutline.Visibility = NoteOutlinesVisibility;
+        _noteLeftOutline.Visibility = BetterBeatSaberConfig.Instance.NoteOutlines.Visibility;
         _noteLeftOutline.Bloom = NoteOutlinesGlow;
 
         _noteRightOutline.enabled = NoteOutlinesEnable;
         _noteRightOutline.Width = NoteOutlinesWidth;
-        _noteRightOutline.Visibility = NoteOutlinesVisibility;
+        _noteRightOutline.Visibility = BetterBeatSaberConfig.Instance.NoteOutlines.Visibility;
         _noteRightOutline.Bloom = NoteOutlinesGlow;
         
         _noteLeft.SetActive(true);
@@ -214,9 +215,12 @@ public partial class MainView {
         }
     }
     
-    public Enums.Visibility NoteOutlinesVisibility {
-        get => BetterBeatSaberConfig.Instance.NoteOutlines.Visibility;
-        set => BetterBeatSaberConfig.Instance.NoteOutlines.Visibility = value;
+    public string NoteOutlinesVisibility {
+        get => BetterBeatSaberConfig.Instance.NoteOutlines.Visibility.ToString();
+        set {
+            if (Enum.TryParse<Visibility>(value, out var visibility))
+                BetterBeatSaberConfig.Instance.NoteOutlines.Visibility = visibility;
+        }
     }
 
     public bool ColorizeCustomNoteOutlines {

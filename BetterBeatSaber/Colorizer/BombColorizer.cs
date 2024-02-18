@@ -13,7 +13,7 @@ internal sealed class BombColorizer : MonoBehaviour {
 
     private void Update() {
 
-        if (_sharedMaterial == null || !BetterBeatSaberConfig.Instance.Bombs.Colorize || Manager.ColorManager.Instance == null)
+        if (_sharedMaterial == null || !BetterBeatSaberConfig.Instance.ColorizeBombs || Manager.ColorManager.Instance == null)
             return;
 
         _sharedMaterial.SetColor(SimpleColor, Manager.ColorManager.Instance.FirstColor);

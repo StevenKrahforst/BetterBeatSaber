@@ -23,7 +23,8 @@ public abstract class Config<T> : Config where T : Config<T> {
         NullValueHandling = NullValueHandling.Ignore,
         DefaultValueHandling = DefaultValueHandling.Populate,
         TypeNameHandling = TypeNameHandling.Auto,
-        ObjectCreationHandling = ObjectCreationHandling.Replace,
+        ObjectCreationHandling = ObjectCreationHandling.Reuse,
+        ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
         Converters = new List<JsonConverter> {
             new StringEnumConverter(),
             new ColorConverter(),

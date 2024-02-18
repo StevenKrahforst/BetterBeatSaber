@@ -1,4 +1,11 @@
-﻿namespace BetterBeatSaber.UI.Main;
+﻿using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.Components.Settings;
+
+using IPA.Loader;
+
+using JetBrains.Annotations;
+
+namespace BetterBeatSaber.UI.Main;
 
 public partial class MainView {
 
@@ -20,17 +27,17 @@ public partial class MainView {
     }
     
     public bool ColorizeBurnMarks {
-        get => BetterBeatSaberConfig.Instance.ColorizeBurnMarks;
+        get => BetterBeatSaberConfig.Instance.ColorizeBurnMarks.CurrentValue;
         set => BetterBeatSaberConfig.Instance.ColorizeBurnMarks.SetValue(value);
     }
     
     public bool ColorizeObstacles {
-        get => BetterBeatSaberConfig.Instance.ColorizeObstacles;
+        get => BetterBeatSaberConfig.Instance.ColorizeObstacles.CurrentValue;
         set => BetterBeatSaberConfig.Instance.ColorizeObstacles.SetValue(value);
     }
     
     public bool ColorizeCutParticles {
-        get => BetterBeatSaberConfig.Instance.ColorizeCutParticles;
+        get => BetterBeatSaberConfig.Instance.ColorizeCutParticles.CurrentValue;
         set => BetterBeatSaberConfig.Instance.ColorizeCutParticles.SetValue(value);
     }
     
@@ -54,7 +61,6 @@ public partial class MainView {
     }
     
     // ReSharper disable once InconsistentNaming
-    // ReSharper disable once IdentifierTypo
     public bool ColorizePBOT {
         get => BetterBeatSaberConfig.Instance.ColorizePBOT;
         set => BetterBeatSaberConfig.Instance.ColorizePBOT = value;
@@ -76,6 +82,35 @@ public partial class MainView {
         set => BetterBeatSaberConfig.Instance.ColorizeMenuPillars.SetValue(value);
     }
     
+    #endregion
+
+    #region Plugin Based Interactable Settings
+
+    [UIComponent(nameof(ColorizeReeSabersToggle)), UsedImplicitly]
+    protected readonly ToggleSetting ColorizeReeSabersToggle = null!;
+    
+    [UIComponent(nameof(ColorizePBOTToggle)), UsedImplicitly]
+    // ReSharper disable once InconsistentNaming
+    protected readonly ToggleSetting ColorizePBOTToggle = null!;
+    
+    [UIComponent(nameof(ColorizeFCPercentageToggle)), UsedImplicitly]
+    // ReSharper disable once InconsistentNaming
+    protected readonly ToggleSetting ColorizeFCPercentageToggle = null!;
+    
+    [UIComponent(nameof(ColorizeFPSCounterToggle)), UsedImplicitly]
+    protected readonly ToggleSetting ColorizeFPSCounterToggle = null!;
+    
+    [UIComponent(nameof(ColorizeMenuPillarsToggle)), UsedImplicitly]
+    protected readonly ToggleSetting ColorizeMenuPillarsToggle = null!;
+    
+    private void SetPluginBasedSettingsInteractable() {
+        ColorizeReeSabersToggle.interactable = PluginManager.GetPluginFromId("ReeSabers") != null;
+        ColorizePBOTToggle.interactable = PluginManager.GetPluginFromId("PBOT") != null;
+        ColorizeFCPercentageToggle.interactable = PluginManager.GetPluginFromId("FCPercentage") != null;
+        ColorizeFPSCounterToggle.interactable = PluginManager.GetPluginFromId("FPSCounter") != null;
+        ColorizeMenuPillarsToggle.interactable = PluginManager.GetPluginFromId("MenuPillars") != null;
+    }
+
     #endregion
 
 }

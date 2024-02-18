@@ -1,4 +1,7 @@
-﻿using BetterBeatSaber.Utilities;
+﻿using System;
+
+using BetterBeatSaber.Enums;
+using BetterBeatSaber.Utilities;
 
 using UnityEngine;
 
@@ -27,27 +30,12 @@ public partial class MainView {
 
     public float BombSize {
         get => BetterBeatSaberConfig.Instance.BombSize * 100;
-        set => BetterBeatSaberConfig.Instance.BombSize = value / 100;
+        set => BetterBeatSaberConfig.Instance.BombSize.SetValue(value / 100);
     }
 
     public bool BombColorize {
-        get => BetterBeatSaberConfig.Instance.Bombs.Colorize;
-        set => BetterBeatSaberConfig.Instance.Bombs.Colorize = value;
-    }
-    
-    public bool BombRGB {
-        get => BetterBeatSaberConfig.Instance.Bombs.RGB;
-        set => BetterBeatSaberConfig.Instance.Bombs.RGB = value;
-    }
-    
-    public Color BombFirstColor {
-        get => BetterBeatSaberConfig.Instance.Bombs.FirstColor ?? Color.black;
-        set => BetterBeatSaberConfig.Instance.Bombs.FirstColor = value;
-    }
-    
-    public Color BombSecondColor {
-        get => BetterBeatSaberConfig.Instance.Bombs.SecondColor ?? Color.black;
-        set => BetterBeatSaberConfig.Instance.Bombs.SecondColor = value;
+        get => BetterBeatSaberConfig.Instance.ColorizeBombs;
+        set => BetterBeatSaberConfig.Instance.ColorizeBombs = value;
     }
     
     #region Outlines
@@ -67,9 +55,12 @@ public partial class MainView {
         set => BetterBeatSaberConfig.Instance.BombOutlines.Width = value;
     }
     
-    public Enums.Visibility BombOutlinesVisibility {
-        get => BetterBeatSaberConfig.Instance.BombOutlines.Visibility;
-        set => BetterBeatSaberConfig.Instance.BombOutlines.Visibility = value;
+    public string BombOutlinesVisibility {
+        get => BetterBeatSaberConfig.Instance.BombOutlines.Visibility.ToString();
+        set {
+            if (Enum.TryParse<Visibility>(value, out var visibility))
+                BetterBeatSaberConfig.Instance.BombOutlines.Visibility = visibility;
+        }
     }
 
     #endregion

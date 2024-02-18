@@ -63,6 +63,7 @@
                             <checkbox-setting text='Hide Promotion Button' value='HidePromotionButton' apply-on-change='true' />
                             <checkbox-setting text='Hide Level Environment' value='HideLevelEnvironment' apply-on-change='true' />
                             <checkbox-setting text='Hide Menu Environment' value='HideMenuEnvironment' apply-on-change='true' />
+                            <checkbox-setting text='Fake Chroma' value='FakeChroma' apply-on-change='true' />
                         </vertical>
                     </modifier-container>
                 </settings-scroll-view>
@@ -82,7 +83,7 @@
                             <checkbox-setting text='Colorize Burn Marks' value='ColorizeBurnMarks' apply-on-change='true' />
                             <checkbox-setting text='Colorize Obstacles' value='ColorizeObstacles' apply-on-change='true' />
                             <checkbox-setting text='Colorize Cut Particles' value='ColorizeCutParticles' apply-on-change='true' />
-                            <checkbox-setting text='Colorize ReeSabers' value='ColorizeReeSabers' apply-on-change='true' />
+                            <checkbox-setting id="ColorizeReeSabersToggle" text='Colorize ReeSabers' value='ColorizeReeSabers' apply-on-change='true' />
                         </vertical>
                         <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
                             <horizontal pref-width='90'>
@@ -90,10 +91,10 @@
                             </horizontal>
                             <checkbox-setting text='Colorize Buttons' value='ColorizeButtons' apply-on-change='true' />
                             <checkbox-setting text='Colorize Menu Buttons' value='ColorizeMenuButtons' apply-on-change='true' />
-                            <checkbox-setting text='Colorize PBOT' value='ColorizePBOT' apply-on-change='true' />
-                            <checkbox-setting text='Colorize FC Percentage' value='ColorizeFCPercentage' apply-on-change='true' />
-                            <checkbox-setting text='Colorize FPS Counter' value='ColorizeFPSCounter' apply-on-change='true' />
-                            <checkbox-setting text='Colorize Colorize Menu Pillars' value='ColorizeMenuPillars' apply-on-change='true' />
+                            <checkbox-setting id="ColorizePBOTToggle" text='Colorize PBOT' value='ColorizePBOT' apply-on-change='true' />
+                            <checkbox-setting id="ColorizeFCPercentageToggle" text='Colorize FC Percentage' value='ColorizeFCPercentage' apply-on-change='true' />
+                            <checkbox-setting id="ColorizeFPSCounterToggle" text='Colorize FPS Counter' value='ColorizeFPSCounter' apply-on-change='true' />
+                            <checkbox-setting id="ColorizeMenuPillarsToggle" text='Colorize Colorize Menu Pillars' value='ColorizeMenuPillars' apply-on-change='true' />
                         </vertical>
                     </modifier-container>
                 </settings-scroll-view>
@@ -134,7 +135,7 @@
                             <checkbox-setting text='Enable' value='NoteOutlinesEnable' apply-on-change='true' />
                             <checkbox-setting text='Glow / Bloom' value='NoteOutlinesGlow' apply-on-change='true' />
                             <increment-setting text='Width' value='NoteOutlinesWidth' apply-on-change='true' min='0.5' max='20' increment='0.5' />
-                            <!-- Visibility -->
+                            <dropdown-list-setting text='Visibility' value='NoteOutlinesVisibility' apply-on-change='true' options='Visibilities' />
                             <checkbox-setting text='Enable for Custom Notes' value='ColorizeCustomNoteOutlines' apply-on-change='true' />
                         </vertical>
                     </modifier-container>
@@ -151,18 +152,16 @@
                             </horizontal>
                             <slider-setting text='Size' value='BombSize' apply-on-change='true' min='10' max='200' increment='5' />
                             <checkbox-setting text='Colorize' value='BombColorize' apply-on-change='true' />
-                            <checkbox-setting text='RGB' value='BombRGB' apply-on-change='true' />
-                            <color-setting text='First Color' value='BombFirstColor' apply-on-change='true' />
-                            <color-setting text='Second Color' value='BombSecondColor' apply-on-change='true' />
                         </vertical>
                         <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
                             <horizontal pref-width='90'>
                                 <text text='Outlines' font-size='5' bold='true' align='Center' />
                             </horizontal>
+                            <toggle-setting text='Enable' value='BombOutlinesEnable' apply-on-change='true' />
                             <checkbox-setting text='Enable' value='BombOutlinesEnable' apply-on-change='true' />
                             <checkbox-setting text='Glow / Bloom' value='BombOutlinesEnable' apply-on-change='true' />
                             <increment-setting text='Width' value='BombOutlinesWidth' apply-on-change='true' min='0.5' max='20' increment='0.5' />
-                            <!-- Visibility -->
+                            <dropdown-list-setting text='Visibility' value='BombOutlinesVisibility' apply-on-change='true' options='Visibilities' />
                         </vertical>
                     </modifier-container>
                 </settings-scroll-view>

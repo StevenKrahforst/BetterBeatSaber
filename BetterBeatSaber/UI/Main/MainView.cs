@@ -1,8 +1,15 @@
-﻿using BeatSaberMarkupLanguage;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.ViewControllers;
 
+using BetterBeatSaber.Enums;
+
 using HMUI;
+
+using JetBrains.Annotations;
 
 namespace BetterBeatSaber.UI.Main;
 
@@ -16,10 +23,23 @@ public partial class MainView : BSMLAutomaticViewController {
             return _instance;
         }
     }
+
+    [UIAction("#post-parse"), UsedImplicitly]
+    private void OnParsed() {
+        SetPluginBasedSettingsInteractable();
+    }
     
-    [UIAction(nameof(OnTabSelected))]
+    [UIAction(nameof(OnTabSelected)), UsedImplicitly]
     private void OnTabSelected(SegmentedControl _, int __) {}
-    
+
+    [UIValue(nameof(Visibilities)), UsedImplicitly]
+    protected List<object> Visibilities => new[] {
+        Visibility.Both,
+        Visibility.Desktop,
+        Visibility.VR,
+        Visibility.None
+    }.Select(visibility => visibility.ToString()).Cast<object>().ToList();
+
     /*[UIAction(nameof(OnTabSelected))]
     // ReSharper disable once UnusedMember.Local
     private void OnTabSelected(SegmentedControl _, int index) {
