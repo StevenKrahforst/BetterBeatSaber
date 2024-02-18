@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 using BetterBeatSaber.Colorizer;
 using BetterBeatSaber.HudModifier;
@@ -66,13 +67,13 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     public bool HidePromotionButton { get; set; } = true;
     
     public ObservableValue<bool> HideLevelEnvironment { get; set; } = new(true);
-    public List<string> IgnoredLevelGameObjects { get; } = [
+    public string[] IgnoredLevelGameObjects { get; set; } = [
         PlayersPlaceColorizer.GameObjectName,
         "DustPS"
     ];
     
     public ObservableValue<bool> HideMenuEnvironment { get; set; } = new(true);
-    public List<string> MenuGameObjects { get; } = [
+    public string[] MenuGameObjects { get; set; } = [
         "MenuFogRing",
         "BackgroundGradient",
         "BasicMenuGround",

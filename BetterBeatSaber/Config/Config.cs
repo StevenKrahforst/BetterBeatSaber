@@ -13,8 +13,16 @@ namespace BetterBeatSaber.Config;
 
 public class Config;
 
+/// <summary>
+/// An abstract config class<br /><br />
+/// You have to Distinct all Enumerables which isn't an Array by overriding the <see cref="ClearLists"/> method
+/// </summary>
+/// <typeparam name="T">The config itself</typeparam>
 public abstract class Config<T> : Config where T : Config<T> {
 
+    /// <summary>
+    /// Instance of the config
+    /// </summary>
     public static T Instance { get; private set; } = null!;
     
     // ReSharper disable once StaticMemberInGenericType
@@ -90,6 +98,7 @@ public abstract class Config<T> : Config where T : Config<T> {
         if (File.Exists(Path)) {
             try {
                 JsonConvert.PopulateObject(File.ReadAllText(Path), this, SerializerSettings);
+                ClearLists();
             } catch (Exception exception) {
                 BetterBeatSaber.Instance.Logger.Error("Failed to load config file! Using default values instead.");
                 BetterBeatSaber.Instance.Logger.Error(exception);
@@ -103,10 +112,13 @@ public abstract class Config<T> : Config where T : Config<T> {
     }
 
     public void Save() {
+        ClearLists();
         File.WriteAllText(Path, JsonConvert.SerializeObject(this, SerializerSettings));
         LastSaveTime = DateTime.Now;
     }
-    
+
+    protected virtual void ClearLists() {}
+
     // Resources.FindObjectsOfTypeAll<MenuTransitionsHelper>().FirstOrDefault()?.RestartGame();
 
 }

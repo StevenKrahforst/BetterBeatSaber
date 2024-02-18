@@ -60,7 +60,7 @@ public sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, I
 
         _relativeScoreAndImmediateRankCounter.relativeScoreOrImmediateRankDidChangeEvent += OnRelativeScoreOrImmediateRankDidChangeEvent;
 
-        _ranks = BetterBeatSaberConfig.Instance.ScoreHudModifier.Ranks;
+        _ranks = BetterBeatSaberConfig.Instance.ScoreHudModifier.Ranks.ToList();
         _ranks.Sort((rank1, rank2) => rank2.Threshold.CompareTo(rank1.Threshold));
         
         UpdateS(1f);
@@ -119,7 +119,7 @@ public sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, I
     
     public sealed class Options : BaseOptions {
 
-        public List<Rank> Ranks { get; } = [
+        public Rank[] Ranks { get; set; } = [
             new Rank {
                 Threshold = .95f,
                 Name = "UwU",
