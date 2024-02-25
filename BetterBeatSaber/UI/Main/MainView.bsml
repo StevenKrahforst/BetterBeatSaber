@@ -83,6 +83,7 @@
                             <checkbox-setting text='Colorize Burn Marks' value='ColorizeBurnMarks' apply-on-change='true' />
                             <checkbox-setting text='Colorize Obstacles' value='ColorizeObstacles' apply-on-change='true' />
                             <checkbox-setting text='Colorize Cut Particles' value='ColorizeCutParticles' apply-on-change='true' />
+                            <checkbox-setting text='Colorize Arcs' value='ColorizeArcs' apply-on-change='true' />
                             <checkbox-setting id="ColorizeReeSabersToggle" text='Colorize ReeSabers' value='ColorizeReeSabers' apply-on-change='true' />
                         </vertical>
                         <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>

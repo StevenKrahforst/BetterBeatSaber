@@ -41,6 +41,11 @@ public partial class MainView {
         set => BetterBeatSaberConfig.Instance.ColorizeCutParticles.SetValue(value);
     }
     
+    public bool ColorizeArcs {
+        get => BetterBeatSaberConfig.Instance.ColorizeArcs.CurrentValue;
+        set => BetterBeatSaberConfig.Instance.ColorizeArcs.SetValue(value);
+    }
+    
     public bool ColorizeReeSabers {
         get => BetterBeatSaberConfig.Instance.ColorizeReeSabers.CurrentValue;
         set => BetterBeatSaberConfig.Instance.ColorizeReeSabers.SetValue(value);
