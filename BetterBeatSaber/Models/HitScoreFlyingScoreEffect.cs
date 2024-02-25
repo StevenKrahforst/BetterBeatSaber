@@ -1,4 +1,6 @@
-﻿using BetterBeatSaber.Extensions;
+﻿using System;
+
+using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Providers;
 
 using TMPro;
@@ -87,7 +89,7 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
         if(addAfterAndBefore && cutScoreBuffer.beforeCutScore < 70)
             text += "<";
         
-        text += BetterBeatSaberConfig.Instance.HitScoreTotalScore || cutScoreBuffer.noteCutInfo.noteData.gameplayType != NoteData.GameplayType.Normal
+        text += BetterBeatSaberConfig.Instance.HitScoreTotalScore || (cutScoreBuffer.noteCutInfo.noteData.gameplayType != NoteData.GameplayType.Normal && cutScoreBuffer.noteCutInfo.noteData.gameplayType != NoteData.GameplayType.BurstSliderHead)
             ? cutScoreBuffer.cutScore
             : cutScoreBuffer.centerDistanceCutScore;
         
@@ -105,7 +107,6 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
 
     private static (Color?, int) GetColorAndSize(int score, int maxScore) =>
         maxScore switch {
-            20 => score == 20 ? (null, 225) : (Color0, 200),
             115 => score switch {
                 115 => (null, 250),
                 114 => (null, 225),
@@ -115,6 +116,16 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
                 >= 105 => (Color105, 150),
                 _ => (Color0, 125)
             },
+            85 => score switch {
+                85 => (null, 225),
+                83 => (null, 200),
+                >= 80 => (Color112, 175),
+                >= 70 => (Color110, 162),
+                >= 60 => (Color107, 150),
+                >= 50 => (Color105, 125),
+                _ => (Color0, 125)
+            },
+            20 => score == 20 ? (null, 225) : (Color0, 200),
             _ => (null, 0)
         };
 
