@@ -43,7 +43,7 @@ jobs:
         uses: Goobwabber/download-beatmods-deps@1.2
         with:
           manifest: ${{ github.workspace }}/BetterBeatSaber/manifest.json
-          path: ${{ github.workspace }}/Refs
+          path: ${{ BeatSaberDirectory }}
       - name: Build
         run: dotnet build -c Release BetterBeatSaber/BetterBeatSaber.csproj
       - name: Upload Artefacts
