@@ -1,0 +1,54 @@
+﻿name: Build
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'BetterBeatSaber.sln'
+      - 'BetterBeatSaber/**'
+      - '.github/workflows/build.yml'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    env:
+      BeatSaberDirectory: ${{ github.workspace }}/Refs
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3.6.0
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v1.3.1
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1.2.0
+      - name: Navigate to Workspace
+        run: cd ${{ github.workspace }}
+      - name: Cache
+        uses: actions/cache@v3
+        id: cache
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      - name: Restore Packages
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: nuget restore BetterBeatSaber.sln
+      - name: Initialize Environment
+        uses: beat-forge/init-beatsaber@v1.1.0
+        with:
+          token: ${{ github.token }}
+          version: 1.29.1
+      - name: Download Dependencies
+        uses: Goobwabber/download-beatmods-deps@1.2
+        with:
+          manifest: ${{ github.workspace }}/BetterBeatSaber/manifest.json
+          path: ${{ github.workspace }}/Refs
+      - name: Build
+        run: dotnet build -c Release BetterBeatSaber/BetterBeatSaber.csproj
+      - name: Upload Artefacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Better Beat Saber
+          path: ${{ github.workspace }}/BetterBeatSaber/bin/BetterBeatSaber.dll
+          if-no-files-found: error

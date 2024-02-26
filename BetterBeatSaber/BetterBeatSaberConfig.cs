@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-using BetterBeatSaber.Colorizer;
+﻿using BetterBeatSaber.Colorizer;
 using BetterBeatSaber.HudModifier;
 using BetterBeatSaber.Utilities;
 
@@ -90,7 +87,7 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     public ObservableValue<bool> HitScoreEnable { get; set; } = new(true);
     public bool HitScoreBloom { get; set; } = true;
     public float HitScoreScale { get; set; } = 1.05f;
-    public bool HitScoreTotalScore { get; set; }
+    public HitScoreMode HitScoreMode { get; set; } = HitScoreMode.Accuracy;
 
     #endregion
     

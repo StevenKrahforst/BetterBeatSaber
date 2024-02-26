@@ -1,6 +1,4 @@
-﻿using System;
-
-using BetterBeatSaber.Extensions;
+﻿using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Providers;
 
 using TMPro;
@@ -84,12 +82,12 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
         if(color != null)
             text += $"<color=#{color.Value.ToHex()}>";
         
-        var addAfterAndBefore = !BetterBeatSaberConfig.Instance.HitScoreTotalScore && cutScoreBuffer.noteCutInfo.noteData.gameplayType == NoteData.GameplayType.Normal && cutScoreBuffer.cutScore < cutScoreBuffer.maxPossibleCutScore;
+        var addAfterAndBefore = !BetterBeatSaberConfig.Instance.HitScoreMode.HasFlag(HitScoreMode.Accuracy) && cutScoreBuffer.noteCutInfo.noteData.gameplayType == NoteData.GameplayType.Normal && cutScoreBuffer.cutScore < cutScoreBuffer.maxPossibleCutScore;
         
         if(addAfterAndBefore && cutScoreBuffer.beforeCutScore < 70)
             text += "<";
         
-        text += BetterBeatSaberConfig.Instance.HitScoreTotalScore || (cutScoreBuffer.noteCutInfo.noteData.gameplayType != NoteData.GameplayType.Normal && cutScoreBuffer.noteCutInfo.noteData.gameplayType != NoteData.GameplayType.BurstSliderHead)
+        text += BetterBeatSaberConfig.Instance.HitScoreMode.HasFlag(HitScoreMode.Total) || (cutScoreBuffer.noteCutInfo.noteData.gameplayType != NoteData.GameplayType.Normal && cutScoreBuffer.noteCutInfo.noteData.gameplayType != NoteData.GameplayType.BurstSliderHead)
             ? cutScoreBuffer.cutScore
             : cutScoreBuffer.centerDistanceCutScore;
         
