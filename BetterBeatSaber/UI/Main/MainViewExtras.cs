@@ -1,7 +1,25 @@
-﻿namespace BetterBeatSaber.UI.Main;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using BeatSaberMarkupLanguage.Attributes;
+
+using BetterBeatSaber.Enums;
+
+using JetBrains.Annotations;
+
+namespace BetterBeatSaber.UI.Main;
 
 public partial class MainView {
 
+    [UIValue(nameof(Visibilities)), UsedImplicitly]
+    protected List<object> HitScoreModes => new[] {
+        Enums.HitScoreMode.Accuracy,
+        Enums.HitScoreMode.Total,
+        Enums.HitScoreMode.AccuracyWithTimeDependency,
+        Enums.HitScoreMode.TotalWithTimeDependency
+    }.Select(mode => mode.ToString()).Cast<object>().ToList();
+    
     #region Hit Score
 
     public bool HitScoreEnable {
@@ -19,9 +37,9 @@ public partial class MainView {
         set => BetterBeatSaberConfig.Instance.HitScoreScale = value / 100;
     }
     
-    public bool HitScoreTotalScore {
-        get => BetterBeatSaberConfig.Instance.HitScoreTotalScore;
-        set => BetterBeatSaberConfig.Instance.HitScoreTotalScore = value;
+    public string HitScoreMode {
+        get => BetterBeatSaberConfig.Instance.HitScoreMode.ToString();
+        set => BetterBeatSaberConfig.Instance.HitScoreMode = (HitScoreMode) Enum.Parse(typeof(HitScoreMode), value);
     }
 
     #endregion

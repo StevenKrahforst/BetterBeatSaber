@@ -1,6 +1,11 @@
 ﻿using BetterBeatSaber.Colorizer;
+using BetterBeatSaber.Enums;
 using BetterBeatSaber.HudModifier;
 using BetterBeatSaber.Utilities;
+
+using IPA.Config.Stores.Converters;
+
+using Newtonsoft.Json;
 
 namespace BetterBeatSaber; 
 
@@ -87,6 +92,8 @@ public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig>
     public ObservableValue<bool> HitScoreEnable { get; set; } = new(true);
     public bool HitScoreBloom { get; set; } = true;
     public float HitScoreScale { get; set; } = 1.05f;
+    
+    [JsonConverter(typeof(NumericEnumConverter<HitScoreMode>))]
     public HitScoreMode HitScoreMode { get; set; } = HitScoreMode.Accuracy;
 
     #endregion

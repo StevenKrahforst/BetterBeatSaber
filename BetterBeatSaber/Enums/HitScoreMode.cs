@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BetterBeatSaber;
+namespace BetterBeatSaber.Enums;
 
 [Flags]
 public enum HitScoreMode : byte {
@@ -13,5 +13,4 @@ public enum HitScoreMode : byte {
     AccuracyWithTimeDependency = Accuracy | TimeDependency,
     TotalWithTimeDependency = Total | TimeDependency
     
-
 }

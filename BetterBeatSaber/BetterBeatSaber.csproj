@@ -15,25 +15,22 @@
         <FileAlignment>512</FileAlignment>
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
     
     <PropertyGroup>
         <BeatSaberVersion>1.29.1</BeatSaberVersion>
-        <BeatSaberVersionNumber>129</BeatSaberVersionNumber>
-        <BeatSaberDir>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDir>
-        <BeatSaberDirectory>$(BeatSaberDir)</BeatSaberDirectory>
+        <BeatSaberDirectory>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDirectory>
         <BeatSaberManagedDirectory>$(BeatSaberDirectory)\Beat Saber_Data\Managed</BeatSaberManagedDirectory>
         <BeatSaberLibsDirectory>$(BeatSaberDirectory)\Libs</BeatSaberLibsDirectory>
         <BeatSaberPluginsDirectory>$(BeatSaberDirectory)\Plugins</BeatSaberPluginsDirectory>
         <BetterBeatSaberModulesDirectory>$(BeatSaberDirectory)\BetterBeatSaber\Modules</BetterBeatSaberModulesDirectory>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(BeatSaberVersionNumber)' &lt; '130'">
+    <PropertyGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
         <DefineConstants>PRE_130</DefineConstants>
     </PropertyGroup>
 
-    <Target Name="CopyToPluginsDirectory" AfterTargets="Build">
+    <Target Name="CopyToPluginsDirectory" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
         <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(BeatSaberPluginsDirectory)\BetterBeatSaber.dll" />
     </Target>
     
@@ -144,7 +141,7 @@
     </ItemGroup>
     
     <ItemGroup>
-        <Reference Include="UnityEngine.TextCoreFontEngineModule" Condition="$(BeatSaberVersionNumber) &gt; 130 Or $(BeatSaberVersionNumber) == 130">
+        <Reference Include="UnityEngine.TextCoreFontEngineModule" Condition="'$(BeatSaberVersion)' != '1.29.1'">
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
@@ -180,9 +177,9 @@
         <Compile Include="Config\Converters\QuaternionConverter.cs" />
         <Compile Include="Config\Converters\Vector2Converter.cs" />
         <Compile Include="Config\Converters\Vector3Converter.cs" />
+        <Compile Include="Enums\HitScoreMode.cs" />
         <Compile Include="Extensions\DiContainerExtensions.cs" />
         <Compile Include="Extensions\TextMeshProExtensions.cs" />
-        <Compile Include="HitScoreMode.cs" />
         <Compile Include="Interops\Tweaks55.cs" />
         <Compile Include="Interop\Interop.cs" />
         <Compile Include="Mixins\SliderControllerMixin.cs" />
@@ -235,7 +232,7 @@
         <Compile Include="Mixins\StaticEnvironmentLightsMixin.cs" />
         <Compile Include="Mixins\TrackLaneRingsManagerMixin.cs" />
         <Compile Include="Mixins\TrackLaneRingsRotationEffectMixin.cs" />
-        <Compile Include="Mixins\UnityMixin.cs" />
+        <Compile Include="Mixins\UnityMixin.cs" Condition="'$(Configuration)' == 'Debug'" />
         <Compile Include="Mixin\Attributes\MixinAttribute.cs" />
         <Compile Include="Mixin\Attributes\MixinHandlerAttribute.cs" />
         <Compile Include="Mixin\Attributes\MixinMethodAttribute.cs" />
