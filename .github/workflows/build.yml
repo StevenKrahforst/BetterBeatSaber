@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: windows-latest
     env:
-      BeatSaberDirectory: ${{ github.workspace }}/Refs
+      BeatSaberDirectory: ${{ github.workspace }}\Refs
     steps:
       - name: Checkout
         uses: actions/checkout@v3.6.0
@@ -44,8 +44,8 @@ jobs:
         with:
           manifest: ${{ github.workspace }}/BetterBeatSaber/manifest.json
           path: ${{ env.BeatSaberDirectory }}
-      - name: Copy and overwrite Main.dll
-        run: copy /Y "${{ env.BeatSaberDirectory }}/Main.dll" "${{ env.BeatSaberDirectory }}/Beat Saber_Data/Managed"
+      - name: Copy Main.dll
+        run: copy /Y "${{ env.BeatSaberDirectory }}\Main.dll" "${{ env.BeatSaberDirectory }}\Beat Saber_Data\Managed"
       - name: Build
         run: dotnet build -c Release BetterBeatSaber/BetterBeatSaber.csproj
       - name: Upload Artefacts
