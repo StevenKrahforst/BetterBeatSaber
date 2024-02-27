@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace BetterBeatSaber.Installer; 
 
-public sealed class MenuInstaller : Zenject.Installer, IDisposable {
+internal sealed class MenuInstaller : Zenject.Installer, IDisposable {
 
     public override void InstallBindings() {
         

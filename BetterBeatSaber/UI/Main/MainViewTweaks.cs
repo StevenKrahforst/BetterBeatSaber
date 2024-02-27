@@ -1,6 +1,6 @@
 ﻿namespace BetterBeatSaber.UI.Main;
 
-public partial class MainView {
+internal partial class MainView {
 
     public bool HideMissTexts {
         get => BetterBeatSaberConfig.Instance.HideMissTexts;

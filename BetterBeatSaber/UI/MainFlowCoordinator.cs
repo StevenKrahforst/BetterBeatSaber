@@ -5,7 +5,7 @@ using HMUI;
 
 namespace BetterBeatSaber.UI;
 
-public sealed class MainFlowCoordinator : FlowCoordinator {
+internal sealed class MainFlowCoordinator : FlowCoordinator {
 
     private static MainFlowCoordinator? _instance;
 

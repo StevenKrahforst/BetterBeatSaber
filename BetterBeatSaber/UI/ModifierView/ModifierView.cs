@@ -2,7 +2,7 @@
 
 namespace BetterBeatSaber.UI.ModifierView;
 
-public sealed class ModifierView {
+internal sealed class ModifierView {
 
     private static ModifierView? _instance;
     public static ModifierView Instance {

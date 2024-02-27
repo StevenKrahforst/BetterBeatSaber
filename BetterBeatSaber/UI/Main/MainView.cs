@@ -13,7 +13,7 @@ using JetBrains.Annotations;
 
 namespace BetterBeatSaber.UI.Main;
 
-public partial class MainView : BSMLAutomaticViewController {
+internal partial class MainView : BSMLAutomaticViewController {
 
     private static MainView? _instance;
 

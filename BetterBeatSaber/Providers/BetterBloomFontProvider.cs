@@ -10,7 +10,7 @@ using Zenject;
 
 namespace BetterBeatSaber.Providers;
 
-public sealed class BetterBloomFontProvider : IInitializable {
+internal sealed class BetterBloomFontProvider : IInitializable {
 
     public static BetterBloomFontProvider? Instance { get; private set; }
     

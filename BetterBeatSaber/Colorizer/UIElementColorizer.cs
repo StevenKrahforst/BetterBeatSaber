@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 namespace BetterBeatSaber.Colorizer; 
 
-public abstract class UIElementColorizer<T> : MonoBehaviour {
+internal abstract class UIElementColorizer<T> : MonoBehaviour {
 
     public int amount = -1;
     public float alpha = 1f;
@@ -59,5 +59,5 @@ public abstract class UIElementColorizer<T> : MonoBehaviour {
 
 }
 
-public sealed class ImageColorizer : UIElementColorizer<Image>;
-public sealed class ImageViewColorizer : UIElementColorizer<ImageView>;
+internal sealed class ImageColorizer : UIElementColorizer<Image>;
+internal sealed class ImageViewColorizer : UIElementColorizer<ImageView>;

@@ -16,7 +16,7 @@ using Zenject;
 
 namespace BetterBeatSaber.HudModifier;
 
-public sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, IDisposable {
+internal sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, IDisposable {
 
     [UsedImplicitly]
     [Inject]

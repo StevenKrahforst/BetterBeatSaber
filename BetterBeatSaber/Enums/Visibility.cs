@@ -3,7 +3,7 @@
 namespace BetterBeatSaber.Enums; 
 
 [Flags]
-public enum Visibility : byte {
+internal enum Visibility : byte {
 
     None = 0,
     Desktop = 1, // Desktop Only

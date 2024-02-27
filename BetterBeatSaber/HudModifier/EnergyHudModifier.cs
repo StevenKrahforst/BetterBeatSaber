@@ -19,7 +19,7 @@ using Random = UnityEngine.Random;
 
 namespace BetterBeatSaber.HudModifier;
 
-public sealed class EnergyHudModifier : HudModifier, IInitializable, ITickable, IDisposable {
+internal sealed class EnergyHudModifier : HudModifier, IInitializable, ITickable, IDisposable {
 
     [UsedImplicitly]
     [Inject]

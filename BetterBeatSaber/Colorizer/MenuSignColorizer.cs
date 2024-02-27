@@ -10,7 +10,7 @@ using Zenject;
 
 namespace BetterBeatSaber.Colorizer;
 
-public sealed class MenuSignColorizer : IInitializable, ITickable {
+internal sealed class MenuSignColorizer : IInitializable, ITickable {
 
     [UsedImplicitly]
     [Inject]

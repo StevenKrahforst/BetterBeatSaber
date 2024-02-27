@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace BetterBeatSaber.UI.Main;
 
-public partial class MainView {
+internal partial class MainView {
 
     /*private GameObject? _bomb;
     private Outline? _bombOutline;

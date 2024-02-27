@@ -10,7 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace BetterBeatSaber.Installer; 
 
-public sealed class GameInstaller : Zenject.Installer {
+internal sealed class GameInstaller : Zenject.Installer {
 
     public override void InstallBindings() {
 

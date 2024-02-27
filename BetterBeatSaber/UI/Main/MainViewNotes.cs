@@ -14,7 +14,7 @@ using UnityEngine.SceneManagement;
 namespace BetterBeatSaber.UI.Main;
 
 // TODO: Add Custom Notes Support
-public partial class MainView {
+internal partial class MainView {
 
     private static readonly FieldAccessor<MenuTransitionsHelper, StandardLevelScenesTransitionSetupDataSO>.Accessor StandardLevelScenesTransitionSetupDataAccessor = FieldAccessor<MenuTransitionsHelper, StandardLevelScenesTransitionSetupDataSO>.GetAccessor("_standardLevelScenesTransitionSetupData");
     

@@ -4,7 +4,7 @@ using Zenject;
 
 namespace BetterBeatSaber.Providers;
 
-public sealed class MaterialProvider : IInitializable {
+internal sealed class MaterialProvider : IInitializable {
 
     public static MaterialProvider? Instance { get; private set; }
     

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using BetterBeatSaber.Enums;
@@ -11,7 +10,7 @@ using UnityEngine.Rendering;
 
 namespace BetterBeatSaber.Utilities;
 
-public class Outline : MonoBehaviour {
+internal class Outline : MonoBehaviour {
 
     #region Shader IDs
 

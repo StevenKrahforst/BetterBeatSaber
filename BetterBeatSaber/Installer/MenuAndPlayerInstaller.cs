@@ -2,7 +2,7 @@
 
 namespace BetterBeatSaber.Installer;
 
-public sealed class MenuAndPlayerInstaller : Zenject.Installer {
+internal sealed class MenuAndPlayerInstaller : Zenject.Installer {
 
     public override void InstallBindings() {
         Container.BindInterfacesAndSelfTo<MaterialProvider>().AsSingle().NonLazy();

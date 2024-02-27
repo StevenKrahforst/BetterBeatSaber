@@ -10,7 +10,7 @@ using JetBrains.Annotations;
 
 namespace BetterBeatSaber.UI.Main;
 
-public partial class MainView {
+internal partial class MainView {
 
     [UIValue(nameof(HitScoreModes)), UsedImplicitly]
     protected List<object> HitScoreModes => new[] {

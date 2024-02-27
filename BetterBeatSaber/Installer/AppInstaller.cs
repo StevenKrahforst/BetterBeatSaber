@@ -3,7 +3,7 @@ using BetterBeatSaber.Interops;
 
 namespace BetterBeatSaber.Installer;
 
-public sealed class AppInstaller : Zenject.Installer {
+internal sealed class AppInstaller : Zenject.Installer {
 
     public override void InstallBindings() {
         Container.BindInstance(BetterBeatSaber.Instance).AsSingle();

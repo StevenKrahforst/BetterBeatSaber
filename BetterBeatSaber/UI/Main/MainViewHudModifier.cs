@@ -1,6 +1,6 @@
 ﻿namespace BetterBeatSaber.UI.Main;
 
-public partial class MainView {
+internal partial class MainView {
 
     #region Combo
 

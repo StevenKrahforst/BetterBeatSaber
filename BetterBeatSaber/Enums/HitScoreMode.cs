@@ -3,7 +3,7 @@
 namespace BetterBeatSaber.Enums;
 
 [Flags]
-public enum HitScoreMode : byte {
+internal enum HitScoreMode : byte {
 
     Accuracy = 1,
     Total = 2,

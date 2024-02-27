@@ -11,7 +11,7 @@ using Zenject;
 
 namespace BetterBeatSaber.Colorizer;
 
-public sealed class DustColorizer : IInitializable, IDisposable, ITickable {
+internal sealed class DustColorizer : IInitializable, IDisposable, ITickable {
 
     [UsedImplicitly]
     [Inject]

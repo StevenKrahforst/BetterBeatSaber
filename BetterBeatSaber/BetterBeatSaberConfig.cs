@@ -11,7 +11,7 @@ namespace BetterBeatSaber;
 
 // CustomFloorPlugin check to disable hide level/menu env
 
-public sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig> {
+internal sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig> {
 
     // ReSharper disable once ConvertToPrimaryConstructor
     public BetterBeatSaberConfig(string name) : base(name) { }

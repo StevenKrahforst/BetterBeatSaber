@@ -9,7 +9,7 @@ using IPA.Loader;
 
 namespace BetterBeatSaber.Interops;
 
-public sealed class Tweaks55 : Interop.Interop<Tweaks55> {
+internal sealed class Tweaks55 : Interop.Interop<Tweaks55> {
 
     protected override string Plugin => "Tweaks55";
 
