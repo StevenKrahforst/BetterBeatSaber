@@ -91,7 +91,8 @@
             <Private>False</Private>
         </Reference>
         <Reference Include="SongCore">
-          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Plugins\SongCore.dll</HintPath>
+            <HintPath>$(BeatSaberPluginsDirectory)\SongCore.dll</HintPath>
+            <Private>False</Private>
         </Reference>
         <Reference Include="Unity.TextMeshPro">
             <HintPath>$(BeatSaberManagedDirectory)\Unity.TextMeshPro.dll</HintPath>

@@ -44,6 +44,8 @@ jobs:
         with:
           manifest: ${{ github.workspace }}/BetterBeatSaber/manifest.json
           path: ${{ env.BeatSaberDirectory }}
+      - name: Copy and overwrite Main.dll
+        run: copy /Y "${{ env.BeatSaberDirectory }}/Refs/Main.dll" "${{ env.BeatSaberDirectory }}/Refs/Beat Saber_Data/Managed"
       - name: Build
         run: dotnet build -c Release BetterBeatSaber/BetterBeatSaber.csproj
       - name: Upload Artefacts
