@@ -17,9 +17,12 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
     
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
+        <BeatSaberDirectory>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDirectory>
+    </PropertyGroup>
+    
     <PropertyGroup>
         <BeatSaberVersion>1.29.1</BeatSaberVersion>
-        <BeatSaberDirectory>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDirectory>
         <BeatSaberManagedDirectory>$(BeatSaberDirectory)\Beat Saber_Data\Managed</BeatSaberManagedDirectory>
         <BeatSaberLibsDirectory>$(BeatSaberDirectory)\Libs</BeatSaberLibsDirectory>
         <BeatSaberPluginsDirectory>$(BeatSaberDirectory)\Plugins</BeatSaberPluginsDirectory>

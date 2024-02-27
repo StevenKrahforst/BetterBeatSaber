@@ -12,7 +12,7 @@ namespace BetterBeatSaber.UI.Main;
 
 public partial class MainView {
 
-    [UIValue(nameof(Visibilities)), UsedImplicitly]
+    [UIValue(nameof(HitScoreModes)), UsedImplicitly]
     protected List<object> HitScoreModes => new[] {
         Enums.HitScoreMode.Accuracy,
         Enums.HitScoreMode.Total,
