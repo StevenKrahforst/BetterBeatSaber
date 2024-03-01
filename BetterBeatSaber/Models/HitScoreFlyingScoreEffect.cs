@@ -21,17 +21,20 @@ namespace BetterBeatSaber.Models;
 
 internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
 
-    private static readonly Color Color112 = new(.3f, 0f, 1f);
-    private static readonly Color Color110 = new(0f, 1f, 1f);
-    private static readonly Color Color107 = new(0f, 1f, 0f);
-    private static readonly Color Color105 = new(1f, .5f, 0f);
-    private static readonly Color Color0 = new(1f, 0f, 0f);
+    private static readonly Color White = new(1f, 1f, 1f);
+    private static readonly Color Purple = new(.3f, 0f, 1f);
+    private static readonly Color Cyan = new(0f, 1f, 1f);
+    private static readonly Color Green = new(0f, 1f, 0f);
+    private static readonly Color Yellow = new(1f, 1f, 0f);
+    private static readonly Color Orange = new(1f, .5f, 0f);
+    private static readonly Color Red = new(1f, 0f, 0f);
 
     [UsedImplicitly]
     private Manager.ColorManager _colorManager = null!;
     
     private bool _accuracyMode;
     private bool _colorize;
+    private int _colorizationLength = -1;
 
     private float _alpha;
 
@@ -67,7 +70,7 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
     
     public new void Update() {
         if (_colorize)
-            _text.ApplyGradient(_colorManager.FirstColor.WithAlpha(_alpha), _colorManager.ThirdColor.WithAlpha(_alpha));
+            _text.ApplyGradient(_colorManager.FirstColor.WithAlpha(_alpha), _colorManager.ThirdColor.WithAlpha(_alpha), _colorizationLength);
         else
             _text.alpha = _alpha;
         base.Update();
@@ -126,8 +129,12 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
         
         text += "</size>";
 
-        if (BetterBeatSaberConfig.Instance.HitScoreMode.HasFlag(HitScoreMode.TimeDependency))
-            text += $"\n<size=100%>{Mathf.Abs(cutScoreBuffer.noteCutInfo.cutNormal.z) * 100:n0}</size>";
+        if (BetterBeatSaberConfig.Instance.HitScoreMode.HasFlag(HitScoreMode.TimeDependency)) {
+            if (_colorize)
+                _colorizationLength = text.Length;
+            var timeDependency = (int) Mathf.Abs(cutScoreBuffer.noteCutInfo.cutNormal.z) * 100;
+            text += $"\n<size=100%><color=#{GetTimeDependencyColor(timeDependency).ToHex()}>{timeDependency}</color></size>";
+        } else _colorizationLength = -1;
         
         _text.text = text;
         
@@ -138,23 +145,31 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
             115 => score switch {
                 115 => (null, 250),
                 114 => (null, 225),
-                >= 112 => (Color112, 200),
-                >= 110 => (Color110, 175),
-                >= 107 => (Color107, 162),
-                >= 105 => (Color105, 150),
-                _ => (Color0, 125)
+                >= 112 => (Color112: Purple, 200),
+                >= 110 => (Color110: Cyan, 175),
+                >= 107 => (Color107: Green, 162),
+                >= 105 => (Color105: Orange, 150),
+                _ => (Color0: Red, 125)
             },
             85 => score switch {
                 85 => (null, 225),
                 83 => (null, 200),
-                >= 80 => (Color112, 175),
-                >= 70 => (Color110, 162),
-                >= 60 => (Color107, 150),
-                >= 50 => (Color105, 125),
-                _ => (Color0, 125)
+                >= 80 => (Color112: Purple, 175),
+                >= 70 => (Color110: Cyan, 162),
+                >= 60 => (Color107: Green, 150),
+                >= 50 => (Color105: Orange, 125),
+                _ => (Color0: Red, 125)
             },
-            20 => score == 20 ? (null, 225) : (Color0, 200),
+            20 => score == 20 ? (null, 225) : (Color0: Red, 200),
             _ => (null, 0)
+        };
+    
+    private static Color GetTimeDependencyColor(int score) =>
+        score switch {
+            >= 21 => Red,
+            >= 11 => Orange,
+            >= 6 => Yellow,
+            _ => White
         };
 
 }

@@ -6,15 +6,15 @@ namespace BetterBeatSaber.Extensions;
 
 public static class TextMeshProExtensions {
 
-    public static void ApplyGradient(this TMP_Text text, Color start, Color end) {
+    public static void ApplyGradient(this TMP_Text text, Color start, Color end, int until = -1) {
         
         text.ForceMeshUpdate();
         
-        var length = text.textInfo.characterInfo.Length;
+        until = until == -1 ? text.textInfo.characterCount : until;
         
-        var steps = start.Steps(end, length);
-        var gradients = new VertexGradient[length];
-        for (var index = 0; index < length; index++) {
+        var steps = start.Steps(end, until);
+        var gradients = new VertexGradient[until];
+        for (var index = 0; index < until; index++) {
             
             gradients[index] = new VertexGradient(steps[index], steps[index + 1], steps[index], steps[index + 1]);
             
