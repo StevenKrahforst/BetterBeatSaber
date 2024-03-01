@@ -24,6 +24,8 @@ namespace BetterBeatSaber;
 
 // ReSharper disable UnusedMember.Global
 
+// Trigger GH ACTION NOW
+
 [Plugin(RuntimeOptions.SingleStartInit)]
 public sealed class BetterBeatSaber {
 
