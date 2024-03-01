@@ -5,10 +5,10 @@ namespace BetterBeatSaber.Enums;
 [Flags]
 internal enum HitScoreMode : byte {
 
-    Accuracy = 1,
-    Total = 2,
+    Accuracy = 2,
+    Total = 4,
     
-    TimeDependency = 3,
+    TimeDependency = 8,
     
     AccuracyWithTimeDependency = Accuracy | TimeDependency,
     TotalWithTimeDependency = Total | TimeDependency
