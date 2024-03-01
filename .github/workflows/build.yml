@@ -51,5 +51,5 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Better Beat Saber
-          path: ${{ github.workspace }}/BetterBeatSaber/bin/BetterBeatSaber.dll
+          path: ${{ github.workspace }}/BetterBeatSaber/bin/Release/BetterBeatSaber.dll
           if-no-files-found: error
