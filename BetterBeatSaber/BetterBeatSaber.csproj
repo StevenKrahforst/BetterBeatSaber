@@ -176,6 +176,7 @@
         <Compile Include="Enums\HitScoreMode.cs" />
         <Compile Include="Extensions\DiContainerExtensions.cs" />
         <Compile Include="Extensions\TextMeshProExtensions.cs" />
+        <Compile Include="Interops\HitScoreVisualizer.cs" />
         <Compile Include="Interops\SongCore.cs" />
         <Compile Include="Interops\Tweaks55.cs" />
         <Compile Include="Interop\Interop.cs" />

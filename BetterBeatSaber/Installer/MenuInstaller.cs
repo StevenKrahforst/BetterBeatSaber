@@ -3,12 +3,20 @@ using System.Collections.Generic;
 
 using BetterBeatSaber.Colorizer;
 
+using IPA.Loader;
+
 using UnityEngine;
 
 namespace BetterBeatSaber.Installer; 
 
 internal sealed class MenuInstaller : Zenject.Installer, IDisposable {
 
+    private static bool IsAdaptableNotesInstalled => PluginManager.GetPluginFromId("AdaptableNotes") != null;
+    private static readonly List<string> AdaptableNotesIgnoredGameObjects = [
+        "Notes",
+        "PileOfNotes"
+    ];
+    
     public override void InstallBindings() {
         
         Container.BindInterfacesAndSelfTo<DustColorizer>().AsSingle();
@@ -36,8 +44,10 @@ internal sealed class MenuInstaller : Zenject.Installer, IDisposable {
     private static void LoadMenuGameObjects() {
         MenuGameObjects.Clear();
         foreach (var gameObjectName in BetterBeatSaberConfig.Instance.MenuGameObjects) {
+            if (IsAdaptableNotesInstalled && AdaptableNotesIgnoredGameObjects.Contains(gameObjectName))
+                continue;
             var gameObject = GameObject.Find(gameObjectName);
-            if(gameObject != null)
+            if(gameObject != null && IsAdaptableNotesInstalled && !AdaptableNotesIgnoredGameObjects.Contains(gameObjectName))
                 MenuGameObjects.Add(gameObject);
         }
     }

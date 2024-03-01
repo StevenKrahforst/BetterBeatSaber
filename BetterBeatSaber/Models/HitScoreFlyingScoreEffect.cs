@@ -12,6 +12,13 @@ using Zenject;
 
 namespace BetterBeatSaber.Models; 
 
+/**
+ * Support for 1.31+
+ * 
+ * https://github.com/daniel-chambers/HitScoreVisualizer/blob/update-1.32.0/HitScoreVisualizer/HarmonyPatches/FlyingScoreEffectPatch.cs
+ * https://github.com/daniel-chambers/HitScoreVisualizer/blob/update-1.32.0/HitScoreVisualizer/HarmonyPatches/EffectPoolsManualInstallerPatch.cs
+ */
+
 internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
 
     private static readonly Color Color112 = new(.3f, 0f, 1f);

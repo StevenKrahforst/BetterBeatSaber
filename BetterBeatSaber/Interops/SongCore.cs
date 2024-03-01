@@ -30,8 +30,12 @@ internal sealed class SongCore : Interop<SongCore>, IDisposable {
         BetterBeatSaberConfig.Instance.FakeChroma.OnValueChanged += SetChroma;
     }
 
-    protected override bool RunIf() =>
-        PluginManager.GetPluginFromId("Chroma") == null;
+    protected override bool RunIf() {
+        var installed = PluginManager.GetPluginFromId("Chroma") != null;
+        if(installed)
+            Logger.Info("Fake Chroma won't be enabled because Chroma is installed");
+        return !installed;
+    }
 
     private void SetChroma(bool state) {
         foreach (var chromaCapability in ChromaCapabilities)

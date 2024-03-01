@@ -1,4 +1,5 @@
 ﻿using IPA.Loader;
+using IPA.Logging;
 
 using Zenject;
 
@@ -8,10 +9,14 @@ public abstract class Interop<T> : IInitializable where T : Interop<T> {
 
     public static T? Instance { get; private set; }
 
+    protected Logger Logger { get; }
+    
     protected abstract string Plugin { get; }
 
-    protected Interop() =>
+    protected Interop() {
         Instance = (T) this;
+        Logger = BetterBeatSaber.Instance.Logger.GetChildLogger($"{GetType().Name} Interop");
+    }
 
     public void Initialize() {
         if (!RunIf())
