@@ -127,7 +127,7 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
         text += "</size>";
 
         if (BetterBeatSaberConfig.Instance.HitScoreMode.HasFlag(HitScoreMode.TimeDependency))
-            text += $"\n<size=50%>{Mathf.Abs(cutScoreBuffer.noteCutInfo.cutNormal.z)}</size>";
+            text += $"\n<size=100%>{Mathf.Abs(cutScoreBuffer.noteCutInfo.cutNormal.z) * 100:n0}</size>";
         
         _text.text = text;
         
