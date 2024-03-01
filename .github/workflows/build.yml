@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'BetterBeatSaber/**/*'
+      - 'BetterBeatSaber/**'
       - '.github/workflows/build.yml'
 
 jobs:
