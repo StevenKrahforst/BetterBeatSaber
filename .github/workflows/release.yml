@@ -1,4 +1,6 @@
-﻿on:
+﻿name: Release
+
+on:
   release:
     branches:
       - main
