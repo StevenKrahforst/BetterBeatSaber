@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Reflection;
 
 using BetterBeatSaber.Installer;
@@ -13,12 +12,9 @@ using JetBrains.Annotations;
 
 using SiraUtil.Zenject;
 
-using SongCore;
-
 using UnityEngine;
 
 using Logger = IPA.Logging.Logger;
-using Version = Hive.Versioning.Version;
 
 #if DEBUG
 using UnityExplorer;
@@ -39,8 +35,6 @@ public sealed class BetterBeatSaber {
 
     internal MixinManager MixinManager { get; private set; }
     
-    public Version Version { get; } = new("2.3.0");
-
     [Init]
     public BetterBeatSaber([UsedImplicitly] Logger logger, [UsedImplicitly] Zenjector zenjector) {
 
@@ -88,35 +82,11 @@ public sealed class BetterBeatSaber {
         
         UI.MainFlowCoordinator.Initialize();
         
-        SetChroma(BetterBeatSaberConfig.Instance.FakeChroma.CurrentValue);
-        BetterBeatSaberConfig.Instance.FakeChroma.OnValueChanged += SetChroma;
-        
-    }
-
-    private static void SetChroma(bool state) {
-        if (state) {
-            
-            if(!Collections.capabilities.Contains("Chroma"))
-                Collections.RegisterCapability("Chroma");
-            
-            if(!Collections.capabilities.Contains("Chroma Lighting Events"))
-                Collections.RegisterCapability("Chroma Lighting Events");
-            
-        } else {
-            
-            if(Collections.capabilities.Contains("Chroma"))
-                Collections.DeregisterizeCapability("Chroma");
-            
-            if(Collections.capabilities.Contains("Chroma Lighting Events"))
-                Collections.DeregisterizeCapability("Chroma Lighting Events");
-            
-        }
     }
 
     [OnExit]
-    public void Exit() {
+    public void Exit() =>
         MixinManager.Unpatch();
-    }
 
     private static IEnumerator LoadAssets() {
         

@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     
-    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')"/>
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     
     <PropertyGroup>
         <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,26 +13,16 @@
         <AssemblyName>BetterBeatSaber</AssemblyName>
         <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
-        <LangVersion>latest</LangVersion>
-        <Nullable>enable</Nullable>
     </PropertyGroup>
     
-    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <BeatSaberDirectory>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDirectory>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+      <OutputPath>bin\Release\</OutputPath>
     </PropertyGroup>
     
-    <PropertyGroup>
-        <BeatSaberVersion>1.29.1</BeatSaberVersion>
-        <BeatSaberManagedDirectory>$(BeatSaberDirectory)\Beat Saber_Data\Managed</BeatSaberManagedDirectory>
-        <BeatSaberLibsDirectory>$(BeatSaberDirectory)\Libs</BeatSaberLibsDirectory>
-        <BeatSaberPluginsDirectory>$(BeatSaberDirectory)\Plugins</BeatSaberPluginsDirectory>
-        <BetterBeatSaberModulesDirectory>$(BeatSaberDirectory)\BetterBeatSaber\Modules</BetterBeatSaberModulesDirectory>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+      <OutputPath>bin\Debug\</OutputPath>
     </PropertyGroup>
-
-    <PropertyGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
-        <DefineConstants>PRE_130</DefineConstants>
-    </PropertyGroup>
-
+    
     <Target Name="CopyToPluginsDirectory" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
         <Copy SourceFiles="$(OutputPath)$(AssemblyName).dll" DestinationFiles="$(BeatSaberPluginsDirectory)\BetterBeatSaber.dll" />
     </Target>
@@ -88,10 +78,6 @@
         </Reference>
         <Reference Include="SiraUtil">
             <HintPath>$(BeatSaberPluginsDirectory)\SiraUtil.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="SongCore">
-            <HintPath>$(BeatSaberPluginsDirectory)\SongCore.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="Unity.TextMeshPro">
@@ -156,14 +142,19 @@
     </ItemGroup>
     
     <ItemGroup>
-        <Reference Include="System"/>
-        <Reference Include="System.Core"/>
-        <Reference Include="System.Data"/>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
         <Reference Include="System.IO.Compression" />
         <Reference Include="System.Net.Http" />
         <Reference Include="System.Runtime.Serialization" />
         <Reference Include="System.Web" />
-        <Reference Include="System.Xml"/>
+        <Reference Include="System.Xml" />
+        <!--
+        <Reference Include="Microsoft.CSharp" />
+        <Reference Include="mscorlib" />
+        <Reference Include="System.Numerics" />
+        -->
     </ItemGroup>
 
     <ItemGroup>
@@ -181,15 +172,14 @@
         <Compile Include="Config\Converters\QuaternionConverter.cs" />
         <Compile Include="Config\Converters\Vector2Converter.cs" />
         <Compile Include="Config\Converters\Vector3Converter.cs" />
+        <Compile Include="Enums\ColorMode.cs" />
         <Compile Include="Enums\HitScoreMode.cs" />
         <Compile Include="Extensions\DiContainerExtensions.cs" />
         <Compile Include="Extensions\TextMeshProExtensions.cs" />
+        <Compile Include="Interops\SongCore.cs" />
         <Compile Include="Interops\Tweaks55.cs" />
         <Compile Include="Interop\Interop.cs" />
         <Compile Include="Mixins\SliderControllerMixin.cs" />
-    </ItemGroup>
-    
-    <ItemGroup>
         <Compile Include="BetterBeatSaber.cs" />
         <Compile Include="BetterBeatSaberConfig.cs" />
         <Compile Include="Enums\Visibility.cs" />
@@ -272,6 +262,7 @@
         <Compile Include="UI\Main\MainViewTweaks.cs" />
         <Compile Include="UI\ModifierView\ModifierView.cs" />
         <Compile Include="Utilities\NoteOutline.cs" />
+        <Compile Include="Utilities\ObservableBoolean.cs" />
         <Compile Include="Utilities\ObservableValue.cs" />
         <Compile Include="Utilities\Outline.cs" />
         <Compile Include="Utilities\PersistentSingleton.cs" />
@@ -292,6 +283,6 @@
         <Content Include="outline_shader.glsl" />
     </ItemGroup>
     
-    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 
 </Project>

@@ -1,6 +1,6 @@
 ﻿namespace BetterBeatSaber.HudModifier;
 
-public abstract class HudModifier {
+internal abstract class HudModifier {
 
     public class BaseOptions {
 

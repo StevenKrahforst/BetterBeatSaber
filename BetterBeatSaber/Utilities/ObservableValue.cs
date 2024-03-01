@@ -2,13 +2,13 @@
 
 namespace BetterBeatSaber.Utilities;
 
-public sealed class ObservableValue<T>(T defaultValue) {
+public class ObservableValue<T>(T defaultValue) {
 
     public event Action<T>? OnValueChanged;
     
-    public T CurrentValue { get; private set; } = defaultValue;
-
-    public void SetValue(T value, bool invokeChange = true, bool invokeChangeOnlyIfDifferent = true) {
+    public virtual T CurrentValue { get; private set; } = defaultValue;
+    
+    public virtual void SetValue(T value, bool invokeChange = true, bool invokeChangeOnlyIfDifferent = true) {
         
         if (invokeChangeOnlyIfDifferent && Equals(CurrentValue, value))
             return;

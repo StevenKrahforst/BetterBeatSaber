@@ -2,9 +2,13 @@
 using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Providers;
 
+using JetBrains.Annotations;
+
 using TMPro;
 
 using UnityEngine;
+
+using Zenject;
 
 namespace BetterBeatSaber.Models; 
 
@@ -16,9 +20,18 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
     private static readonly Color Color105 = new(1f, .5f, 0f);
     private static readonly Color Color0 = new(1f, 0f, 0f);
 
-    private Colorizer? _colorizer;
+    [UsedImplicitly]
+    private Manager.ColorManager _colorManager = null!;
+    
     private bool _accuracyMode;
+    private bool _colorize;
 
+    private float _alpha;
+
+    [Inject, UsedImplicitly]
+    internal void Construct(Manager.ColorManager colorManager) =>
+        _colorManager = colorManager;
+    
     #region Overrides
 
     public override void InitAndPresent(IReadonlyCutScoreBuffer cutScoreBuffer, float duration, Vector3 targetPos, Color color) {
@@ -42,45 +55,50 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
         
     }
 
-    protected override void ManualUpdate(float t) {
-        var alpha = _fadeAnimationCurve.Evaluate(t);
-        if (_colorizer != null) {
-            _colorizer.alpha = alpha;
-        } else {
-            var color = _color.WithAlpha(alpha);
-            _text.color = color;
-            _maxCutDistanceScoreIndicator.color = color;
-        }
+    protected override void ManualUpdate(float t) =>
+        _alpha = _fadeAnimationCurve.Evaluate(t);
+    
+    public new void Update() {
+        if (_colorize)
+            _text.ApplyGradient(_colorManager.FirstColor.WithAlpha(_alpha), _colorManager.ThirdColor.WithAlpha(_alpha));
+        else
+            _text.alpha = _alpha;
+        base.Update();
     }
-
+    
     public override void HandleCutScoreBufferDidChange(CutScoreBuffer cutScoreBuffer) =>
         Judge(cutScoreBuffer);
 
-    public override void HandleCutScoreBufferDidFinish(CutScoreBuffer cutScoreBuffer) =>
-        Judge(cutScoreBuffer);
+    // Breaks the HSV, but not in Replays
+    /*public override void HandleCutScoreBufferDidFinish(CutScoreBuffer cutScoreBuffer) =>
+        Judge(cutScoreBuffer);*/
 
     #endregion
 
-    private void Judge(IReadonlyCutScoreBuffer cutScoreBuffer, int? assumedAfterCutScore = null) {
-
-        _colorizer = gameObject.GetComponentInChildren<Colorizer>();
+    private void ConfigureText() {
         
         if(!_text.richText)
             _text.richText = true;
         
+        if(_text.enableWordWrapping)
+            _text.enableWordWrapping = false;
+        
+        if(_text.overflowMode != TextOverflowModes.Overflow)
+            _text.overflowMode = TextOverflowModes.Overflow;
+        
         if(BetterBloomFontProvider.Instance != null)
             BetterBloomFontProvider.Instance.SetBloom(ref _text, BetterBeatSaberConfig.Instance.HitScoreBloom);
         
+    }
+    
+    private void Judge(IReadonlyCutScoreBuffer cutScoreBuffer, int? assumedAfterCutScore = null) {
+
+        ConfigureText();
+        
         var (color, size) = GetColorAndSize(cutScoreBuffer.cutScore, cutScoreBuffer.maxPossibleCutScore);
         size = (int) (size * BetterBeatSaberConfig.Instance.HitScoreScale);
-        
-        if (_colorizer != null && color != null) {
-            DestroyImmediate(_colorizer);
-            _colorizer = null;
-        } else if (_colorizer == null && color == null) {
-            _colorizer = _text.gameObject.AddComponent<Colorizer>();
-            _colorizer.text = _text;
-        }
+
+        _colorize = color == null;
         
         var text = $"<size={size}%>";
         if(color != null)
@@ -131,17 +149,5 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
             20 => score == 20 ? (null, 225) : (Color0, 200),
             _ => (null, 0)
         };
-
-    private sealed class Colorizer : MonoBehaviour {
-
-        public TextMeshPro? text;
-        public float alpha = 1f;
-
-        private void Update() {
-            if (text != null && Manager.ColorManager.Instance != null)
-                text.ApplyGradient(Manager.ColorManager.Instance.FirstColor.WithAlpha(alpha), Manager.ColorManager.Instance.ThirdColor.WithAlpha(alpha));
-        }
-
-    }
 
 }

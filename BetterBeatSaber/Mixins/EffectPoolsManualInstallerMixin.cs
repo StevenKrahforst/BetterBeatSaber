@@ -25,7 +25,7 @@ namespace BetterBeatSaber.Mixins;
 
 [Mixin(typeof(EffectPoolsManualInstaller), "HitScoreVisualizer")]
 [ToggleableMixin(typeof(BetterBeatSaberConfig), nameof(BetterBeatSaberConfig.HitScoreEnable))]
-public static class EffectPoolsManualInstallerMixin {
+internal static class EffectPoolsManualInstallerMixin {
 	
 	private static readonly MethodInfo MemoryPoolBinderOriginal = typeof(DiContainer).GetMethods().First(x => x.Name == nameof(DiContainer.BindMemoryPool) && x.IsGenericMethod && x.GetGenericArguments().Length == 2).MakeGenericMethod(typeof(FlyingScoreEffect), typeof(FlyingScoreEffect.Pool));
     private static readonly MethodInfo MemoryPoolBinderReplacement = SymbolExtensions.GetMethodInfo(() => MemoryPoolBinderStub(null!));

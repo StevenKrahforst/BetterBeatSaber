@@ -68,13 +68,13 @@ internal sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfi
     // TODO: Make Observable
     public bool HidePromotionButton { get; set; } = true;
     
-    public ObservableValue<bool> HideLevelEnvironment { get; set; } = new(true);
+    public ObservableBoolean HideLevelEnvironment { get; set; } = new(true, "CustomFloorPlugin");
     public string[] IgnoredLevelGameObjects { get; set; } = [
         PlayersPlaceColorizer.GameObjectName,
         "DustPS"
     ];
     
-    public ObservableValue<bool> HideMenuEnvironment { get; set; } = new(true);
+    public ObservableBoolean HideMenuEnvironment { get; set; } = new(true, "CustomFloorPlugin");
     public string[] MenuGameObjects { get; set; } = [
         "MenuFogRing",
         "BackgroundGradient",
@@ -93,7 +93,6 @@ internal sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfi
     public bool HitScoreBloom { get; set; } = true;
     public float HitScoreScale { get; set; } = 1.05f;
     
-    [JsonConverter(typeof(NumericEnumConverter<HitScoreMode>))]
     public HitScoreMode HitScoreMode { get; set; } = HitScoreMode.Accuracy;
 
     #endregion

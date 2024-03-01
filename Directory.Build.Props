@@ -3,26 +3,33 @@
 
     <PropertyGroup>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <PlatformTarget>AnyCPU</PlatformTarget>
+        <PlatformTarget>x64</PlatformTarget>
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
         <Nullable>enable</Nullable>
-        <OutputPath>bin\</OutputPath>
+        <LangVersion>latest</LangVersion>
+        <OutputPath>bin\$(Configuration)</OutputPath>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+        <BeatSaberVersion>1.29.1</BeatSaberVersion>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
         <DebugSymbols>true</DebugSymbols>
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
         <DefineConstants>DEBUG</DefineConstants>
+        <BeatSaberDirectory>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDirectory>
     </PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <DebugSymbols>false</DebugSymbols>
         <Optimize>true</Optimize>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
+        <DefineConstants>PRE_130</DefineConstants>
+    </PropertyGroup>
+    
     <PropertyGroup>
         <BeatSaberManagedDirectory>$(BeatSaberDirectory)\Beat Saber_Data\Managed</BeatSaberManagedDirectory>
         <BeatSaberLibsDirectory>$(BeatSaberDirectory)\Libs</BeatSaberLibsDirectory>

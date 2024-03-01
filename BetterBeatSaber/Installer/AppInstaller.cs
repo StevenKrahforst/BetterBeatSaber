@@ -9,6 +9,7 @@ internal sealed class AppInstaller : Zenject.Installer {
         Container.BindInstance(BetterBeatSaber.Instance).AsSingle();
         Container.BindInterfacesAndSelfTo<Manager.ColorManager>().AsSingle();
         Container.BindInterop<Tweaks55>();
+        Container.BindInterop<Interops.SongCore>();
     }
     
 }

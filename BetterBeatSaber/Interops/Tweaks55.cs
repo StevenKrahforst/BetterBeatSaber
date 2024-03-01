@@ -18,8 +18,8 @@ internal sealed class Tweaks55 : Interop.Interop<Tweaks55> {
     
     private Type? _configType;
     private object? _configInstance;
-    
-    public override void Init(PluginMetadata pluginMetadata) {
+
+    protected override void Init(PluginMetadata pluginMetadata) {
         
         _configType = pluginMetadata.Assembly.GetType("Tweaks55.Config");
         _configInstance = _configType.GetField("Instance", BindingFlags.Public | BindingFlags.Static)?.GetValue(null);
@@ -52,7 +52,7 @@ internal sealed class Tweaks55 : Interop.Interop<Tweaks55> {
 
         [MixinMethod(nameof(ApplyValues), MixinAt.Post)]
         private static void ApplyValues() =>
-            Instance.OnValuesChanged();
+            Instance?.OnValuesChanged();
 
     }
 
