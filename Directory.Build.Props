@@ -18,12 +18,19 @@
         <DebugType>full</DebugType>
         <Optimize>false</Optimize>
         <DefineConstants>DEBUG</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <OutputPath>bin\Debug\</OutputPath>
         <BeatSaberDirectory>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDirectory>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
         <DebugSymbols>false</DebugSymbols>
+        <DebugType>pdbonly</DebugType>
         <Optimize>true</Optimize>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <OutputPath>bin\Release\</OutputPath>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">

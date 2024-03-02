@@ -3,6 +3,7 @@ using System.Reflection;
 
 using BetterBeatSaber.Installer;
 using BetterBeatSaber.Mixin;
+using BetterBeatSaber.Online;
 using BetterBeatSaber.Utilities;
 
 using IPA;
@@ -24,18 +25,16 @@ namespace BetterBeatSaber;
 
 // ReSharper disable UnusedMember.Global
 
-// Trigger GH ACTION NOW
-
-[Plugin(RuntimeOptions.SingleStartInit)]
+[Plugin(RuntimeOptions.SingleStartInit), NoEnableDisable]
 public sealed class BetterBeatSaber {
 
     public static BetterBeatSaber Instance { get; private set; } = null!;
 
-    internal Logger Logger { get; private set; }
+    internal Logger Logger { get; }
     
-    internal Zenjector Zenjector { get; private set; }
+    internal Zenjector Zenjector { get; }
 
-    internal MixinManager MixinManager { get; private set; }
+    internal MixinManager MixinManager { get; }
     
     [Init]
     public BetterBeatSaber([UsedImplicitly] Logger logger, [UsedImplicitly] Zenjector zenjector) {
@@ -47,6 +46,9 @@ public sealed class BetterBeatSaber {
         
         // ReSharper disable once ObjectCreationAsStatement
         new BetterBeatSaberConfig("BetterBeatSaber");
+
+        if (BetterBeatSaberConfig.Instance.EnableOnlineMode)
+            OnlineLoader.Load();
         
         PluginInitInjector.AddInjector(typeof(BetterBeatSaber), (_, _, _) => this);
         PluginInitInjector.AddInjector(typeof(MixinManager), CreateMixinManager);
@@ -57,7 +59,7 @@ public sealed class BetterBeatSaber {
     }
 
     [OnStart]
-    public void Start() {
+    internal void Start() {
         
         MixinManager.Patch();
         
@@ -84,12 +86,17 @@ public sealed class BetterBeatSaber {
         
         UI.MainFlowCoordinator.Initialize();
         
+        OnlineLoader.Start();
+        
     }
 
     [OnExit]
-    public void Exit() =>
+    internal void Exit() {
+        OnlineLoader.Exit();
         MixinManager.Unpatch();
+    }
 
+    // Move to class like "AssetLoader" or "AssetBundleLoader"
     private static IEnumerator LoadAssets() {
         
         var bundleRequest = AssetBundle.LoadFromStreamAsync(Assembly.GetExecutingAssembly().GetManifestResourceStream("BetterBeatSaber.Resources.resources"));
@@ -113,5 +120,5 @@ public sealed class BetterBeatSaber {
     
     private static MixinManager CreateMixinManager(object? _, ParameterInfo __, PluginMetadata pluginMetadata) =>
         new(pluginMetadata);
-    
+
 }

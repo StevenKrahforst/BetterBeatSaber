@@ -87,6 +87,8 @@ internal sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfi
     
     #endregion
 
+    #region Extras
+
     #region Hit Score
 
     public ObservableValue<bool> HitScoreEnable { get; set; } = new(true);
@@ -95,6 +97,10 @@ internal sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfi
     
     public HitScoreMode HitScoreMode { get; set; } = HitScoreMode.Accuracy;
 
+    #endregion
+    
+    public bool EnableOnlineMode { get; set; } = false;
+    
     #endregion
     
     public HudModifier.HudModifier.BaseOptions ComboHudModifier { get; set; } = new();

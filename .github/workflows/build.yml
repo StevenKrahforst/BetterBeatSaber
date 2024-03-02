@@ -47,9 +47,14 @@ jobs:
         run: Copy-Item "${{ github.workspace }}\Refs\Main.dll" -Destination "${{ env.BeatSaberDirectory }}\Beat Saber_Data\Managed" -Force
       - name: Build
         run: dotnet build -c Release BetterBeatSaber/BetterBeatSaber.csproj
-      - name: Upload Artefacts
+      - name: Upload Artefact
         uses: actions/upload-artifact@v3
         with:
           name: Better Beat Saber
           path: ${{ github.workspace }}/BetterBeatSaber/bin/Release/BetterBeatSaber.dll
           if-no-files-found: error
+      - name: Upload Online Artefact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Better Beat Saber
+          path: ${{ github.workspace }}/Online/bin/Release/BetterBeatSaber.Online.dll

@@ -15,7 +15,7 @@ internal static class NoteCutParticlesEffectMixin {
 
     [MixinMethod(nameof(SpawnParticles), MixinAt.Pre)]
     private static void SpawnParticles(ref Color32 color) {
-        if (BetterBeatSaberConfig.Instance.ColorizeCutParticles && !Tweaks55.Instance.DisableCutParticles && Manager.ColorManager.Instance != null)
+        if (BetterBeatSaberConfig.Instance.ColorizeCutParticles && (!Tweaks55.Instance.DisableCutParticles) && Manager.ColorManager.Instance != null)
             color = Manager.ColorManager.Instance.FirstColor;
     }
 
