@@ -10,7 +10,7 @@ public static class TextMeshProExtensions {
         
         text.ForceMeshUpdate();
         
-        until = until == -1 ? text.textInfo.characterCount : until;
+        until = until == -1 || until > text.textInfo.characterCount ? text.textInfo.characterCount : until;
         
         var steps = start.Steps(end, until);
         var gradients = new VertexGradient[until];

@@ -106,11 +106,10 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
         ConfigureText();
         
         var (color, size) = GetColorAndSize(cutScoreBuffer.cutScore, cutScoreBuffer.maxPossibleCutScore);
-        size = (int) (size * BetterBeatSaberConfig.Instance.HitScoreScale);
 
         _colorize = color == null;
         
-        var text = $"<size={size}%>";
+        var text = $"<size={size * BetterBeatSaberConfig.Instance.HitScoreScale:N0}%>";
         if(color != null)
             text += $"<color=#{color.Value.ToHex()}>";
 
@@ -131,9 +130,9 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
 
         if (BetterBeatSaberConfig.Instance.HitScoreMode.HasFlag(HitScoreMode.TimeDependency)) {
             if (_colorize)
-                _colorizationLength = text.Length;
-            var timeDependency = (int) Mathf.Abs(cutScoreBuffer.noteCutInfo.cutNormal.z) * 100;
-            text += $"\n<size=100%><color=#{GetTimeDependencyColor(timeDependency).ToHex()}>{timeDependency}</color></size>";
+                _colorizationLength = text.Length - 1;
+            var timeDependency = Mathf.Abs(cutScoreBuffer.noteCutInfo.cutNormal.z) * 100;
+            text += $"\n<size={100 * BetterBeatSaberConfig.Instance.HitScoreScale:N0}%><color=#{GetTimeDependencyColor(timeDependency).ToHex()}>{timeDependency:N0}</color></size>";
         } else _colorizationLength = -1;
         
         _text.text = text;
@@ -145,26 +144,26 @@ internal sealed class HitScoreFlyingScoreEffect : FlyingScoreEffect {
             115 => score switch {
                 115 => (null, 250),
                 114 => (null, 225),
-                >= 112 => (Color112: Purple, 200),
-                >= 110 => (Color110: Cyan, 175),
-                >= 107 => (Color107: Green, 162),
-                >= 105 => (Color105: Orange, 150),
-                _ => (Color0: Red, 125)
+                >= 112 => (Purple, 200),
+                >= 110 => (Cyan, 175),
+                >= 107 => (Green, 162),
+                >= 105 => (Orange, 150),
+                _ => (Red, 125)
             },
             85 => score switch {
                 85 => (null, 225),
                 83 => (null, 200),
-                >= 80 => (Color112: Purple, 175),
-                >= 70 => (Color110: Cyan, 162),
-                >= 60 => (Color107: Green, 150),
-                >= 50 => (Color105: Orange, 125),
-                _ => (Color0: Red, 125)
+                >= 80 => (Purple, 175),
+                >= 70 => (Cyan, 162),
+                >= 60 => (Green, 150),
+                >= 50 => (Orange, 125),
+                _ => (Red, 125)
             },
-            20 => score == 20 ? (null, 225) : (Color0: Red, 200),
+            20 => score == 20 ? (null, 225) : (Red, 200),
             _ => (null, 0)
         };
     
-    private static Color GetTimeDependencyColor(int score) =>
+    private static Color GetTimeDependencyColor(float score) =>
         score switch {
             >= 21 => Red,
             >= 11 => Orange,
