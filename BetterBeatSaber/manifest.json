@@ -3,7 +3,7 @@
   "id": "bbs",
   "name": "Better Beat Saber",
   "author": "StevenK",
-  "version": "2.2.0",
+  "version": "2.2.3",
   "description": "Better Beat Saber",
   "gameVersion": "1.29.1",
   "dependsOn": {

@@ -47,9 +47,9 @@ Thumbs.db
 
 # Custom
 website/
-Server/
 BetterBeatSaber.Resources/
 F/
+Server/Public
 
 # Private
 UnityMixin.cs

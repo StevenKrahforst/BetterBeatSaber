@@ -23,12 +23,18 @@ internal static class OnlineLoader {
 
     private static async Task LoadAsync() {
 
-        #if DEBUG // Update to Local !!!
-        using var stream = await new HttpClient().GetStreamAsync("https://github.com/BetterBeatSaber/BetterBeatSaber/releases/latest/download/Better.Beat.Saber.Online.zip");
-        #else
-        using var stream = await new HttpClient().GetStreamAsync("https://github.com/BetterBeatSaber/BetterBeatSaber/releases/latest/download/Better.Beat.Saber.Online.zip");
-        #endif
+        #if !DEBUG // Update to Local !!!
         
+        var raw = await new HttpClient().GetByteArrayAsync("http://localhost:5182/download");
+        if (raw is null or { Length: 0 })
+            return;
+        
+        Assembly = Assembly.Load(raw);
+        
+        #else
+        
+        using var stream = await new HttpClient().GetStreamAsync("https://github.com/BetterBeatSaber/BetterBeatSaber/releases/latest/download/Better.Beat.Saber.Online.zip");
+
         using var archive = new ZipArchive(stream, ZipArchiveMode.Read);
         
         var entry = archive.GetEntry("Better Beat Saber Online.dll");
@@ -41,6 +47,8 @@ internal static class OnlineLoader {
         await rawStream.CopyToAsync(memoryStream);
         
         Assembly = Assembly.Load(memoryStream.ToArray());
+
+        #endif
 
         Instance = Assembly
             .GetType("BetterBeatSaber.Online.BetterBeatSaberOnline")?
