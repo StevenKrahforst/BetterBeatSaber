@@ -23,6 +23,7 @@ jobs:
         with:
           dotnet-version: 8.x.x
           cache: true
+          cache-dependency-path: Server/packages.lock.json
       - name: Restore Packages
         run: dotnet restore --locked-mode
       - name: Build
