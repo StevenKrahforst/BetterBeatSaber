@@ -47,19 +47,19 @@ public sealed class BetterBeatSaber {
         // ReSharper disable once ObjectCreationAsStatement
         new BetterBeatSaberConfig("BetterBeatSaber");
 
-        if (BetterBeatSaberConfig.Instance.EnableOnlineMode)
-            OnlineLoader.Load();
-        
         PluginInitInjector.AddInjector(typeof(BetterBeatSaber), (_, _, _) => this);
         PluginInitInjector.AddInjector(typeof(MixinManager), CreateMixinManager);
         
         MixinManager = new MixinManager("BetterBeatSaber", Assembly.GetExecutingAssembly());
         MixinManager.AddMixins();
         
+        if (BetterBeatSaberConfig.Instance.EnableOnlineMode)
+            OnlineLoader.Load();
+        
     }
 
     [OnStart]
-    internal void Start() {
+    public void Start() {
         
         MixinManager.Patch();
         
@@ -77,6 +77,8 @@ public sealed class BetterBeatSaber {
         Zenjector.Expose<ComboUIController>("Environment");
         Zenjector.Expose<GameEnergyUIPanel>("Environment");
         
+        OnlineLoader.Start();
+        
         Utilities.SharedCoroutineStarter.Instance.StartCoroutine(LoadAssets());
 
         #if DEBUG
@@ -86,12 +88,10 @@ public sealed class BetterBeatSaber {
         
         UI.MainFlowCoordinator.Initialize();
         
-        OnlineLoader.Start();
-        
     }
 
     [OnExit]
-    internal void Exit() {
+    public void Exit() {
         OnlineLoader.Exit();
         MixinManager.Unpatch();
     }

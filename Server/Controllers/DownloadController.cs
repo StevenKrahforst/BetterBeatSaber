@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace BetterBeatSaber.Server.Controllers;
 
 [Route("download")]
-[Controller]
+[ApiController]
 public sealed class DownloadController : ControllerBase {
 
     [HttpGet]

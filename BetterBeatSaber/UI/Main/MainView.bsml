@@ -141,7 +141,6 @@
                             <horizontal pref-width='90'>
                                 <text text='Outlines' font-size='5' bold='true' align='Center' />
                             </horizontal>
-                            <toggle-setting text='Enable' value='BombOutlinesEnable' apply-on-change='true' />
                             <checkbox-setting text='Enable' value='BombOutlinesEnable' apply-on-change='true' />
                             <checkbox-setting text='Glow / Bloom' value='BombOutlinesEnable' apply-on-change='true' />
                             <increment-setting text='Width' value='BombOutlinesWidth' apply-on-change='true' min='0.5' max='20' increment='0.5' />

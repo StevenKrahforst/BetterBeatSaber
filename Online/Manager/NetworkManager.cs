@@ -1,8 +1,16 @@
 ﻿using System;
-using System.Threading;
+using System.Collections;
+using System.Net;
+
+using BetterBeatSaber.Online.Api;
+using BetterBeatSaber.Shared.Models;
+
+using JetBrains.Annotations;
 
 using LiteNetLib;
 using LiteNetLib.Utils;
+
+using UnityEngine;
 
 using Zenject;
 
@@ -19,6 +27,11 @@ internal sealed class NetworkManager : IInitializable, IDisposable, ITickable {
     private NetDataWriter Writer { get; } = new();
     private NetPeer? Peer { get; set; }
     
+    [Inject, UsedImplicitly]
+    private readonly SteamPlatformUserModel _platformUserModel = null!;
+    
+    public Player? Player { get; private set; }
+    
     public NetworkManager() {
         Manager = new NetManager(Listener) {
             EnableStatistics = true,
@@ -31,15 +44,14 @@ internal sealed class NetworkManager : IInitializable, IDisposable, ITickable {
             SimulationMaxLatency = 50
             #endif
         };
-        Listener.PeerConnectedEvent += OnConnectedEvent;
-        Listener.PeerDisconnectedEvent += OnDisconnectedEvent;
-        Listener.NetworkReceiveEvent += OnReceiveEvent;
     }
 
     #region Event Handlers
-    
-    private void OnConnectedEvent(NetPeer _) =>
+
+    private void OnConnectedEvent(NetPeer _) {
         OnConnected?.Invoke();
+        Console.WriteLine("CONNNNNNNNNNN");
+    }
     
     private void OnDisconnectedEvent(NetPeer _, DisconnectInfo __) =>
         OnDisconnected?.Invoke();
@@ -48,19 +60,21 @@ internal sealed class NetworkManager : IInitializable, IDisposable, ITickable {
         PacketProcessor.ReadAllPackets(reader);
 
     #endregion
-    
+
+    #region Init & Exit
+
     public void Initialize() =>
-        Connect();
+        global::BetterBeatSaber.Utilities.SharedCoroutineStarter.Instance.StartCoroutine(Connect());
 
     public void Dispose() =>
         Disconnect();
     
-    public void Tick() {
-        while (!Console.KeyAvailable) {
-            //client.PollEvents();
-            Thread.Sleep(15);
-        }
-    }
+    #endregion
+    
+    public void Tick() =>
+        Manager.PollEvents();
+
+    #region Public
     
     public void RegisterPacketListener<T>(Action<T> listener) where T : INetSerializable, new() =>
         PacketProcessor.SubscribeNetSerializable(listener);
@@ -73,21 +87,60 @@ internal sealed class NetworkManager : IInitializable, IDisposable, ITickable {
         PacketProcessor.WriteNetSerializable(Writer, ref packet);
         Peer?.Send(Writer, deliveryMethod);
     }
+    
+    #endregion
 
-    private void Connect() {
+    #region Private
+
+    private IEnumerator Connect() {
         
-        Listener.NetworkReceiveEvent -= OnReceiveEvent;
-        Listener.PeerConnectedEvent -= OnConnectedEvent;
-        Listener.PeerDisconnectedEvent -= OnDisconnectedEvent;
+        Console.WriteLine("CONNECTING TO SERVER...");
+        
+        yield return new WaitUntil(() => SteamManager.Initialized);
+
+        var ticketTask = _platformUserModel.GetUserAuthToken();
+        yield return new WaitUntil(() => ticketTask.IsCompleted);
+
+        if(string.IsNullOrEmpty(ticketTask.Result.token))
+            yield break;
+
+        var request = new ApiRequest("/server");
+        yield return request.SendWebRequest();
+        
+        if(request.Failed)
+            yield break;
+        
+        var addressSplit = request.ContentString.Split(':');
+        if(addressSplit.Length != 2 || !IPAddress.TryParse(addressSplit[0], out var address) || !int.TryParse(addressSplit[1], out var port))
+            yield break;
+        
+        Connect(new IPEndPoint(address, port), ticketTask.Result.token);
+        
+    }
+    
+    private void Connect(IPEndPoint endpoint, string ticket) {
+        
+        Listener.PeerConnectedEvent += OnConnectedEvent;
+        Listener.PeerDisconnectedEvent += OnDisconnectedEvent;
+        Listener.NetworkReceiveEvent += OnReceiveEvent;
         
         Manager.Start();
-        Peer = Manager.Connect("", 2, "");
+
+        var writer = new NetDataWriter();
+        writer.Put((byte) 0x25);
+        writer.Put(ticket);
+
+        Peer = Manager.Connect(endpoint, writer);
         
     }
 
     private void Disconnect() {
         Manager.Stop();
+        Listener.PeerConnectedEvent -= OnConnectedEvent;
+        Listener.PeerDisconnectedEvent -= OnDisconnectedEvent;
         Listener.NetworkReceiveEvent -= OnReceiveEvent;
     }
+    
+    #endregion
 
 }

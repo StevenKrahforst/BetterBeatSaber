@@ -1,6 +1,4 @@
-﻿using System.IO;
-using System.IO.Compression;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -23,7 +21,7 @@ internal static class OnlineLoader {
 
     private static async Task LoadAsync() {
 
-        #if !DEBUG // Update to Local !!!
+        #if !DEBUG
         
         var raw = await new HttpClient().GetByteArrayAsync("http://localhost:5182/download");
         if (raw is null or { Length: 0 })
@@ -55,12 +53,17 @@ internal static class OnlineLoader {
             .GetConstructor([ typeof(Logger), typeof(Zenjector), typeof(MixinManager) ])?
             .Invoke([ BetterBeatSaber.Instance.Logger, BetterBeatSaber.Instance.Zenjector, BetterBeatSaber.Instance.MixinManager ]);
 
+        InvokeMethod("Init");
+        
     }
     
     internal static void Start() =>
-        Instance?.GetType().GetMethod("Init", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(Instance, []);
+        InvokeMethod(nameof(Start));
 
     internal static void Exit() =>
-        Instance?.GetType().GetMethod("Exit", BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(Instance, []);
+        InvokeMethod(nameof(Exit));
+    
+    private static void InvokeMethod(string name) =>
+        Instance?.GetType().GetMethod(name, BindingFlags.NonPublic | BindingFlags.Instance)?.Invoke(Instance, []);
     
 }

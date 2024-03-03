@@ -1,6 +1,4 @@
-﻿using System;
-
-using BetterBeatSaber.Mixin;
+﻿using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Online.Installers;
 
 using IPA.Logging;
@@ -25,18 +23,34 @@ public sealed class BetterBeatSaberOnline(
     internal Zenjector Zenjector { get; } = zenjector;
     internal MixinManager MixinManager { get; } = mixinManager;
 
+    /// <summary>
+    /// Invoked by <see cref="OnlineLoader.LoadAsync"/>.
+    /// </summary>
     internal void Init() {
+        
+        Logger.Info("INIT");
         
         Zenjector.Install<AppInstaller>(Location.App);
         Zenjector.Install<GameInstaller>(Location.GameCore);
         
-        MixinManager.AddMixins();
+    }
+
+    /// <summary>
+    /// Invoked by <see cref="OnlineLoader.Start"/>.
+    /// </summary>
+    internal void Start() {
         
-        Console.WriteLine("HEYYYY");
+        Logger.Info("START");
+        
+        //MixinManager.AddMixins();
         
     }
 
+    /// <summary>
+    /// Invoked by <see cref="OnlineLoader.Exit"/>.
+    /// </summary>
     internal void Exit() {
+        Logger.Info("EXIT");
     }
 
 }

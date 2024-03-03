@@ -57,6 +57,9 @@
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.UI.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="UnityEngine.UnityWebRequestModule">
+          <HintPath>C:\Users\steve\BSManager\BSInstances\1.29.1\Beat Saber_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+        </Reference>
         <Reference Include="Zenject">
             <HintPath>$(BeatSaberManagedDirectory)\Zenject.dll</HintPath>
             <Private>False</Private>
@@ -77,6 +80,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="Api\ApiRequest.cs" />
         <Compile Include="LiteNetLib\**\*" />
     </ItemGroup>
     
@@ -110,7 +114,6 @@
         <Compile Include="Installers\AppInstaller.cs" />
         <Compile Include="Installers\GameInstaller.cs" />
         <Compile Include="Installers\MenuInstaller.cs" />
-        <Compile Include="Manager\AuthManager.cs" />
         <Compile Include="Manager\DiscordManager.cs" />
         <Compile Include="Manager\FriendManager.cs" />
         <Compile Include="Manager\NetworkManager.cs" />
