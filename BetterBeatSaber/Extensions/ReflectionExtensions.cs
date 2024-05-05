@@ -5,8 +5,6 @@ using System.Reflection;
 
 using IPA.Logging;
 
-using Logger = IPA.Logging.Logger;
-
 namespace BetterBeatSaber.Extensions; 
 
 public static class ReflectionExtensions {

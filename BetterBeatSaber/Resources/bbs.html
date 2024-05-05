@@ -1,0 +1,31 @@
+<head>
+    <title>Better Beat Saber</title>
+    <meta description="Better Beat Saber RGB Integration" />
+    <meta publisher="StevenK" />
+</head>
+  
+<body style="margin: 0; padding: 0;">
+    <canvas id="canvas" width="320" height="200"></canvas>
+</body>
+  
+<script>
+    
+    const c = document.getElementById('canvas');
+    const ctx = c.getContext('2d');
+    const width = 320, height = 200;
+
+    let hue = 0;
+    function onCanvasApiEvent(apiEvent) {
+        if (apiEvent["sender"] === "bbs")
+            hue = apiEvent["event"];
+    }
+  
+    function update() {
+        ctx.fillStyle = 'hsl('+ hue + ', 100%, 50%)';
+        ctx.fillRect(0, 0, width , height);
+        window.requestAnimationFrame(update);
+    }
+    
+    window.requestAnimationFrame(update);
+    
+</script>

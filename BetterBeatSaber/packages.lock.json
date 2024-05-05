@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "dependencies": {
+    ".NETFramework,Version=v4.8.1": {},
+    ".NETFramework,Version=v4.8.1/win": {},
+    ".NETFramework,Version=v4.8.1/win-arm64": {},
+    ".NETFramework,Version=v4.8.1/win-x64": {},
+    ".NETFramework,Version=v4.8.1/win-x86": {}
+  }
+}

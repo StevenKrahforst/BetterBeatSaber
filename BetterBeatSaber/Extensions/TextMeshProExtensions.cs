@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using BeatSaberMarkupLanguage;
+
+using TMPro;
 
 using UnityEngine;
 
@@ -6,6 +8,8 @@ namespace BetterBeatSaber.Extensions;
 
 public static class TextMeshProExtensions {
 
+    internal static TMP_FontAsset? BloomFont { get; set; } = null!;
+    
     public static void ApplyGradient(this TMP_Text text, Color start, Color end, int until = -1) {
         
         text.ForceMeshUpdate();
@@ -35,6 +39,10 @@ public static class TextMeshProExtensions {
             
         text.UpdateVertexData(TMP_VertexDataUpdateFlags.All);
         
+    }
+
+    public static void SetBloom(this TextMeshPro text, bool enable = true) {
+        text.font = enable ? BloomFont ?? BeatSaberUI.MainTextFont : BeatSaberUI.MainTextFont;
     }
     
     public static TMP_FontAsset Clone(this TMP_FontAsset original) {

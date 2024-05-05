@@ -30,7 +30,7 @@ internal static class FpsCounterCountersPlusMixin {
     [MixinMethod("Tick", MixinAt.Post)]
     private static void Tick(ref TMP_Text ____counterText, ref ImageView ____ringImage) {
         
-        if (!FpsTargetPercentageColorValueConverterMixin.RGB || Manager.ColorManager.Instance == null)
+        if (!FpsTargetPercentageColorValueConverterMixin.RGB)
             return;
         
         ____counterText.color = Manager.ColorManager.Instance.FirstColor;

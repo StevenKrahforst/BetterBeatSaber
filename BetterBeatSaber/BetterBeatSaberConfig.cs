@@ -1,22 +1,84 @@
-﻿using BetterBeatSaber.Colorizer;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+
+using BetterBeatSaber.Colorizer;
+using BetterBeatSaber.Config.Attributes;
 using BetterBeatSaber.Enums;
 using BetterBeatSaber.HudModifier;
+using BetterBeatSaber.Manager;
 using BetterBeatSaber.Utilities;
-
-using IPA.Config.Stores.Converters;
-
-using Newtonsoft.Json;
 
 namespace BetterBeatSaber; 
 
 // CustomFloorPlugin check to disable hide level/menu env
 
-internal sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfig> {
+// ReSharper disable ReplaceAutoPropertyWithComputedProperty
 
-    // ReSharper disable once ConvertToPrimaryConstructor
-    public BetterBeatSaberConfig(string name) : base(name) { }
-    
+internal sealed class BetterBeatSaberConfig(string name) : Config.Config<BetterBeatSaberConfig>(name) {
+
+    #region Handlers
+
+    protected override void OnLoad(bool firstLoad) {
+
+        if (!firstLoad)
+            return;
+
+        // ReSharper disable once InvertIf
+        if (SignalRGBIntegration) {
+            var path = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "WhirlwindFX", "Effects", "bbs.html");
+            if (!File.Exists(path)) {
+                try {
+                    using var stream = File.OpenWrite(path);
+                    typeof(BetterBeatSaberConfig).Assembly.GetManifestResourceStream("BetterBeatSaber.Resources.bbs.html")!.CopyTo(stream);
+                    ModalManager.Instance.ShowModal("Warning", "You have to restart SignalRGB and either the game or apply the \"Better Beat Saber\" effect by yourself");
+                } catch (Exception) {
+                    BetterBeatSaber.Instance.Logger.Warn("Failed to extract SignalRGB Integration Effect");
+                }
+            } else {
+                Process.Start(System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "Local", "VortxEngine", "SignalRgbLauncher.exe"), "--url=effect/apply/Better%20Beat%20Saber?-silentlaunch-");
+            }
+        }
+        
+    }
+
+    #endregion
+
+    #region Config
+
     public ObservableValue<float> ColorUpdateDurationTime { get; set; } = new(5f);
+
+    #region Integrations
+
+    #region RGB
+
+    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
+    public bool SignalRGBIntegration { get; set; } = true;
+
+    #region Philips Hue
+    
+    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
+    public bool PhilipsHueIntegration { get; set; } = false;
+    
+    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
+    public string PhilipsHueBridgeIp { get; set; } = string.Empty;
+    
+    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
+    public string PhilipsHueUsername { get; set; } = string.Empty;
+    
+    // ReSharper disable once UseCollectionExpression
+    // ReSharper disable once CollectionNeverUpdated.Global
+    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
+    public List<int> PhilipsHueLightIds { get; } = new();
+    
+    #endregion
+    
+    public ObservableValue<float> RGBIntegrationUpdateInterval { get; } = new(.02f);
+
+    #endregion
+    
+    #endregion
     
     #region Game Colorization
 
@@ -99,8 +161,6 @@ internal sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfi
 
     #endregion
     
-    public bool EnableOnlineMode { get; set; } = false;
-    
     #endregion
     
     public HudModifier.HudModifier.BaseOptions ComboHudModifier { get; set; } = new();
@@ -109,4 +169,6 @@ internal sealed class BetterBeatSaberConfig : Config.Config<BetterBeatSaberConfi
     public HudModifier.HudModifier.BaseOptions ProgressHudModifier { get; set; } = new();
     public ScoreHudModifier.Options ScoreHudModifier { get; set; } = new();
 
+    #endregion
+    
 }

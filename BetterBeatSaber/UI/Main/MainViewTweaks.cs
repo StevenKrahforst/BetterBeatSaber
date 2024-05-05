@@ -1,5 +1,7 @@
 ﻿namespace BetterBeatSaber.UI.Main;
 
+// ReSharper disable UnusedMember.Global
+
 internal partial class MainView {
 
     public bool HideMissTexts {

@@ -163,6 +163,14 @@
                             <slider-setting text='Scale' value='HitScoreScale' apply-on-change='true' min='25' max='150' increment='5' />
                             <dropdown-list-setting text='Mode' value='HitScoreMode' apply-on-change='true' options='HitScoreModes' />
                         </vertical>
+                        <vertical bg='round-rect-panel' vertical-fit='PreferredSize' pad='5'>
+                            <horizontal pref-width='90'>
+                                <text text='Integrations' font-size='5' bold='true' align='Center' />
+                            </horizontal>
+                            <checkbox-setting text='Enable SignalRGB Integration' hover-hint='Requires a game restart' value='SignalRGBIntegration' apply-on-change='true' />
+                            <text text='If you want to use Philips Hue Integration, you will have to edit the config file' font-size='3' />
+                            <clickable-text text='Click here to get started using Philips Hue' on-click='OpenPhilipsHueGetStartedPage' />
+                        </vertical>
                     </modifier-container>
                 </settings-scroll-view>
             </horizontal>

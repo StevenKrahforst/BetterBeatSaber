@@ -13,6 +13,8 @@ using JetBrains.Annotations;
 
 namespace BetterBeatSaber.UI.Main;
 
+// ReSharper disable UnusedMember.Global
+
 internal partial class MainView : BSMLAutomaticViewController {
 
     private static MainView? _instance;

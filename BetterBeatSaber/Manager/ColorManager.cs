@@ -1,15 +1,14 @@
 ﻿using System;
+using System.Collections;
+using System.Text;
 
 using UnityEngine;
-
-using Zenject;
+using UnityEngine.Networking;
 
 namespace BetterBeatSaber.Manager;
 
-public sealed class ColorManager : IInitializable, IDisposable, ITickable {
+public sealed class ColorManager : Utilities.PersistentSingleton<ColorManager> {
 
-    public static ColorManager? Instance { get; private set; }
-    
     private float _duration;
     
     public float FirstColorHue { get; private set; }
@@ -20,22 +19,31 @@ public sealed class ColorManager : IInitializable, IDisposable, ITickable {
     public Color SecondColor { get; private set; }
     public Color ThirdColor { get; private set; }
 
-    public ColorManager() {
-        Instance = this;
-    }
+    private int[] _philipsHueLightIds = [];
 
-    public void Initialize() {
+    private void Start() {
+        
         _duration = BetterBeatSaberConfig.Instance.ColorUpdateDurationTime.CurrentValue;
+        
         BetterBeatSaberConfig.Instance.ColorUpdateDurationTime.OnValueChanged += OnColorUpdateDurationTimeValueChanged;
+
+        _philipsHueLightIds = BetterBeatSaberConfig.Instance.PhilipsHueLightIds.ToArray();
+
+        if(BetterBeatSaberConfig.Instance.SignalRGBIntegration || BetterBeatSaberConfig.Instance.PhilipsHueIntegration)
+            StartCoroutine(UpdateIntegrations());
+        
     }
 
-    public void Dispose() =>
+    protected override void OnDestroy() {
+        StopCoroutine(UpdateIntegrations());
         BetterBeatSaberConfig.Instance.ColorUpdateDurationTime.OnValueChanged += OnColorUpdateDurationTimeValueChanged;
-    
+        base.OnDestroy();
+    }
+
     private void OnColorUpdateDurationTimeValueChanged(float duration) =>
         _duration = duration;
-
-    public void Tick() {
+    
+    private void Update() {
         
         var time = Time.time / _duration;
         var hue = Mathf.Clamp(time % 2f >= 1f ? 1f - time % 1f : time % 1f, .05f, .9f);
@@ -49,5 +57,35 @@ public sealed class ColorManager : IInitializable, IDisposable, ITickable {
         ThirdColor = Color.HSVToRGB(ThirdColorHue, 1f, 1f);
         
     }
+
+    #region Integrations
+
+    private IEnumerator UpdateIntegrations() {
+        for(;;) {
+            if(BetterBeatSaberConfig.Instance.SignalRGBIntegration)
+                yield return SetSignalRGBHue((int) Math.Floor(FirstColorHue * 360));
+            if(BetterBeatSaberConfig.Instance.PhilipsHueIntegration)
+                yield return SetPhilipsHueHue((int) Math.Floor((1.0 - FirstColorHue) * 65535));
+            yield return new WaitForSeconds(BetterBeatSaberConfig.Instance.RGBIntegrationUpdateInterval.CurrentValue);
+        }
+        // ReSharper disable once IteratorNeverReturns
+    }
+
+    private static IEnumerator SetSignalRGBHue(int hue) {
+        var request = new UnityWebRequest($"http://localhost:16034/canvas/event?sender=bbs&event={hue}");
+        request.method = "POST";
+        yield return request.SendWebRequest();
+    }
+
+    private IEnumerator SetPhilipsHueHue(int hue) {
+        foreach (var lightId in _philipsHueLightIds) {
+            var request = new UnityWebRequest($"http://{BetterBeatSaberConfig.Instance.PhilipsHueBridgeIp}/api/{BetterBeatSaberConfig.Instance.PhilipsHueUsername}/lights/{lightId}/state");
+            request.method = "PUT";
+            request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes($"{{\"on\":true, \"sat\":254, \"bri\":254,\"hue\":{hue}, \"effect\": \"none\"}}"));
+            yield return request.SendWebRequest();
+        }
+    }
+    
+    #endregion
 
 }

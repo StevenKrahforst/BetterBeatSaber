@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 
 using BetterBeatSaber.Config.Converters;
+using BetterBeatSaber.Utilities;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
@@ -39,12 +40,16 @@ public abstract class Config<T> : Config where T : Config<T> {
             new Vector3Converter(),
             new QuaternionConverter(),
             new ObservableValueConverter<bool>(),
-            new ObservableValueConverter<float>()
+            new ObservableValueConverter<float>(),
+            new ObservableValueConverter<string>()
         },
         ContractResolver = new DefaultContractResolver {
             NamingStrategy = new SnakeCaseNamingStrategy()
         }
     };
+
+    public event Action? OnLoaded;
+    public event Action? OnSaved;
     
     [JsonIgnore]
     public string Path { get; private set; }
@@ -72,7 +77,7 @@ public abstract class Config<T> : Config where T : Config<T> {
         Watcher.Path = System.IO.Path.Combine(Environment.CurrentDirectory, "UserData");
         Watcher.Filter = $"{name}.json";
         
-        Load();
+        Load(true);
         Save();
         
     }
@@ -86,7 +91,7 @@ public abstract class Config<T> : Config where T : Config<T> {
            DateTime.Now - LastInvokeTime < TimeSpan.FromMilliseconds(25))
             return;
 
-        SharedCoroutineStarter.instance.StartCoroutine(LoadAsync());
+        Utilities.SharedCoroutineStarter.Instance.StartCoroutine(LoadAsync());
         
         Load();
         
@@ -94,11 +99,16 @@ public abstract class Config<T> : Config where T : Config<T> {
         
     }
 
-    public void Load() {
+    public void Load() =>
+        Load(false);
+
+    private void Load(bool firstLoad) {
         if (File.Exists(Path)) {
             try {
                 JsonConvert.PopulateObject(File.ReadAllText(Path), this, SerializerSettings);
+                OnLoad(firstLoad);
                 ClearLists();
+                OnLoaded?.Invoke();
             } catch (Exception exception) {
                 BetterBeatSaber.Instance.Logger.Error("Failed to load config file! Using default values instead.");
                 BetterBeatSaber.Instance.Logger.Error(exception);
@@ -115,9 +125,18 @@ public abstract class Config<T> : Config where T : Config<T> {
         ClearLists();
         File.WriteAllText(Path, JsonConvert.SerializeObject(this, SerializerSettings));
         LastSaveTime = DateTime.Now;
+        OnSave();
+        OnSaved?.Invoke();
     }
 
+    #region Overideables
+
+    protected virtual void OnLoad(bool firstLoad) {}
+    protected virtual void OnSave() {}
+    
     protected virtual void ClearLists() {}
+    
+    #endregion
 
     // Resources.FindObjectsOfTypeAll<MenuTransitionsHelper>().FirstOrDefault()?.RestartGame();
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 using BeatSaberMarkupLanguage.Attributes;
@@ -9,6 +10,8 @@ using BetterBeatSaber.Enums;
 using JetBrains.Annotations;
 
 namespace BetterBeatSaber.UI.Main;
+
+// ReSharper disable UnusedMember.Global
 
 internal partial class MainView {
 
@@ -43,5 +46,18 @@ internal partial class MainView {
     }
 
     #endregion
-    
+
+    #region Integrations
+
+    public bool SignalRGBIntegration {
+        get => BetterBeatSaberConfig.Instance.SignalRGBIntegration;
+        set => BetterBeatSaberConfig.Instance.SignalRGBIntegration = value;
+    }
+
+    [UIAction(nameof(OpenPhilipsHueGetStartedPage))]
+    public void OpenPhilipsHueGetStartedPage() =>
+        Process.Start("https://developers.meethue.com/develop/get-started-2/");
+
+    #endregion
+
 }

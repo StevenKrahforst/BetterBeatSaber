@@ -35,10 +35,6 @@ internal abstract class UIElementColorizer<T> : MonoBehaviour {
     }
 
     private void Update() {
-
-        if (Manager.ColorManager.Instance == null)
-            return;
-        
         if (_isImageView) {
             foreach (var imageView in _images.Cast<ImageView>()) {
                 if (imageView.name == "Icon") {
@@ -54,7 +50,6 @@ internal abstract class UIElementColorizer<T> : MonoBehaviour {
                 image.color = Manager.ColorManager.Instance.FirstColor;
             }
         }
-        
     }
 
 }

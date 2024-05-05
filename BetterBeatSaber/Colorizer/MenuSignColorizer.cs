@@ -16,10 +16,6 @@ internal sealed class MenuSignColorizer : IInitializable, ITickable {
     [Inject]
     private readonly MenuEnvironmentManager _menuEnvironmentManager = null!;
     
-    [UsedImplicitly]
-    [Inject]
-    private readonly Manager.ColorManager _colorManager = null!;
-
     private FlickeringNeonSign _flickeringNeonSign = null!;
 
     private SpriteRenderer? _eLogo;
@@ -98,8 +94,8 @@ internal sealed class MenuSignColorizer : IInitializable, ITickable {
 
     public void UpdateColors() {
 
-        var color0 = _colorManager.FirstColor.WithAlpha(0.8f);
-        var color1 = _colorManager.SecondColor.WithAlpha(0.8f);
+        var color0 = Manager.ColorManager.Instance.FirstColor.WithAlpha(0.8f);
+        var color1 = Manager.ColorManager.Instance.SecondColor.WithAlpha(0.8f);
 
         _batLogo.color = color0;
         if(_eLogo != null)

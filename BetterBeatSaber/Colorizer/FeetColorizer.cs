@@ -8,12 +8,9 @@ using Zenject;
 
 namespace BetterBeatSaber.Colorizer; 
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class FeetColorizer : IInitializable, IDisposable, ITickable {
 
-    [UsedImplicitly]
-    [Inject]
-    private readonly Manager.ColorManager _colorManager = null!;
-    
     private bool _enabled;
     private SpriteRenderer? _renderer;
 
@@ -29,7 +26,7 @@ internal sealed class FeetColorizer : IInitializable, IDisposable, ITickable {
 
     public void Tick() {
         if (_enabled && _renderer != null)
-            _renderer.color = _colorManager.FirstColor;
+            _renderer.color = Manager.ColorManager.Instance.FirstColor;
     }
     
     public void Dispose() =>

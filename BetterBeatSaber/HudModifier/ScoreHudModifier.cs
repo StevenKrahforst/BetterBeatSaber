@@ -30,10 +30,6 @@ internal sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable,
     [Inject]
     private readonly BetterBloomFontProvider _bloomFontProvider = null!;
     
-    [UsedImplicitly]
-    [Inject]
-    private readonly Manager.ColorManager _colorManager = null!;
-    
     private TextMeshProUGUI? _rankText;
     private TextMeshProUGUI? _scoreText;
 
@@ -69,8 +65,8 @@ internal sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable,
 
     public void Tick() {
 
-        var firstColor = _rgb ? _colorManager.FirstColor : _color;
-        var secondColor = _rgb ? _colorManager.SecondColor : _secondColor;
+        var firstColor = _rgb ? Manager.ColorManager.Instance.FirstColor : _color;
+        var secondColor = _rgb ? Manager.ColorManager.Instance.SecondColor : _secondColor;
         
         if (_gradient) {
 

@@ -11,7 +11,7 @@
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>BetterBeatSaber</RootNamespace>
         <AssemblyName>BetterBeatSaber</AssemblyName>
-        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
     
@@ -135,6 +135,10 @@
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="BGLib.AppFlow" Condition="'$(BeatSaberVersion)' != '1.29.1'">
+            <HintPath>$(BeatSaberManagedDirectory)\BGLib.AppFlow.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
         <Reference Include="UnityExplorer.Standalone.Mono" Condition="'$(Configuration)' == 'Debug'">
             <HintPath>$(BeatSaberManagedDirectory)\UnityExplorer.STANDALONE.Mono.dll</HintPath>
             <Private>False</Private>
@@ -167,6 +171,7 @@
         <Compile Include="Colorizer\ObstacleColorizer.cs" />
         <Compile Include="Colorizer\PlayersPlaceColorizer.cs" />
         <Compile Include="Colorizer\UIElementColorizer.cs" />
+        <Compile Include="Config\Attributes\RequiresRestartAttribute.cs" />
         <Compile Include="Config\Config.cs" />
         <Compile Include="Config\Converters\ColorConverter.cs" />
         <Compile Include="Config\Converters\ObservableValueConverter.cs" />
@@ -182,6 +187,8 @@
         <Compile Include="Interops\SongCore.cs" />
         <Compile Include="Interops\Tweaks55.cs" />
         <Compile Include="Interop\Interop.cs" />
+        <Compile Include="Manager\ModalManager.cs" />
+        <Compile Include="Mixins\FlyingScoreEffectMixin.cs" />
         <Compile Include="Mixins\SliderControllerMixin.cs" />
         <Compile Include="BetterBeatSaber.cs" />
         <Compile Include="BetterBeatSaberConfig.cs" />
@@ -211,7 +218,6 @@
         <Compile Include="Mixins\CustomNoteControllerMixin.cs" />
         <Compile Include="Mixins\DateTimeMixin.cs" />
         <Compile Include="Mixins\DeltaRankCounterVisualManagerMixin.cs" />
-        <Compile Include="Mixins\EffectPoolsManualInstallerMixin.cs" />
         <Compile Include="Mixins\FCPCounterControllerMixin.cs" />
         <Compile Include="Mixins\FPSCounter\FpsCounterCountersPlusMixin.cs" />
         <Compile Include="Mixins\FPSCounter\FpsTargetPercentageColorValueConverterMixin.cs" />
@@ -251,8 +257,6 @@
         <Compile Include="Mixin\TypeResolvers\PluginResolver.cs" />
         <Compile Include="Mixin\TypeResolvers\TypeProvider.cs" />
         <Compile Include="Mixin\TypeResolvers\TypeResolver.cs" />
-        <Compile Include="Models\HitScoreFlyingScoreEffect.cs" />
-        <Compile Include="Online\OnlineLoader.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Providers\BetterBloomFontProvider.cs" />
         <Compile Include="Providers\MaterialProvider.cs" />
@@ -277,6 +281,7 @@
 
         <EmbeddedResource Include="manifest.json" />
         <EmbeddedResource Include="Resources\resources" />
+        <EmbeddedResource Include="Resources\bbs.html" />
 
         <EmbeddedResource Include="UI\Main\MainView.bsml" />
         <EmbeddedResource Include="UI\ModifierView\ModifierView.bsml" />

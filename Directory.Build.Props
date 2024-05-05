@@ -10,7 +10,7 @@
         <LangVersion>latest</LangVersion>
         <OutputPath>bin\$(Configuration)</OutputPath>
         <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
-        <BeatSaberVersion>1.29.1</BeatSaberVersion>
+        <BeatSaberVersion>1.34.2</BeatSaberVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">

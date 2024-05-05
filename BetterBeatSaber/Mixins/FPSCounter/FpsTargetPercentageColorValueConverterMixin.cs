@@ -28,7 +28,7 @@ internal static class FpsTargetPercentageColorValueConverterMixin {
         RGB = fpsTargetPercentage > RGBThreshold;
         
         __result = fpsTargetPercentage switch {
-            > RGBThreshold => Manager.ColorManager.Instance?.FirstColor ?? Green,
+            > RGBThreshold => Manager.ColorManager.Instance.FirstColor,
             > .95f => Green,
             > .7f => Yellow,
             > .5f => Orange,

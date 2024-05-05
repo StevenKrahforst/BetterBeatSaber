@@ -9,6 +9,7 @@ using Zenject;
 
 namespace BetterBeatSaber.Bindings;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class MenuEnvironmentHider : IInitializable, IDisposable {
 
     private static readonly List<GameObject> MenuGameObjects = [];

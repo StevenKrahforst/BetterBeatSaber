@@ -8,6 +8,7 @@ using IPA.Loader;
 
 namespace BetterBeatSaber.Interops;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class SongCore : Interop<SongCore>, IDisposable {
 
     private static readonly List<string> ChromaCapabilities = [

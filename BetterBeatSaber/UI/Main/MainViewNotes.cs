@@ -13,6 +13,8 @@ using UnityEngine.SceneManagement;
 
 namespace BetterBeatSaber.UI.Main;
 
+// ReSharper disable UnusedMember.Global
+
 // TODO: Add Custom Notes Support
 internal partial class MainView {
 

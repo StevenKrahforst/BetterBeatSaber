@@ -178,7 +178,7 @@ internal class Outline : MonoBehaviour {
     private void Update() {
         
         if (RGB) {
-            FirstColor = Manager.ColorManager.Instance!.FirstColor;
+            FirstColor = Manager.ColorManager.Instance.FirstColor;
             SecondColor = Manager.ColorManager.Instance.SecondColor;
         }
         

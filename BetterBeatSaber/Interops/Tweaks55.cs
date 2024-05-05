@@ -9,6 +9,7 @@ using IPA.Loader;
 
 namespace BetterBeatSaber.Interops;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class Tweaks55 : Interop.Interop<Tweaks55> {
 
     protected override string Plugin => "Tweaks55";

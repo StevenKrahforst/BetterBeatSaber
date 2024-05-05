@@ -3,6 +3,7 @@ using BetterBeatSaber.Colorizer;
 
 namespace BetterBeatSaber.Installer; 
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class MenuInstaller : Zenject.Installer {
 
     public override void InstallBindings() {

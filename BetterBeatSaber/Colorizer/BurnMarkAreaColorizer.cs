@@ -17,7 +17,7 @@ internal sealed class BurnMarkAreaColorizer : MonoBehaviour {
 
     private void Update() {
         
-        if (_lineRenderers == null || Manager.ColorManager.Instance == null)
+        if (_lineRenderers == null)
             return;
         
         foreach (var renderer in _lineRenderers) {

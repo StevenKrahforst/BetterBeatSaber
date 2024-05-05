@@ -51,9 +51,6 @@ internal sealed class ObstacleColorizer : MonoBehaviour {
 
     private void Update() {
         
-        if(Manager.ColorManager.Instance == null)
-            return;
-        
         var color = Manager.ColorManager.Instance.FirstColor;
 
         if (_obstacleFrame != null) {

@@ -40,10 +40,6 @@ internal sealed class EnergyHudModifier : HudModifier, IInitializable, ITickable
     [UsedImplicitly]
     [Inject]
     private readonly MaterialProvider _materialProvider = null!;
-    
-    [UsedImplicitly]
-    [Inject]
-    private readonly Manager.ColorManager _colorManager = null!;
 
     private Image? _energyBar;
 
@@ -72,7 +68,7 @@ internal sealed class EnergyHudModifier : HudModifier, IInitializable, ITickable
 
         // ReSharper disable once CompareOfFloatsByEqualityOperator
         if (_gameplayModifiers.instaFail || (_energyCounter.energy == 1f && _gameplayModifiers.energyType == GameplayModifiers.EnergyType.Bar)) {
-            _energyBar.color = _colorManager.FirstColor;
+            _energyBar.color = Manager.ColorManager.Instance.FirstColor;
         }
         
     }

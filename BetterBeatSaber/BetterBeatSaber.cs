@@ -1,9 +1,13 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Reflection;
 
+using BeatSaberMarkupLanguage;
+
+using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Installer;
 using BetterBeatSaber.Mixin;
-using BetterBeatSaber.Online;
+using BetterBeatSaber.Providers;
 using BetterBeatSaber.Utilities;
 
 using IPA;
@@ -13,12 +17,15 @@ using JetBrains.Annotations;
 
 using SiraUtil.Zenject;
 
+using TMPro;
+
 using UnityEngine;
+using UnityEngine.TextCore.LowLevel;
 
 using Logger = IPA.Logging.Logger;
 
 #if DEBUG
-using UnityExplorer;
+//using UnityExplorer;
 #endif
 
 namespace BetterBeatSaber; 
@@ -40,7 +47,7 @@ public sealed class BetterBeatSaber {
     public BetterBeatSaber([UsedImplicitly] Logger logger, [UsedImplicitly] Zenjector zenjector) {
 
         Instance = this;
-        
+
         Logger = logger;
         Zenjector = zenjector;
         
@@ -52,9 +59,6 @@ public sealed class BetterBeatSaber {
         
         MixinManager = new MixinManager("BetterBeatSaber", Assembly.GetExecutingAssembly());
         MixinManager.AddMixins();
-        
-        if (BetterBeatSaberConfig.Instance.EnableOnlineMode)
-            OnlineLoader.Load();
         
     }
 
@@ -77,13 +81,11 @@ public sealed class BetterBeatSaber {
         Zenjector.Expose<ComboUIController>("Environment");
         Zenjector.Expose<GameEnergyUIPanel>("Environment");
         
-        OnlineLoader.Start();
-        
         Utilities.SharedCoroutineStarter.Instance.StartCoroutine(LoadAssets());
 
         #if DEBUG
-        if (Environment.GetCommandLineArgs().Contains("--explorer"))
-            ExplorerStandalone.CreateInstance();
+        //if (Environment.GetCommandLineArgs().Contains("--explorer"))
+        //    ExplorerStandalone.CreateInstance();
         #endif
         
         UI.MainFlowCoordinator.Initialize();
@@ -92,7 +94,6 @@ public sealed class BetterBeatSaber {
 
     [OnExit]
     public void Exit() {
-        OnlineLoader.Exit();
         MixinManager.Unpatch();
     }
 
@@ -113,6 +114,10 @@ public sealed class BetterBeatSaber {
         var fillMaterialRequest = assetBundle.LoadAssetAsync<Material>("Outline Fill");
         yield return fillMaterialRequest;
         Outline.FillMaterial = (fillMaterialRequest.asset as Material)!;
+
+        var bloomFontRequest = assetBundle.LoadAssetAsync<Font>("Teko-Medium Bloom");
+        yield return bloomFontRequest;
+        TextMeshProExtensions.BloomFont = TMP_FontAsset.CreateFontAsset(bloomFontRequest.asset as Font, 90, 5, GlyphRenderMode.SDFAA, 1024, 512, AtlasPopulationMode.Static);
         
         assetBundle.Unload(false);
         

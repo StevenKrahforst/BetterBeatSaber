@@ -28,10 +28,6 @@ internal sealed class ComboHudModifier : HudModifier, IInitializable, ITickable,
     [Inject]
     private readonly BetterBloomFontProvider _bloomFontProvider = null!;
     
-    [UsedImplicitly]
-    [Inject]
-    private readonly Manager.ColorManager _colorManager = null!;
-    
     private CurvedTextMeshPro? _comboText;
     private CurvedTextMeshPro? _comboNumText;
 
@@ -73,23 +69,23 @@ internal sealed class ComboHudModifier : HudModifier, IInitializable, ITickable,
     public void Tick() {
         
         if(_comboText != null)
-            _comboText.color = _colorManager.FirstColor;
+            _comboText.color = Manager.ColorManager.Instance.FirstColor;
         
         if (_comboBroke)
             return;
         
         if(_comboNumText != null)
-            _comboNumText.color = _colorManager.FirstColor;
+            _comboNumText.color = Manager.ColorManager.Instance.FirstColor;
         
         if (_topLine != null) {
-            _topLine.color0 = _colorManager.FirstColor;
-            _topLine.color1 = _colorManager.FirstColor;
+            _topLine.color0 = Manager.ColorManager.Instance.FirstColor;
+            _topLine.color1 = Manager.ColorManager.Instance.FirstColor;
         }
         
         // ReSharper disable once InvertIf
         if (_bottomLine != null) {
-            _bottomLine.color0 = _colorManager.FirstColor;
-            _bottomLine.color1 = _colorManager.FirstColor;
+            _bottomLine.color0 = Manager.ColorManager.Instance.FirstColor;
+            _bottomLine.color1 = Manager.ColorManager.Instance.FirstColor;
         }
         
     }

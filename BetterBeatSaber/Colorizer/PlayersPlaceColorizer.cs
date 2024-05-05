@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Linq;
 
-using JetBrains.Annotations;
-
 using UnityEngine;
 
 using Zenject;
 
 namespace BetterBeatSaber.Colorizer; 
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class PlayersPlaceColorizer : IInitializable, IDisposable, ITickable {
 
     public const string GameObjectName = "PlayersPlace";
-    
-    [UsedImplicitly]
-    [Inject]
-    private readonly Manager.ColorManager _colorManager = null!;
     
     private bool _enabled;
     private RectangleFakeGlow? _rectangleFakeGlow;
@@ -32,7 +27,7 @@ internal sealed class PlayersPlaceColorizer : IInitializable, IDisposable, ITick
 
     public void Tick() {
         if (_enabled && _rectangleFakeGlow != null)
-            _rectangleFakeGlow.color = _colorManager.FirstColor;
+            _rectangleFakeGlow.color = Manager.ColorManager.Instance.FirstColor;
     }
 
     public void Dispose() =>

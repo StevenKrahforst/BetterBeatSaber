@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Linq;
 
+using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Interops;
-
-using JetBrains.Annotations;
 
 using UnityEngine;
 
@@ -11,11 +10,8 @@ using Zenject;
 
 namespace BetterBeatSaber.Colorizer;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class DustColorizer : IInitializable, IDisposable, ITickable {
-
-    [UsedImplicitly]
-    [Inject]
-    private readonly Manager.ColorManager _colorManager = null!;
     
     private bool _enabled;
     private ParticleSystem? _particleSystem;
@@ -34,7 +30,7 @@ internal sealed class DustColorizer : IInitializable, IDisposable, ITickable {
     public void Tick() {
         if(_enabled && _particleSystem != null)
 #pragma warning disable CS0618 // Type or member is obsolete
-            _particleSystem.startColor = _colorManager.FirstColor.ColorWithAlpha(_particleSystem.colorOverLifetime.color.Evaluate(_particleSystem.time).a);
+            _particleSystem.startColor = Manager.ColorManager.Instance.FirstColor.WithAlpha(_particleSystem.colorOverLifetime.color.Evaluate(_particleSystem.time).a);
 #pragma warning restore CS0618 // Type or member is obsolete
     }
 

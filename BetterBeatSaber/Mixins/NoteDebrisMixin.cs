@@ -20,14 +20,9 @@ internal static class NoteDebrisMixin {
     [MixinMethod(nameof(Init), MixinAt.Post)]
     [MixinMethod("Update", MixinAt.Post)]
     private static void Init(MaterialPropertyBlockController ____materialPropertyBlockController) {
-        
-        if (Manager.ColorManager.Instance == null)
-            return;
-        
         var materialPropertyBlock = ____materialPropertyBlockController.materialPropertyBlock;
         materialPropertyBlock.SetColor(ColorShaderPropertyId, Manager.ColorManager.Instance.FirstColor);
         ____materialPropertyBlockController.ApplyChanges();
-        
     }
 
 }

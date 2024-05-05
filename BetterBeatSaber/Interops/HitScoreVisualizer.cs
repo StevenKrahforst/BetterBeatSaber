@@ -6,6 +6,7 @@ using IPA.Loader;
 
 namespace BetterBeatSaber.Interops;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class HitScoreVisualizer : Interop<HitScoreVisualizer> {
 
     protected override string Plugin => "HitScoreVisualizer";

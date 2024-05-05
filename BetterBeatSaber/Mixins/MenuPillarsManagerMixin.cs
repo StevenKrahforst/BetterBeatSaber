@@ -21,7 +21,7 @@ internal static class MenuPillarsManagerMixin {
     private static void LateTick(object __instance) {
         var property = __instance.GetType().GetProperty("CurrentColor");
         var alpha = ((Color?) property?.GetValue(__instance))?.a ?? 1f;
-        property?.SetValue(__instance, Manager.ColorManager.Instance?.FirstColor.WithAlpha(alpha));
+        property?.SetValue(__instance, Manager.ColorManager.Instance.FirstColor.WithAlpha(alpha));
     }
 
 }

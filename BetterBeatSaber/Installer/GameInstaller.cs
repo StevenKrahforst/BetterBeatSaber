@@ -10,6 +10,7 @@ using Object = UnityEngine.Object;
 
 namespace BetterBeatSaber.Installer; 
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class GameInstaller : Zenject.Installer {
 
     public override void InstallBindings() {

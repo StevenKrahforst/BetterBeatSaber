@@ -6,17 +6,18 @@ internal sealed class BombColorizer : MonoBehaviour {
 
     private static readonly int SimpleColor = Shader.PropertyToID("_SimpleColor");
     
-    private Material? _sharedMaterial;
+    private Material[]? _sharedMaterials;
 
     private void Start() =>
-        _sharedMaterial = gameObject.GetComponentInChildren<Renderer>().sharedMaterial;
+        _sharedMaterials = gameObject.GetComponentInChildren<Renderer>().sharedMaterials;
 
     private void Update() {
 
-        if (_sharedMaterial == null || !BetterBeatSaberConfig.Instance.ColorizeBombs || Manager.ColorManager.Instance == null)
+        if (_sharedMaterials == null || !BetterBeatSaberConfig.Instance.ColorizeBombs)
             return;
-
-        _sharedMaterial.SetColor(SimpleColor, Manager.ColorManager.Instance.FirstColor);
+        
+        foreach (var sharedMaterial in _sharedMaterials)
+            sharedMaterial.SetColor(SimpleColor, Manager.ColorManager.Instance.FirstColor);
 
     }
 

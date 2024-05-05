@@ -57,9 +57,6 @@ internal static class ColorControllerMixin {
     
     [MixinMethod(nameof(Update), MixinAt.Pre)]
     private static bool Update(object __instance) {
-
-        if (Manager.ColorManager.Instance == null)
-            return false;
         
         if(!_isInitialized)
             Initialize();
