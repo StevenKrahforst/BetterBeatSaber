@@ -100,10 +100,6 @@
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.ParticleSystemModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="UnityEngine.TextCoreModule">
-            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreModule.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
         <Reference Include="UnityEngine.TextRenderingModule">
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextRenderingModule.dll</HintPath>
             <Private>False</Private>
@@ -131,8 +127,16 @@
     </ItemGroup>
     
     <ItemGroup>
+        <Reference Include="UnityEngine.TextCoreModule" Condition="'$(BeatSaberVersion)' == '1.29.1'">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
         <Reference Include="UnityEngine.TextCoreFontEngineModule" Condition="'$(BeatSaberVersion)' != '1.29.1'">
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.TextCoreTextEngineModule" Condition="'$(BeatSaberVersion)' != '1.29.1'">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
         <Reference Include="BGLib.AppFlow" Condition="'$(BeatSaberVersion)' != '1.29.1'">
