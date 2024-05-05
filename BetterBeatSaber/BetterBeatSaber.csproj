@@ -4,8 +4,6 @@
     <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
     
     <PropertyGroup>
-        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
         <ProjectGuid>{F4D05FAA-F8B3-45C0-9F23-07F36A2FD944}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -124,27 +122,32 @@
             <HintPath>$(BeatSaberManagedDirectory)\Zenject-usage.dll</HintPath>
             <Private>False</Private>
         </Reference>
+        <Reference Include="UnityExplorer.Standalone.Mono" Condition="'$(Configuration)' == 'Debug'">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityExplorer.STANDALONE.Mono.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
     </ItemGroup>
     
-    <ItemGroup>
-        <Reference Include="UnityEngine.TextCoreModule" Condition="'$(BeatSaberVersion)' == '1.29.1'">
+    <!-- 1.29.1 -->
+    <ItemGroup Condition="'$(BeatSaberVersion)' == '1.29.1'">
+        <Reference Include="UnityEngine.TextCoreModule">
             <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="UnityEngine.TextCoreFontEngineModule" Condition="'$(BeatSaberVersion)' != '1.29.1'">
-            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="UnityEngine.TextCoreTextEngineModule" Condition="'$(BeatSaberVersion)' != '1.29.1'">
-            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="BGLib.AppFlow" Condition="'$(BeatSaberVersion)' != '1.29.1'">
+    </ItemGroup>
+    
+    <!-- 1.29.4+ -->
+    <ItemGroup Condition="'$(BeatSaberVersion)' != '1.29.1'">
+        <Reference Include="BGLib.AppFlow">
             <HintPath>$(BeatSaberManagedDirectory)\BGLib.AppFlow.dll</HintPath>
             <Private>False</Private>
         </Reference>
-        <Reference Include="UnityExplorer.Standalone.Mono" Condition="'$(Configuration)' == 'Debug'">
-            <HintPath>$(BeatSaberManagedDirectory)\UnityExplorer.STANDALONE.Mono.dll</HintPath>
+        <Reference Include="UnityEngine.TextCoreFontEngineModule">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+            <Private>False</Private>
+        </Reference>
+        <Reference Include="UnityEngine.TextCoreTextEngineModule">
+            <HintPath>$(BeatSaberManagedDirectory)\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
             <Private>False</Private>
         </Reference>
     </ItemGroup>
