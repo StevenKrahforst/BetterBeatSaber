@@ -10,7 +10,7 @@
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
         <RootNamespace>BetterBeatSaber</RootNamespace>
-        <AssemblyName>BetterBeatSaber</AssemblyName>
+        <AssemblyName>BetterBeatSaber.$(BeatSaberVersion)</AssemblyName>
         <TargetFrameworkVersion>v4.8.1</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
     </PropertyGroup>
@@ -158,11 +158,6 @@
         <Reference Include="System.Runtime.Serialization" />
         <Reference Include="System.Web" />
         <Reference Include="System.Xml" />
-        <!--
-        <Reference Include="Microsoft.CSharp" />
-        <Reference Include="mscorlib" />
-        <Reference Include="System.Numerics" />
-        -->
     </ItemGroup>
 
     <ItemGroup>
@@ -294,6 +289,8 @@
     
     <ItemGroup>
         <Content Include="outline_shader.glsl" />
+        <Content Include="..\Directory.Build.props" />
+        <Content Include="..\.github\workflows\build.yml" />
     </ItemGroup>
     
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
