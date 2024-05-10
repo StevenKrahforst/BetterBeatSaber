@@ -4,7 +4,6 @@ using BetterBeatSaber.Enums;
 using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
-using BetterBeatSaber.Providers;
 
 using IPA.Utilities;
 

@@ -19,7 +19,7 @@ using Random = UnityEngine.Random;
 
 namespace BetterBeatSaber.HudModifier;
 
-internal sealed class EnergyHudModifier : HudModifier, IInitializable, ITickable, IDisposable {
+internal sealed class EnergyHudModifier : IHudModifier, ITickable, IDisposable {
 
     [UsedImplicitly]
     [Inject]
@@ -183,7 +183,7 @@ internal sealed class EnergyHudModifier : HudModifier, IInitializable, ITickable
         
     }
     
-    public class Options : BaseOptions {
+    public sealed class Options : BetterBeatSaberConfig.HudModifierOptions {
 
         public bool ShakeOnComboBreak { get; set; } = true;
         

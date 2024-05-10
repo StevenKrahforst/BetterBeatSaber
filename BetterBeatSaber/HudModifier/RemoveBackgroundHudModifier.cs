@@ -4,7 +4,8 @@ using Zenject;
 
 namespace BetterBeatSaber.HudModifier; 
 
-internal sealed class RemoveBackgroundHudModifier : HudModifier, IInitializable {
+// ReSharper disable once ClassNeverInstantiated.Global
+internal sealed class RemoveBackgroundHudModifier : IHudModifier {
 
     public void Initialize() {
         

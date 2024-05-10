@@ -1,4 +1,5 @@
-﻿using BetterBeatSaber.Mixin.Attributes;
+﻿using BetterBeatSaber.Extensions;
+using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
 using BetterBeatSaber.Providers;
 
@@ -18,10 +19,10 @@ internal static class FpsCounterCountersPlusMixin {
     [MixinMethod("CounterInit", MixinAt.Post)]
     private static void CounterInit(ref TMP_Text ____counterText, ref ImageView ____ringImage) {
         
-        if(!BetterBeatSaberConfig.Instance.ColorizeFPSCounter || BetterBloomFontProvider.Instance == null || MaterialProvider.Instance == null)
+        if(!BetterBeatSaberConfig.Instance.ColorizeFPSCounter || MaterialProvider.Instance == null)
             return;
         
-        ____counterText.font = BetterBloomFontProvider.Instance.BloomFont;
+        ____counterText.font = TextMeshProExtensions.BloomFont;
         ____counterText.fontSharedMaterial = MaterialProvider.Instance.DistanceFieldMaterial;
         ____ringImage.material = MaterialProvider.Instance.DefaultUIMaterial;
         

@@ -64,7 +64,7 @@ internal sealed class GameInstaller : Zenject.Installer {
 
     }
     
-    private void BindHudModifier<T>() where T : HudModifier.HudModifier =>
+    private void BindHudModifier<T>() where T : IHudModifier =>
         Container.BindInterfacesAndSelfTo<T>().AsSingle();
 
 }

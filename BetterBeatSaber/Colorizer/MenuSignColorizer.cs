@@ -2,6 +2,8 @@
 
 using BetterBeatSaber.Extensions;
 
+using IPA.Utilities;
+
 using JetBrains.Annotations;
 
 using UnityEngine;
@@ -11,6 +13,12 @@ using Zenject;
 namespace BetterBeatSaber.Colorizer;
 
 internal sealed class MenuSignColorizer : IInitializable, ITickable {
+
+    private static readonly FieldAccessor<FlickeringNeonSign, Color>.Accessor LightOnColorField = FieldAccessor<FlickeringNeonSign, Color>.GetAccessor("_lightOnColor");
+    private static readonly FieldAccessor<FlickeringNeonSign, Color>.Accessor SpriteOnColorField = FieldAccessor<FlickeringNeonSign, Color>.GetAccessor("_spriteOnColor");
+    
+    private static readonly FieldAccessor<FlickeringNeonSign, TubeBloomPrePassLight>.Accessor LightField = FieldAccessor<FlickeringNeonSign, TubeBloomPrePassLight>.GetAccessor("_light"); // E Neon
+    private static readonly FieldAccessor<FlickeringNeonSign, SpriteRenderer>.Accessor FlickeringSpriteField = FieldAccessor<FlickeringNeonSign, SpriteRenderer>.GetAccessor("_flickeringSprite"); // E Logo
 
     [UsedImplicitly]
     [Inject]
@@ -36,9 +44,9 @@ internal sealed class MenuSignColorizer : IInitializable, ITickable {
         var renderers = parent.GetComponentsInChildren<SpriteRenderer>();
         var tubeLights = parent.GetComponentsInChildren<TubeBloomPrePassLight>();
 
-        _eNeon = _flickeringNeonSign.GetField<TubeBloomPrePassLight, FlickeringNeonSign>("_light");
-        _eLogo = _flickeringNeonSign.GetField<SpriteRenderer, FlickeringNeonSign>("_flickeringSprite");
-
+        _eNeon = LightField(ref _flickeringNeonSign);
+        _eLogo = FlickeringSpriteField(ref _flickeringNeonSign);
+        
         var rootRenderers = new List<SpriteRenderer>();
         var defaultEnvironment = _menuEnvironmentManager.transform.GetChild(0);
 
@@ -101,8 +109,8 @@ internal sealed class MenuSignColorizer : IInitializable, ITickable {
         if(_eLogo != null)
             _eLogo.color = color0;
 
-        _flickeringNeonSign.SetField("_lightOnColor", color0);
-        _flickeringNeonSign.SetField("_spriteOnColor", color0);
+        LightOnColorField(ref _flickeringNeonSign) = color0;
+        SpriteOnColorField(ref _flickeringNeonSign) = color0;
 
         var pss = _flickeringNeonSign.gameObject.GetComponentsInChildren<ParticleSystem>();
 

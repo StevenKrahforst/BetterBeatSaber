@@ -1,6 +1,6 @@
-﻿using BetterBeatSaber.Mixin.Attributes;
+﻿using BetterBeatSaber.Extensions;
+using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
-using BetterBeatSaber.Providers;
 
 using TMPro;
 
@@ -15,8 +15,8 @@ internal static class DeltaRankCounterVisualManagerMixin {
 
     [MixinMethod(nameof(CounterInit), MixinAt.Post)]
     private static void CounterInit(ref TMP_Text ____text) {
-        if(BetterBloomFontProvider.Instance != null && BetterBeatSaberConfig.Instance.ColorizePBOT)
-            ____text.font = BetterBloomFontProvider.Instance.BloomFont;
+        if(BetterBeatSaberConfig.Instance.ColorizePBOT)
+            ____text.font = TextMeshProExtensions.BloomFont;
     }
 
 }

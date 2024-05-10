@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 
 using BetterBeatSaber.Extensions;
-using BetterBeatSaber.Providers;
 
 using JetBrains.Annotations;
 
@@ -16,7 +15,7 @@ using Zenject;
 
 namespace BetterBeatSaber.HudModifier;
 
-internal sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable, IDisposable {
+internal sealed class ScoreHudModifier : IHudModifier, ITickable, IDisposable {
 
     [UsedImplicitly]
     [Inject]
@@ -26,10 +25,6 @@ internal sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable,
     [Inject]
     private readonly ImmediateRankUIPanel _immediateRankUIPanel = null!;
 
-    [UsedImplicitly]
-    [Inject]
-    private readonly BetterBloomFontProvider _bloomFontProvider = null!;
-    
     private TextMeshProUGUI? _rankText;
     private TextMeshProUGUI? _scoreText;
 
@@ -104,16 +99,16 @@ internal sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable,
         _secondColor = rank.SecondColor;
 
         if (_rankText != null) {
-            _rankText.font = rank.Bloom ? _bloomFontProvider.BloomFont : _rankTextDefaultFont;
+            _rankText.font = rank.Bloom ? TextMeshProExtensions.BloomFont : _rankTextDefaultFont;
             _rankText.text = rank.Name;
         }
         
         if(_scoreText != null)
-            _scoreText.font = rank.Bloom ? _bloomFontProvider.BloomFont : _scoreTextDefaultFont;
+            _scoreText.font = rank.Bloom ? TextMeshProExtensions.BloomFont : _scoreTextDefaultFont;
         
     }
     
-    public sealed class Options : BaseOptions {
+    public sealed class Options : BetterBeatSaberConfig.HudModifierOptions {
 
         public Rank[] Ranks { get; set; } = [
             new Rank {
@@ -159,8 +154,8 @@ internal sealed class ScoreHudModifier : HudModifier, IInitializable, ITickable,
         public float Threshold { get; set; }
         public string Name { get; set; } = null!;
         public ColorMode ColorMode { get; set; } = ColorMode.Color;
-        public Color Color { get; set; } = Extensions.ColorExtensions.None;
-        public Color SecondColor { get; set; } = Extensions.ColorExtensions.None;
+        public Color Color { get; set; } = ColorExtensions.None;
+        public Color SecondColor { get; set; } = ColorExtensions.None;
         public bool Bloom { get; set; }
 
     }

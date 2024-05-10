@@ -12,7 +12,7 @@ using Object = UnityEngine.Object;
 
 namespace BetterBeatSaber.HudModifier; 
 
-internal sealed class ProgressHudModifier : HudModifier, IInitializable, ITickable {
+internal sealed class ProgressHudModifier : IHudModifier, ITickable {
 
     [UsedImplicitly]
     [Inject]

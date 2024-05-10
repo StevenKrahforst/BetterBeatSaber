@@ -4,6 +4,7 @@ using Zenject;
 
 namespace BetterBeatSaber.Providers;
 
+// ReSharper disable once ClassNeverInstantiated.Global
 internal sealed class MaterialProvider : IInitializable {
 
     public static MaterialProvider? Instance { get; private set; }

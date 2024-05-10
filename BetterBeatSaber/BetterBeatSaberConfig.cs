@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
 using BetterBeatSaber.Colorizer;
-using BetterBeatSaber.Config.Attributes;
 using BetterBeatSaber.Enums;
 using BetterBeatSaber.HudModifier;
-using BetterBeatSaber.Manager;
 using BetterBeatSaber.Utilities;
 
 namespace BetterBeatSaber; 
-
-// CustomFloorPlugin check to disable hide level/menu env
 
 // ReSharper disable ReplaceAutoPropertyWithComputedProperty
 
@@ -32,7 +27,6 @@ internal sealed class BetterBeatSaberConfig(string name) : Config.Config<BetterB
                 try {
                     using var stream = File.OpenWrite(path);
                     typeof(BetterBeatSaberConfig).Assembly.GetManifestResourceStream("BetterBeatSaber.Resources.bbs.html")!.CopyTo(stream);
-                    ModalManager.Instance.ShowModal("Warning", "You have to restart SignalRGB and either the game or apply the \"Better Beat Saber\" effect by yourself");
                 } catch (Exception) {
                     BetterBeatSaber.Instance.Logger.Warn("Failed to extract SignalRGB Integration Effect");
                 }
@@ -53,27 +47,8 @@ internal sealed class BetterBeatSaberConfig(string name) : Config.Config<BetterB
 
     #region RGB
 
-    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
     public bool SignalRGBIntegration { get; set; } = true;
 
-    #region Philips Hue
-    
-    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
-    public bool PhilipsHueIntegration { get; set; } = false;
-    
-    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
-    public string PhilipsHueBridgeIp { get; set; } = string.Empty;
-    
-    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
-    public string PhilipsHueUsername { get; set; } = string.Empty;
-    
-    // ReSharper disable once UseCollectionExpression
-    // ReSharper disable once CollectionNeverUpdated.Global
-    [RequiresRestart(RequiresRestartAttribute.RestartType.Full)]
-    public List<int> PhilipsHueLightIds { get; } = new();
-    
-    #endregion
-    
     public ObservableValue<float> RGBIntegrationUpdateInterval { get; } = new(.02f);
 
     #endregion
@@ -163,12 +138,19 @@ internal sealed class BetterBeatSaberConfig(string name) : Config.Config<BetterB
     
     #endregion
     
-    public HudModifier.HudModifier.BaseOptions ComboHudModifier { get; set; } = new();
+    public HudModifierOptions ComboHudModifier { get; set; } = new();
     public EnergyHudModifier.Options EnergyHudModifier { get; set; } = new();
-    public HudModifier.HudModifier.BaseOptions MultiplierHudModifier { get; set; } = new();
-    public HudModifier.HudModifier.BaseOptions ProgressHudModifier { get; set; } = new();
+    public HudModifierOptions MultiplierHudModifier { get; set; } = new();
+    public HudModifierOptions ProgressHudModifier { get; set; } = new();
     public ScoreHudModifier.Options ScoreHudModifier { get; set; } = new();
 
     #endregion
+    
+    public class HudModifierOptions {
+
+        public bool Enable { get; set; } = true;
+        public bool Glow { get; set; } = true;
+
+    }
     
 }

@@ -19,17 +19,13 @@ public sealed class ColorManager : Utilities.PersistentSingleton<ColorManager> {
     public Color SecondColor { get; private set; }
     public Color ThirdColor { get; private set; }
 
-    private int[] _philipsHueLightIds = [];
-
     private void Start() {
         
         _duration = BetterBeatSaberConfig.Instance.ColorUpdateDurationTime.CurrentValue;
         
         BetterBeatSaberConfig.Instance.ColorUpdateDurationTime.OnValueChanged += OnColorUpdateDurationTimeValueChanged;
 
-        _philipsHueLightIds = BetterBeatSaberConfig.Instance.PhilipsHueLightIds.ToArray();
-
-        if(BetterBeatSaberConfig.Instance.SignalRGBIntegration || BetterBeatSaberConfig.Instance.PhilipsHueIntegration)
+        if(BetterBeatSaberConfig.Instance.SignalRGBIntegration)
             StartCoroutine(UpdateIntegrations());
         
     }
@@ -64,8 +60,6 @@ public sealed class ColorManager : Utilities.PersistentSingleton<ColorManager> {
         for(;;) {
             if(BetterBeatSaberConfig.Instance.SignalRGBIntegration)
                 yield return SetSignalRGBHue((int) Math.Floor(FirstColorHue * 360));
-            if(BetterBeatSaberConfig.Instance.PhilipsHueIntegration)
-                yield return SetPhilipsHueHue((int) Math.Floor((1.0 - FirstColorHue) * 65535));
             yield return new WaitForSeconds(BetterBeatSaberConfig.Instance.RGBIntegrationUpdateInterval.CurrentValue);
         }
         // ReSharper disable once IteratorNeverReturns
@@ -77,15 +71,6 @@ public sealed class ColorManager : Utilities.PersistentSingleton<ColorManager> {
         yield return request.SendWebRequest();
     }
 
-    private IEnumerator SetPhilipsHueHue(int hue) {
-        foreach (var lightId in _philipsHueLightIds) {
-            var request = new UnityWebRequest($"http://{BetterBeatSaberConfig.Instance.PhilipsHueBridgeIp}/api/{BetterBeatSaberConfig.Instance.PhilipsHueUsername}/lights/{lightId}/state");
-            request.method = "PUT";
-            request.uploadHandler = new UploadHandlerRaw(Encoding.UTF8.GetBytes($"{{\"on\":true, \"sat\":254, \"bri\":254,\"hue\":{hue}, \"effect\": \"none\"}}"));
-            yield return request.SendWebRequest();
-        }
-    }
-    
     #endregion
 
 }

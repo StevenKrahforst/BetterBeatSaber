@@ -1,5 +1,6 @@
 ﻿using System;
 
+using BetterBeatSaber.Extensions;
 using BetterBeatSaber.Providers;
 
 using HMUI;
@@ -10,7 +11,7 @@ using Zenject;
 
 namespace BetterBeatSaber.HudModifier; 
 
-internal sealed class ComboHudModifier : HudModifier, IInitializable, ITickable, IDisposable {
+internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
 
     [UsedImplicitly]
     [Inject]
@@ -24,10 +25,6 @@ internal sealed class ComboHudModifier : HudModifier, IInitializable, ITickable,
     [Inject]
     private readonly MaterialProvider _materialProvider = null!;
 
-    [UsedImplicitly]
-    [Inject]
-    private readonly BetterBloomFontProvider _bloomFontProvider = null!;
-    
     private CurvedTextMeshPro? _comboText;
     private CurvedTextMeshPro? _comboNumText;
 
@@ -46,8 +43,8 @@ internal sealed class ComboHudModifier : HudModifier, IInitializable, ITickable,
         _comboNumText = comboTexts[1];
 
         if (BetterBeatSaberConfig.Instance.ComboHudModifier.Glow) {
-            _comboText.font = _bloomFontProvider.BloomFont;
-            _comboNumText.font = _bloomFontProvider.BloomFont;
+            _comboText.font = TextMeshProExtensions.BloomFont;
+            _comboNumText.font = TextMeshProExtensions.BloomFont;
         }
         
         var fullComboLines = _comboUIController.GetComponentsInChildren<ImageView>();

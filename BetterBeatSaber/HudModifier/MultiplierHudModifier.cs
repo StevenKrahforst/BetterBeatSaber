@@ -12,7 +12,7 @@ using Zenject;
 
 namespace BetterBeatSaber.HudModifier; 
 
-internal sealed class MultiplierHudModifier : HudModifier, IInitializable, ITickable, IDisposable {
+internal sealed class MultiplierHudModifier : IHudModifier, ITickable, IDisposable {
 
     [UsedImplicitly]
     [Inject]

@@ -220,8 +220,10 @@ internal class Outline : MonoBehaviour {
     }
 
     private void UpdateMaterialProperties() {
+        
         if(_needsUpdate)
             _needsUpdate = false;
+        
         foreach (var r in Renderers) {
             for (var i = 0; i < r.sharedMaterials.Length; i++) {
                 var sharedMaterial = r.sharedMaterials[i];
@@ -231,6 +233,7 @@ internal class Outline : MonoBehaviour {
                     r.SetPropertyBlock(_fillMaterialPropertyBlock, i);
             }
         }
+        
     }
 
     protected virtual void UpdateRenderers() =>
