@@ -154,8 +154,8 @@ internal sealed class ScoreHudModifier : IHudModifier, ITickable, IDisposable {
         public float Threshold { get; set; }
         public string Name { get; set; } = null!;
         public ColorMode ColorMode { get; set; } = ColorMode.Color;
-        public Color Color { get; set; } = ColorExtensions.None;
-        public Color SecondColor { get; set; } = ColorExtensions.None;
+        public Color Color { get; set; } = Extensions.ColorExtensions.None;
+        public Color SecondColor { get; set; } = Extensions.ColorExtensions.None;
         public bool Bloom { get; set; }
 
     }

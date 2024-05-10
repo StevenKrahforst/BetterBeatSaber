@@ -18,11 +18,11 @@ internal sealed class DustColorizer : IInitializable, IDisposable, ITickable {
     
     public void Initialize() {
         
-        _enabled = BetterBeatSaberConfig.Instance.ColorizeDust.CurrentValue && !Tweaks55.Instance.DisableCutParticles.CurrentValue;
+        _enabled = BetterBeatSaberConfig.Instance.ColorizeDust.CurrentValue && !Tweaks55.Instance!.DisableCutParticles.CurrentValue;
         
         FetchDustParticleSystem();
 
-        Tweaks55.Instance.DisableGlobalParticles.OnValueChanged += OnDisableCutParticlesValueChanged;
+        Tweaks55.Instance!.DisableGlobalParticles.OnValueChanged += OnDisableCutParticlesValueChanged;
         BetterBeatSaberConfig.Instance.ColorizeDust.OnValueChanged += OnColorizeDustValueChanged;
 
     }
@@ -35,7 +35,7 @@ internal sealed class DustColorizer : IInitializable, IDisposable, ITickable {
     }
 
     public void Dispose() {
-        Tweaks55.Instance.DisableGlobalParticles.OnValueChanged -= OnDisableCutParticlesValueChanged;
+        Tweaks55.Instance!.DisableGlobalParticles.OnValueChanged -= OnDisableCutParticlesValueChanged;
         BetterBeatSaberConfig.Instance.ColorizeDust.OnValueChanged -= OnColorizeDustValueChanged;
     }
     
@@ -44,7 +44,7 @@ internal sealed class DustColorizer : IInitializable, IDisposable, ITickable {
     
     // TODO: On disable change back to default ig???
     private void OnColorizeDustValueChanged(bool state) =>
-        _enabled = state && !Tweaks55.Instance.DisableGlobalParticles;
+        _enabled = state && !Tweaks55.Instance!.DisableGlobalParticles;
 
     private void FetchDustParticleSystem() =>
         _particleSystem = Resources.FindObjectsOfTypeAll<ParticleSystem>().FirstOrDefault(particleSystem => particleSystem.name == "DustPS");
