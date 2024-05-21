@@ -13,16 +13,13 @@ namespace BetterBeatSaber.HudModifier;
 
 internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
 
-    [UsedImplicitly]
-    [Inject]
-    private readonly ComboController _comboController = null!;
+    [InjectOptional, UsedImplicitly]
+    private readonly ComboController? _comboController;
     
-    [UsedImplicitly]
-    [Inject]
-    private readonly ComboUIController _comboUIController = null!;
+    [InjectOptional, UsedImplicitly]
+    private readonly ComboUIController? _comboUIController;
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly MaterialProvider _materialProvider = null!;
 
     private CurvedTextMeshPro? _comboText;
@@ -34,6 +31,10 @@ internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
     private bool _comboBroke;
     
     public void Initialize() {
+
+        if (_comboController == null || _comboUIController == null) {
+            return;
+        }
         
         var comboTexts = _comboUIController.GetComponentsInChildren<CurvedTextMeshPro>();
         if (comboTexts is not { Length: 2 })
@@ -41,14 +42,8 @@ internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
 
         _comboText = comboTexts[0];
         _comboNumText = comboTexts[1];
-
-        if (BetterBeatSaberConfig.Instance.ComboHudModifier.Glow) {
-            _comboText.font = TextMeshProExtensions.BloomFont;
-            _comboNumText.font = TextMeshProExtensions.BloomFont;
-        }
         
         var fullComboLines = _comboUIController.GetComponentsInChildren<ImageView>();
-
         foreach (var fullComboLine in fullComboLines) {
             fullComboLine.gradient = true;
             if (BetterBeatSaberConfig.Instance.ComboHudModifier.Glow) {
@@ -58,6 +53,11 @@ internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
 
         _topLine = fullComboLines[0];
         _bottomLine = fullComboLines[1];
+        
+        if (BetterBeatSaberConfig.Instance.ComboHudModifier.Glow) {
+            _comboText.font = TextMeshProExtensions.BloomFont;
+            _comboNumText.font = TextMeshProExtensions.BloomFont;
+        }
 
         _comboController.comboBreakingEventHappenedEvent += OnComboBreakingEventHappenedEvent;
         
@@ -88,26 +88,25 @@ internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
     }
     
     public void Dispose() {
-        _comboController.comboBreakingEventHappenedEvent -= OnComboBreakingEventHappenedEvent;
+        if(_comboController != null)
+            _comboController.comboBreakingEventHappenedEvent -= OnComboBreakingEventHappenedEvent;
     }
     
     private void OnComboBreakingEventHappenedEvent() {
 	    
         _comboBroke = true;
         
-        if(_topLine != null) {
+        if(_topLine != null)
             _topLine.gameObject.SetActive(false);
-        }
         
-        if(_bottomLine != null) {
+        if(_bottomLine != null)
             _bottomLine.gameObject.SetActive(false);
-        }
         
-        if(_comboText != null) {
+        if(_comboText != null)
             _comboText.color = UnityEngine.Color.green;
-        }
         
-        _comboController.comboBreakingEventHappenedEvent -= OnComboBreakingEventHappenedEvent;
+        if(_comboController != null)
+            _comboController.comboBreakingEventHappenedEvent -= OnComboBreakingEventHappenedEvent;
         
     }
 
