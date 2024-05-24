@@ -13,11 +13,11 @@ namespace BetterBeatSaber.HudModifier;
 
 internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
 
-    [InjectOptional, UsedImplicitly]
-    private readonly ComboController? _comboController;
+    [Inject, UsedImplicitly]
+    private readonly ComboController _comboController = null!;
     
-    [InjectOptional, UsedImplicitly]
-    private readonly ComboUIController? _comboUIController;
+    [Inject, UsedImplicitly]
+    private readonly ComboUIController _comboUIController = null!;
 
     [Inject, UsedImplicitly]
     private readonly MaterialProvider _materialProvider = null!;
@@ -32,10 +32,6 @@ internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
     
     public void Initialize() {
 
-        if (_comboController == null || _comboUIController == null) {
-            return;
-        }
-        
         var comboTexts = _comboUIController.GetComponentsInChildren<CurvedTextMeshPro>();
         if (comboTexts is not { Length: 2 })
             return;
@@ -46,9 +42,8 @@ internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
         var fullComboLines = _comboUIController.GetComponentsInChildren<ImageView>();
         foreach (var fullComboLine in fullComboLines) {
             fullComboLine.gradient = true;
-            if (BetterBeatSaberConfig.Instance.ComboHudModifier.Glow) {
+            if (BetterBeatSaberConfig.Instance.ComboHudModifier.Glow)
                 fullComboLine.material = _materialProvider.DistanceFieldMaterial;
-            }
         }
 
         _topLine = fullComboLines[0];
@@ -87,10 +82,8 @@ internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
         
     }
     
-    public void Dispose() {
-        if(_comboController != null)
-            _comboController.comboBreakingEventHappenedEvent -= OnComboBreakingEventHappenedEvent;
-    }
+    public void Dispose() =>
+        _comboController.comboBreakingEventHappenedEvent -= OnComboBreakingEventHappenedEvent;
     
     private void OnComboBreakingEventHappenedEvent() {
 	    
@@ -105,9 +98,8 @@ internal sealed class ComboHudModifier : IHudModifier, ITickable, IDisposable {
         if(_comboText != null)
             _comboText.color = UnityEngine.Color.green;
         
-        if(_comboController != null)
-            _comboController.comboBreakingEventHappenedEvent -= OnComboBreakingEventHappenedEvent;
-        
+        _comboController.comboBreakingEventHappenedEvent -= OnComboBreakingEventHappenedEvent;
+ 
     }
 
 }

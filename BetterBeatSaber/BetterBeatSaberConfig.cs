@@ -138,6 +138,7 @@ internal sealed class BetterBeatSaberConfig(string name) : Config.Config<BetterB
     
     #endregion
     
+    public bool RemoveHudBackground { get; set; } = true;
     public HudModifierOptions ComboHudModifier { get; set; } = new();
     public EnergyHudModifier.Options EnergyHudModifier { get; set; } = new();
     public HudModifierOptions MultiplierHudModifier { get; set; } = new();

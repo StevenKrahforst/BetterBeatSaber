@@ -183,6 +183,7 @@
         <Compile Include="Enums\HitScoreMode.cs" />
         <Compile Include="Extensions\DiContainerExtensions.cs" />
         <Compile Include="Extensions\TextMeshProExtensions.cs" />
+        <Compile Include="HudModifier\HudModifierInstaller.cs" />
         <Compile Include="HudModifier\IHudModifier.cs" />
         <Compile Include="Interops\HitScoreVisualizer.cs" />
         <Compile Include="Interops\SongCore.cs" />

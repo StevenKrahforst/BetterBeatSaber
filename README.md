@@ -15,6 +15,7 @@ Any questions, ideas, suggestions, bugs etc? Create an Issue on GitHub or write 
 - Integration for SignalRGB, FPS Counter, PBOT, FC Percentage, Menu Pillars, Custom Notes *(Outlines)*
 - Some little Tweaks like Note/Bomb size, hiding the Level and/or Menu Environment and more
 - Outlines are configurable (Visibility *(Only for VR or Desktop or Both)*, Width, Glow/Bloom)
+- Custom Rank names and colors based on a threshold *(Only configurable through the config file)*
 
 > [!NOTE]
 > There are a few things which are only configurable from the config file

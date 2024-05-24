@@ -14,16 +14,13 @@ namespace BetterBeatSaber.HudModifier;
 
 internal sealed class MultiplierHudModifier : IHudModifier, ITickable, IDisposable {
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly ScoreMultiplierUIController _scoreMultiplierUIController = null!;
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly IScoreController _scoreController = null!;
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly MaterialProvider _materialProvider = null!;
     
     private int _currentMultiplier;

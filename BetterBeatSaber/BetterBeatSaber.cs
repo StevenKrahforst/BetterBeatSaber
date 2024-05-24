@@ -5,6 +5,7 @@ using System.Reflection;
 using BeatSaberMarkupLanguage;
 
 using BetterBeatSaber.Extensions;
+using BetterBeatSaber.HudModifier;
 using BetterBeatSaber.Installer;
 using BetterBeatSaber.Mixin;
 using BetterBeatSaber.Providers;
@@ -67,19 +68,19 @@ public sealed class BetterBeatSaber {
         
         MixinManager.Patch();
         
+        Zenjector.Expose<ScoreMultiplierUIController>("Environment");
+        Zenjector.Expose<SongProgressUIController>("Environment");
+        Zenjector.Expose<ImmediateRankUIPanel>("Environment");
+        Zenjector.Expose<ComboUIController>("Environment");
+        Zenjector.Expose<GameEnergyUIPanel>("Environment");
+        
         Zenjector.Install<AppInstaller>(Location.App);
         
         Zenjector.Install<MenuAndPlayerInstaller>(Location.Menu | Location.Player);
         
         Zenjector.Install<MenuInstaller>(Location.Menu);
         Zenjector.Install<GameInstaller>(Location.Player);
-        
-        Zenjector.Expose<ScoreMultiplierUIController>("Environment");
-        Zenjector.Expose<SongProgressUIController>("Environment");
-        Zenjector.Expose<ImmediateRankUIPanel>("Environment");
-        
-        Zenjector.Expose<ComboUIController>("Environment");
-        Zenjector.Expose<GameEnergyUIPanel>("Environment");
+        Zenjector.Install<HudModifierInstaller>(Location.StandardPlayer | Location.CampaignPlayer);
         
         Utilities.SharedCoroutineStarter.Instance.StartCoroutine(LoadAssets());
 

@@ -21,24 +21,19 @@ namespace BetterBeatSaber.HudModifier;
 
 internal sealed class EnergyHudModifier : IHudModifier, ITickable, IDisposable {
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly IGameEnergyCounter _energyCounter = null!;
     
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly GameEnergyUIPanel _gameEnergyUIPanel = null!;
     
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly ComboController _comboController = null!;
     
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly GameplayModifiers _gameplayModifiers = null!;
     
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly MaterialProvider _materialProvider = null!;
 
     private Image? _energyBar;

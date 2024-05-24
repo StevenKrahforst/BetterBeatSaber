@@ -17,12 +17,10 @@ namespace BetterBeatSaber.HudModifier;
 
 internal sealed class ScoreHudModifier : IHudModifier, ITickable, IDisposable {
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly RelativeScoreAndImmediateRankCounter _relativeScoreAndImmediateRankCounter = null!;
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly ImmediateRankUIPanel _immediateRankUIPanel = null!;
 
     private TextMeshProUGUI? _rankText;

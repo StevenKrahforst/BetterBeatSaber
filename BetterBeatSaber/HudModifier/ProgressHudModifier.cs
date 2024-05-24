@@ -14,16 +14,13 @@ namespace BetterBeatSaber.HudModifier;
 
 internal sealed class ProgressHudModifier : IHudModifier, ITickable {
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly SongProgressUIController _songProgressUIController = null!;
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly AudioTimeSyncController _audioTimeSyncController = null!;
 
-    [UsedImplicitly]
-    [Inject]
+    [Inject, UsedImplicitly]
     private readonly MaterialProvider _materialProvider = null!;
 
     private ImageView? _progressBar;

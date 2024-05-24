@@ -14,27 +14,10 @@ namespace BetterBeatSaber.Installer;
 internal sealed class GameInstaller : Zenject.Installer {
 
     public override void InstallBindings() {
-
+        
         Container.BindInterfacesAndSelfTo<DustColorizer>().AsSingle();
         Container.BindInterfacesAndSelfTo<FeetColorizer>().AsSingle();
         Container.BindInterfacesAndSelfTo<PlayersPlaceColorizer>().AsSingle();
-
-        if(BetterBeatSaberConfig.Instance.ComboHudModifier.Enable)
-            BindHudModifier<ComboHudModifier>();
-        
-        if(BetterBeatSaberConfig.Instance.EnergyHudModifier.Enable)
-            BindHudModifier<EnergyHudModifier>();
-        
-        if(BetterBeatSaberConfig.Instance.MultiplierHudModifier.Enable)
-            BindHudModifier<MultiplierHudModifier>();
-        
-        if(BetterBeatSaberConfig.Instance.ProgressHudModifier.Enable)
-            BindHudModifier<ProgressHudModifier>();
-        
-        BindHudModifier<RemoveBackgroundHudModifier>();
-        
-        if(BetterBeatSaberConfig.Instance.ScoreHudModifier.Enable)
-            BindHudModifier<ScoreHudModifier>();
 
         if (!BetterBeatSaberConfig.Instance.HideLevelEnvironment)
             return;
@@ -64,7 +47,4 @@ internal sealed class GameInstaller : Zenject.Installer {
 
     }
     
-    private void BindHudModifier<T>() where T : IHudModifier =>
-        Container.BindInterfacesAndSelfTo<T>().AsSingle();
-
 }
