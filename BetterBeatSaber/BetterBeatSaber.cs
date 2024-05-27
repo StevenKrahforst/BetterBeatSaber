@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Reflection;
-
-using BeatSaberMarkupLanguage;
 
 using BetterBeatSaber.Extensions;
 using BetterBeatSaber.HudModifier;
 using BetterBeatSaber.Installer;
 using BetterBeatSaber.Mixin;
-using BetterBeatSaber.Providers;
 using BetterBeatSaber.Utilities;
 
 using IPA;
@@ -55,7 +51,6 @@ public sealed class BetterBeatSaber {
         // ReSharper disable once ObjectCreationAsStatement
         new BetterBeatSaberConfig("BetterBeatSaber");
 
-        PluginInitInjector.AddInjector(typeof(BetterBeatSaber), (_, _, _) => this);
         PluginInitInjector.AddInjector(typeof(MixinManager), CreateMixinManager);
         
         MixinManager = new MixinManager("BetterBeatSaber", Assembly.GetExecutingAssembly());
@@ -94,9 +89,8 @@ public sealed class BetterBeatSaber {
     }
 
     [OnExit]
-    public void Exit() {
+    public void Exit() =>
         MixinManager.Unpatch();
-    }
 
     // Move to class like "AssetLoader" or "AssetBundleLoader"
     private static IEnumerator LoadAssets() {

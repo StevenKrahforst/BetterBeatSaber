@@ -47,7 +47,7 @@ internal sealed class BetterBeatSaberConfig(string name) : Config.Config<BetterB
 
     #region RGB
 
-    public bool SignalRGBIntegration { get; set; } = true;
+    public bool SignalRGBIntegration { get; set; } = false;
 
     public ObservableValue<float> RGBIntegrationUpdateInterval { get; } = new(.02f);
 
@@ -98,7 +98,6 @@ internal sealed class BetterBeatSaberConfig(string name) : Config.Config<BetterB
     public ObservableValue<float> NoteSize { get; set; } = new(1.2f);
     public ObservableValue<float> BombSize { get; set; } = new(1.2f);
     
-    public bool HideMissTexts { get; set; } = true;
     public bool DisableAprilFoolsAndEarthDayStuff { get; set; } = true;
     // TODO: Make Observable
     public bool HideEditorButton { get; set; } = true;
@@ -137,8 +136,11 @@ internal sealed class BetterBeatSaberConfig(string name) : Config.Config<BetterB
     #endregion
     
     #endregion
-    
+
+    #region HUD
+
     public bool RemoveHudBackground { get; set; } = true;
+    
     public HudModifierOptions ComboHudModifier { get; set; } = new();
     public EnergyHudModifier.Options EnergyHudModifier { get; set; } = new();
     public HudModifierOptions MultiplierHudModifier { get; set; } = new();
@@ -147,9 +149,11 @@ internal sealed class BetterBeatSaberConfig(string name) : Config.Config<BetterB
 
     #endregion
     
+    #endregion
+    
     public class HudModifierOptions {
 
-        public bool Enable { get; set; } = true;
+        public bool Enable { get; set; } = false;
         public bool Glow { get; set; } = true;
 
     }

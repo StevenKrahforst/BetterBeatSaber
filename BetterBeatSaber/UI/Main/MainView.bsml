@@ -57,7 +57,6 @@
                             <horizontal pref-width='90'>
                                 <text text='Tweaks' font-size='5' bold='true' align='Center' />
                             </horizontal>
-                            <checkbox-setting text='Hide Miss Texts' value='HideMissTexts' apply-on-change='true' />
                             <checkbox-setting text='Disable April Fools And Earth Day Stuff' value='DisableAprilFoolsAndEarthDayStuff' apply-on-change='true' />
                             <checkbox-setting text='Hide Editor Button' value='HideEditorButton' apply-on-change='true' />
                             <checkbox-setting text='Hide Promotion Button' value='HidePromotionButton' apply-on-change='true' />

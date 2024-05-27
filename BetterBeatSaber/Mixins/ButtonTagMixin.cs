@@ -1,4 +1,6 @@
-﻿using BetterBeatSaber.Colorizer;
+﻿using System;
+
+using BetterBeatSaber.Colorizer;
 using BetterBeatSaber.Mixin.Attributes;
 using BetterBeatSaber.Mixin.Enums;
 

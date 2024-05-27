@@ -15,6 +15,7 @@ internal sealed class MenuInstaller : Zenject.Installer {
             Container.BindInterfacesAndSelfTo<MenuSignColorizer>().AsSingle();
 
         Container.BindInterfacesAndSelfTo<MenuEnvironmentHider>().AsSingle();
+        Container.BindInterfacesAndSelfTo<MenuButtonColorizer>().AsSingle();
 
     }
 

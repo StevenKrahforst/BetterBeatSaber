@@ -164,6 +164,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Compile Include="Bindings\MenuButtonColorizer.cs" />
         <Compile Include="Bindings\MenuEnvironmentHider.cs" />
         <Compile Include="Colorizer\BombColorizer.cs" />
         <Compile Include="Colorizer\BurnMarkAreaColorizer.cs" />
@@ -220,7 +221,6 @@
         <Compile Include="Mixins\LightSwitchEventEffectMixin.cs" />
         <Compile Include="Mixins\MainMenuViewControllerMixin.cs" />
         <Compile Include="Mixins\MenuPillarsManagerMixin.cs" />
-        <Compile Include="Mixins\MissedNoteEffectSpawnerMixin.cs" />
         <Compile Include="Mixins\NoteControllerMixin.cs" />
         <Compile Include="Mixins\NoteCutParticlesEffectMixin.cs" />
         <Compile Include="Mixins\NoteDebrisMixin.cs" />

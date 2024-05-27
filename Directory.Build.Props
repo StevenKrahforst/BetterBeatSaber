@@ -20,7 +20,7 @@
         <ErrorReport>prompt</ErrorReport>
         <WarningLevel>4</WarningLevel>
         <OutputPath>bin\Debug\</OutputPath>
-        <BeatSaberVersion>1.34.2</BeatSaberVersion>
+        <BeatSaberVersion>1.29.1</BeatSaberVersion>
         <BeatSaberDirectory>C:\Users\steve\BSManager\BSInstances\$(BeatSaberVersion)</BeatSaberDirectory>
     </PropertyGroup>
 

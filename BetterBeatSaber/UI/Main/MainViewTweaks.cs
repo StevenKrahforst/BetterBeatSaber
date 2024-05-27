@@ -4,11 +4,6 @@
 
 internal partial class MainView {
 
-    public bool HideMissTexts {
-        get => BetterBeatSaberConfig.Instance.HideMissTexts;
-        set => BetterBeatSaberConfig.Instance.HideMissTexts = value;
-    }
-    
     public bool DisableAprilFoolsAndEarthDayStuff {
         get => BetterBeatSaberConfig.Instance.DisableAprilFoolsAndEarthDayStuff;
         set => BetterBeatSaberConfig.Instance.DisableAprilFoolsAndEarthDayStuff = value;
