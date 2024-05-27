@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 
 using BetterBeatSaber.Extensions;
-using BetterBeatSaber.Utilities;
 
 using IPA.Loader;
 
@@ -25,7 +24,7 @@ public sealed class MenuButtonColorizer : IInitializable, ITickable {
     public void Initialize() {
         _menuButtonsViewControllerType = PluginManager.GetPluginFromId("BeatSaberMarkupLanguage").Assembly.GetType("BeatSaberMarkupLanguage.MenuButtons.MenuButtonsViewController");
         if(_menuButtonsViewControllerType != null)
-            SharedCoroutineStarter.Instance.StartCoroutine(FindText());
+            Utilities.SharedCoroutineStarter.Instance.StartCoroutine(FindText());
     }
     
     public void Tick() {
